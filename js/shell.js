@@ -94,32 +94,81 @@ function renderShell(opts) {
       '</div>' +
     '</div>';
 
+  var otpBoxesHtml = '';
+  for (var _i = 0; _i < 6; _i++) otpBoxesHtml += '<input class="otp-box" maxlength="1" oninput="otpNext(this)">';
+
   var profileModalHtml =
     '<div id="profile-modal" class="modal-overlay">' +
       '<div class="modal" style="width:440px;padding:24px;max-height:86vh;overflow-y:auto">' +
-        '<div class="modal-title">Profile</div>' +
-        '<div class="modal-sub">Your personal account &mdash; separate from organisation Settings.</div>' +
-        '<div style="display:flex;align-items:center;gap:12px;margin-top:18px">' +
-          '<span style="width:52px;height:52px;border-radius:50%;background:var(--accent-tint);color:var(--accent);display:flex;align-items:center;justify-content:center;font:600 16px/20px var(--font-sans);flex-shrink:0">' +
-            userName.split(' ').map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase() +
-          '</span>' +
-          '<span class="btn btn-secondary btn-sm">Change photo</span>' +
-        '</div>' +
-        '<div style="margin-top:16px"><label class="field-label">Full name</label><input class="input" value="' + userName + '"></div>' +
-        '<div style="margin-top:14px"><label class="field-label">Email</label><input class="input" value="' + userEmail + '"></div>' +
-        '<div style="font:400 12px/16px var(--font-sans);color:var(--ink-300);margin-top:6px">Email and password changes go through Ellora.</div>' +
-        '<div style="margin-top:14px"><span class="btn btn-secondary btn-sm">Change password</span></div>' +
-        '<div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--line-100)">' +
-          '<div style="border-radius:10px;box-shadow:0 0 0 1px var(--danger-border) inset;padding:14px">' +
-            '<div style="font:600 14px/20px var(--font-sans);color:var(--danger-text)">Delete your account</div>' +
-            '<div style="font:400 13px/19px var(--font-sans);color:var(--ink-500);margin-top:4px">Permanently remove your principal and every organisation membership it holds. This cannot be undone.</div>' +
-            '<span class="btn btn-danger btn-sm" style="margin-top:12px">Delete account</span>' +
-            '<div style="font:400 12px/16px var(--font-sans);color:var(--ink-300);margin-top:6px">Not yet available &mdash; planned for a future release.</div>' +
+
+        '<div id="profile-main-view">' +
+          '<div class="modal-title">Profile</div>' +
+          '<div class="modal-sub">Your personal account &mdash; separate from organisation Settings.</div>' +
+          '<div style="margin-top:12px;padding:8px 10px;border-radius:6px;background:var(--danger-bg);font:500 12px/17px var(--font-sans);color:var(--danger-text)">Note for engineering: email changes, password changes and Google linking below will require Ellora support to implement &mdash; these are mockups only.</div>' +
+
+          '<div style="display:flex;align-items:center;gap:12px;margin-top:18px">' +
+            '<span style="width:52px;height:52px;border-radius:50%;background:var(--accent-tint);color:var(--accent);display:flex;align-items:center;justify-content:center;font:600 16px/20px var(--font-sans);flex-shrink:0">' +
+              userName.split(' ').map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase() +
+            '</span>' +
+            '<span class="btn btn-secondary btn-sm">Change photo</span>' +
+          '</div>' +
+          '<div style="margin-top:16px"><label class="field-label">Full name</label><input class="input" value="' + userName + '"></div>' +
+
+          '<div style="margin-top:14px"><label class="field-label">Email</label><input class="input" id="profile-email-input" value="' + userEmail + '" data-original="' + userEmail + '" oninput="onProfileEmailInput()"></div>' +
+          '<div class="field-help" id="profile-email-help">Changing this will require verifying a one-time code.</div>' +
+
+          '<div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between">' +
+            '<label class="field-label" style="margin-bottom:0">Password</label>' +
+            '<span class="btn btn-secondary btn-sm" onclick="closeModal(\'profile-modal\');openModal(\'change-password-modal\')">Change password</span>' +
+          '</div>' +
+
+          '<div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line-100)">' +
+            '<label class="field-label">Google account</label>' +
+            '<div id="google-account-row" style="margin-top:6px"></div>' +
+          '</div>' +
+
+          '<div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--line-100)">' +
+            '<div style="border-radius:10px;box-shadow:0 0 0 1px var(--danger-border) inset;padding:14px">' +
+              '<div style="font:600 14px/20px var(--font-sans);color:var(--danger-text)">Delete your account</div>' +
+              '<div style="font:400 13px/19px var(--font-sans);color:var(--ink-500);margin-top:4px">Permanently remove your principal and every organisation membership it holds. This cannot be undone.</div>' +
+              '<span class="btn btn-danger btn-sm" style="margin-top:12px">Delete account</span>' +
+              '<div style="font:400 12px/16px var(--font-sans);color:var(--ink-300);margin-top:6px">Not yet available &mdash; planned for a future release.</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">' +
+            '<span class="btn btn-secondary" onclick="closeModal(\'profile-modal\')">Cancel</span>' +
+            '<span class="btn btn-primary" id="profile-save-btn" onclick="saveProfileChanges()">Save changes</span>' +
           '</div>' +
         '</div>' +
+
+        '<div id="profile-otp-view" style="display:none;text-align:center">' +
+          '<div class="modal-title" style="font-size:16px">Verify your new email</div>' +
+          '<div class="modal-sub">We sent a 6-digit code to <b style="color:var(--ink-900)" id="profile-otp-target"></b>.</div>' +
+          '<div style="display:flex;gap:8px;justify-content:center;margin-top:18px">' + otpBoxesHtml + '</div>' +
+          '<div class="field-help" id="profile-otp-error" style="display:none;color:var(--danger-text);margin-top:8px"></div>' +
+          '<div style="display:flex;justify-content:center;gap:8px;margin-top:20px">' +
+            '<span class="btn btn-secondary" onclick="cancelEmailVerification()">&larr; Back</span>' +
+            '<span class="btn btn-primary" onclick="verifyProfileEmailOtp()">Verify</span>' +
+          '</div>' +
+        '</div>' +
+
+      '</div>' +
+    '</div>';
+
+  var changePasswordModalHtml =
+    '<div id="change-password-modal" class="modal-overlay">' +
+      '<div class="modal" style="width:400px;padding:24px">' +
+        '<div class="modal-title">Change password</div>' +
+        '<div class="modal-sub">Choose a new password for your account.</div>' +
+        '<div style="margin-top:12px;padding:8px 10px;border-radius:6px;background:var(--danger-bg);font:500 12px/17px var(--font-sans);color:var(--danger-text)">Note for engineering: this flow will require Ellora support to implement.</div>' +
+        '<div style="margin-top:16px"><label class="field-label">Current password</label><input class="input" type="password" id="cp-current" oninput="validateChangePassword()"></div>' +
+        '<div style="margin-top:14px"><label class="field-label">New password</label><input class="input" type="password" id="cp-new" oninput="validateChangePassword()"></div>' +
+        '<div style="margin-top:14px"><label class="field-label">Confirm new password</label><input class="input" type="password" id="cp-confirm" oninput="validateChangePassword()"></div>' +
+        '<div class="field-help" id="cp-error" style="display:none;color:var(--danger-text);margin-top:6px"></div>' +
         '<div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">' +
-          '<span class="btn btn-secondary" onclick="closeModal(\'profile-modal\')">Cancel</span>' +
-          '<span class="btn btn-primary" onclick="closeModal(\'profile-modal\');showToast(\'Profile updated\')">Save changes</span>' +
+          '<span class="btn btn-secondary" onclick="closeModal(\'change-password-modal\');openModal(\'profile-modal\')">Cancel</span>' +
+          '<span class="btn btn-primary" id="cp-save-btn" disabled onclick="saveNewPassword()">Save password</span>' +
         '</div>' +
       '</div>' +
     '</div>';
@@ -187,9 +236,10 @@ function renderShell(opts) {
   if (sidenavEl) sidenavEl.outerHTML = sidenavHtml;
 
   if (!document.getElementById('invites-modal')) {
-    document.body.insertAdjacentHTML('beforeend', invitesModalHtml + profileModalHtml);
+    document.body.insertAdjacentHTML('beforeend', invitesModalHtml + profileModalHtml + changePasswordModalHtml);
   }
   updateInviteBadge();
+  renderGoogleAccountRow();
 
   if (topbarEl) {
     topbarEl.outerHTML =
@@ -274,6 +324,98 @@ function openModal(id) {
 function closeModal(id) {
   var el = document.getElementById(id);
   if (el) el.classList.remove('open');
+}
+
+var PROFILE_GOOGLE_LINKED = false;
+var GOOGLE_ICON_SVG = '<svg width="16" height="16" viewBox="0 0 16 16"><path fill="#4285F4" d="M15.68 8.18c0-.57-.05-1.11-.14-1.64H8v3.1h4.3a3.68 3.68 0 0 1-1.6 2.42v2h2.58c1.51-1.39 2.38-3.44 2.38-5.88Z"/><path fill="#34A853" d="M8 16c2.16 0 3.97-.72 5.29-1.94l-2.58-2c-.72.48-1.63.77-2.71.77-2.08 0-3.85-1.41-4.48-3.3H.86v2.07A8 8 0 0 0 8 16Z"/><path fill="#FBBC05" d="M3.52 9.53a4.8 4.8 0 0 1 0-3.06V4.4H.86a8 8 0 0 0 0 7.2l2.66-2.07Z"/><path fill="#EA4335" d="M8 3.18c1.18 0 2.23.4 3.06 1.2l2.29-2.29A7.95 7.95 0 0 0 8 0 8 8 0 0 0 .86 4.4l2.66 2.07C4.15 4.59 5.92 3.18 8 3.18Z"/></svg>';
+function renderGoogleAccountRow() {
+  var el = document.getElementById('google-account-row');
+  if (!el) return;
+  el.innerHTML =
+    '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset">' +
+      GOOGLE_ICON_SVG +
+      (PROFILE_GOOGLE_LINKED
+        ? '<span style="flex:1;font:400 13px/18px var(--font-sans);color:var(--ink-800)">Linked as <b>asha.rao@gmail.com</b></span><span class="btn btn-secondary btn-sm" onclick="toggleGoogleLink()">Unlink</span>'
+        : '<span style="flex:1;font:400 13px/18px var(--font-sans);color:var(--ink-500)">Not linked</span><span class="btn btn-secondary btn-sm" onclick="toggleGoogleLink()">Link Google account</span>') +
+    '</div>';
+}
+function toggleGoogleLink() {
+  PROFILE_GOOGLE_LINKED = !PROFILE_GOOGLE_LINKED;
+  renderGoogleAccountRow();
+  showToast(PROFILE_GOOGLE_LINKED ? 'Google account linked.' : 'Google account unlinked.');
+}
+
+function onProfileEmailInput() {
+  var input = document.getElementById('profile-email-input');
+  var changed = input.value.trim() !== input.getAttribute('data-original');
+  document.getElementById('profile-email-help').textContent = changed
+    ? 'You’ll need to verify this new address before it takes effect.'
+    : 'Changing this will require verifying a one-time code.';
+}
+function saveProfileChanges() {
+  var input = document.getElementById('profile-email-input');
+  var changed = input.value.trim() !== input.getAttribute('data-original');
+  if (changed) {
+    document.getElementById('profile-otp-target').textContent = input.value.trim();
+    document.getElementById('profile-main-view').style.display = 'none';
+    document.getElementById('profile-otp-view').style.display = '';
+    document.querySelectorAll('#profile-otp-view .otp-box').forEach(function (b) { b.value = ''; });
+    document.getElementById('profile-otp-error').style.display = 'none';
+    var first = document.querySelector('#profile-otp-view .otp-box');
+    if (first) first.focus();
+    return;
+  }
+  closeModal('profile-modal');
+  showToast('Profile updated.');
+}
+function cancelEmailVerification() {
+  var input = document.getElementById('profile-email-input');
+  input.value = input.getAttribute('data-original');
+  onProfileEmailInput();
+  document.getElementById('profile-otp-view').style.display = 'none';
+  document.getElementById('profile-main-view').style.display = '';
+}
+function verifyProfileEmailOtp() {
+  var boxes = document.querySelectorAll('#profile-otp-view .otp-box');
+  var code = Array.prototype.map.call(boxes, function (b) { return b.value; }).join('');
+  var err = document.getElementById('profile-otp-error');
+  if (code.length < 6) {
+    err.textContent = 'Enter all 6 digits.';
+    err.style.display = '';
+    return;
+  }
+  err.style.display = 'none';
+  var input = document.getElementById('profile-email-input');
+  input.setAttribute('data-original', input.value.trim());
+  document.getElementById('profile-otp-view').style.display = 'none';
+  document.getElementById('profile-main-view').style.display = '';
+  closeModal('profile-modal');
+  showToast('Email address updated.');
+}
+function otpNext(el) {
+  if (el.value && el.nextElementSibling) el.nextElementSibling.focus();
+}
+
+function validateChangePassword() {
+  var cur = document.getElementById('cp-current').value;
+  var next = document.getElementById('cp-new').value;
+  var confirm = document.getElementById('cp-confirm').value;
+  var err = document.getElementById('cp-error');
+  var msg = '';
+  if (next && next.length < 8) msg = 'New password must be at least 8 characters.';
+  else if (confirm && next !== confirm) msg = 'Passwords don’t match.';
+  err.textContent = msg;
+  err.style.display = msg ? '' : 'none';
+  var valid = cur.length > 0 && next.length >= 8 && next === confirm;
+  document.getElementById('cp-save-btn').toggleAttribute('disabled', !valid);
+  return valid;
+}
+function saveNewPassword() {
+  if (!validateChangePassword()) return;
+  ['cp-current', 'cp-new', 'cp-confirm'].forEach(function (id) { document.getElementById(id).value = ''; });
+  document.getElementById('cp-save-btn').setAttribute('disabled', '');
+  closeModal('change-password-modal');
+  showToast('Password updated.');
 }
 
 function updateInviteBadge() {

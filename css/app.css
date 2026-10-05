@@ -169,6 +169,8 @@ textarea.input{resize:none;padding-top:8px;font-family:var(--font-sans)}
 .modal{background:#fff;border-radius:var(--radius-8);box-shadow:var(--shadow-modal);box-sizing:border-box;max-width:92vw}
 .modal-title{font:600 17px/22px var(--font-sans);color:var(--ink-900)}
 .modal-sub{font:400 13px/19px var(--font-sans);color:var(--text-muted);margin-top:4px}
+.otp-box{width:40px;height:48px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset,0 0 0 1px var(--line-100);text-align:center;font:600 18px/48px var(--font-sans);color:var(--ink-900);outline:none}
+.otp-box:focus{box-shadow:0 0 0 1px var(--accent) inset,0 0 0 1px var(--accent)}
 
 /* ---------- Toast ---------- */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:200;background:var(--ink-900);color:#fff;border-radius:var(--radius-8);padding:12px 18px;max-width:420px;text-align:center;font:400 13px/19px var(--font-sans);display:none}
