@@ -50,20 +50,66 @@
   <div data-panelgroup="settings" data-panelkey="general">
     <div class="card card-pad" style="margin-bottom:16px">
       <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Identity</span>
-      <div style="margin-top:16px;display:flex;align-items:center;gap:14px">
-        <span class="swatch" style="width:56px;height:56px;background:var(--blue-100)"></span>
-        <span class="btn btn-secondary">Change logo</span>
+      <p class="field-help" style="margin-top:4px;max-width:560px">This is your public partner profile &mdash; it appears on the app directory alongside every app you list, and it's often the first thing a merchant reads before installing. Make it count.</p>
+
+      <div style="margin-top:14px;display:flex;align-items:center;gap:14px">
+        <span class="swatch" id="org-logo-swatch" style="width:56px;height:56px;background:var(--blue-100);background-repeat:no-repeat"></span>
+        <span class="btn btn-secondary" onclick="openModal('logo-modal')">Change logo</span>
       </div>
-      <div style="margin-top:16px"><label class="field-label">Organisation name</label><input class="input" value="Nutristar Digital"></div>
-      <div style="margin-top:14px"><label class="field-label">Country</label><select class="input" style="width:240px"><option>India</option><option>United States</option><option>United Kingdom</option></select></div>
-      <div style="margin-top:14px"><label class="field-label">Description</label><textarea class="input" style="height:72px">We build commerce apps and manage storefronts for D2C brands across India.</textarea></div>
+
+      <div style="margin-top:16px">
+        <label class="field-label">Organisation name <span style="color:var(--danger-text)">*</span></label>
+        <input class="input" id="gen-org-name" value="Nutristar Digital" oninput="validateGeneralForm()" onblur="markTouched('org-name')">
+        <div class="field-help" id="err-org-name" style="display:none;color:var(--danger-text)"></div>
+      </div>
+
+      <div style="margin-top:14px;display:flex;gap:12px">
+        <div style="flex:1"><label class="field-label">City</label><input class="input" id="gen-city" value="Bengaluru"></div>
+        <div style="flex:1"><label class="field-label">Country</label><select class="input" id="gen-country"><option>India</option><option>United States</option><option>United Kingdom</option><option>United Arab Emirates</option><option>Singapore</option><option>Other</option></select></div>
+      </div>
+
+      <div style="margin-top:14px">
+        <label class="field-label">Building since</label>
+        <select class="input" id="gen-since" style="width:160px"></select>
+        <div class="field-help">Shown on your public profile.</div>
+      </div>
+
+      <div style="margin-top:16px">
+        <label class="field-label">Description</label>
+        <div class="field-help" style="margin-top:0;margin-bottom:8px;max-width:560px">Shown on the app directory, right under your logo. Supports basic Markdown.</div>
+        <div style="display:flex;align-items:center;gap:4px;margin-bottom:6px;flex-wrap:wrap">
+          <span class="btn btn-secondary btn-sm" style="padding:0 10px;font-weight:700" title="Bold" onclick="mdBold()">B</span>
+          <span class="btn btn-secondary btn-sm" style="padding:0 10px;font-style:italic" title="Italic" onclick="mdItalic()">I</span>
+          <span class="btn btn-secondary btn-sm" style="padding:0 10px" title="Link" onclick="mdLink()"><span id="md-link-icon"></span></span>
+          <span class="btn btn-secondary btn-sm" style="padding:0 10px" title="Bulleted list" onclick="mdList()">List</span>
+          <span style="flex:1"></span>
+          <span class="tab active" id="md-write-tab" style="font-size:12px;padding:0 2px 4px;margin-bottom:0" onclick="if(mdPreviewOn) toggleMdPreview()">Write</span>
+          <span class="tab" id="md-preview-tab" style="font-size:12px;padding:0 2px 4px;margin-bottom:0" onclick="if(!mdPreviewOn) toggleMdPreview()">Preview</span>
+        </div>
+        <textarea class="input" id="gen-desc" style="height:96px">We build commerce apps and manage storefronts for D2C brands across India.</textarea>
+        <div class="input" id="gen-desc-preview" style="display:none;min-height:96px;height:auto;padding:10px 12px;font:400 14px/20px var(--font-sans);color:var(--ink-800)"></div>
+        <div class="field-help">Supports **bold**, _italic_, [links](https://) and bulleted lists.</div>
+      </div>
     </div>
-    <div class="card card-pad">
+    <div class="card card-pad" style="margin-bottom:16px">
       <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Contact</span>
-      <div style="margin-top:16px"><label class="field-label">Support email</label><input class="input" value="support@nutristar.in"></div>
-      <div style="margin-top:14px"><label class="field-label">Website</label><input class="input" value="https://nutristar.in"></div>
+      <div style="margin-top:16px">
+        <label class="field-label">Support email <span style="color:var(--danger-text)">*</span></label>
+        <input class="input" id="gen-email" value="support@nutristar.in" oninput="validateGeneralForm()" onblur="markTouched('email')">
+        <div class="field-help" id="err-email" style="display:none;color:var(--danger-text)"></div>
+      </div>
+      <div style="margin-top:14px">
+        <label class="field-label">Website</label>
+        <input class="input" id="gen-website" value="https://nutristar.in" oninput="validateGeneralForm()" onblur="onWebsiteBlur()">
+        <div class="field-help" id="err-website" style="display:none;color:var(--danger-text)"></div>
+      </div>
+      <div style="margin-top:14px">
+        <label class="field-label">Contact phone <span style="color:var(--danger-text)">*</span></label>
+        <input class="input" type="tel" id="gen-phone" value="+91 98765 43210" placeholder="+91 98765 43210" oninput="validateGeneralForm()" onblur="markTouched('phone')">
+        <div class="field-help" id="err-phone" style="display:none;color:var(--danger-text)"></div>
+      </div>
     </div>
-    <div style="display:flex;justify-content:flex-end;margin-top:16px"><span class="btn btn-primary">Save changes</span></div>
+    <div style="display:flex;justify-content:flex-end;margin-top:16px"><span class="btn btn-primary" id="gen-save-btn" onclick="saveGeneralForm()">Save changes</span></div>
   </div>
 
   <!-- Payouts -->
@@ -75,7 +121,23 @@
 
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
       <span style="font:600 18px/24px var(--font-sans);color:var(--ink-900)">Payouts</span>
-      <span class="btn btn-secondary btn-sm" onclick="showToast('Exporting CSV — check your email in a few minutes.')">Export CSV</span>
+      <span class="btn btn-secondary btn-sm" id="export-csv-btn" onclick="showToast('Exporting CSV — check your email in a few minutes.')">Export CSV</span>
+    </div>
+
+    <div class="card card-pad" style="margin-bottom:16px">
+      <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Payout account</span>
+      <div id="payout-account-has" class="payout-account-row" style="border:1px solid var(--line-100)">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="width:36px;height:24px;border-radius:4px;background:var(--ink-900);display:flex;align-items:center;justify-content:center;color:#fff" id="card-icon"></span>
+          <div><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)" id="payout-account-label">HDFC Bank &bull;&bull;&bull;&bull; 4421</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Payouts settle here monthly</div></div>
+        </div>
+        <span class="btn btn-secondary btn-sm" onclick="openModal('payout-account-modal')">Update</span>
+      </div>
+      <div id="payout-account-none" class="payout-account-row" style="border:1px dashed var(--line-150);display:none">
+        <div style="font:400 13px/19px var(--font-sans);color:var(--text-muted)">No payout account on file yet.</div>
+        <span class="btn btn-primary btn-sm" onclick="openModal('payout-account-modal')">Add account</span>
+      </div>
+      <div id="payout-account-warning" style="display:none;margin-top:10px;font:500 12px/17px var(--font-sans);color:var(--danger-text)">Payments cannot be processed until a payout account is added.</div>
     </div>
 
     <div id="payout-has">
@@ -96,21 +158,6 @@
         <div style="margin-top:10px;font:600 30px/36px var(--font-sans);color:var(--ink-900);font-variant-numeric:tabular-nums">&#8377;3,398.50</div>
         <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px">Estimated amount, GST included</div>
         <div style="margin-top:14px;font:400 13px/19px var(--font-sans);color:var(--ink-550)">Estimated payout date Oct 22, 2026 via bank account (HDFC Bank &bull;&bull;&bull;&bull; 4421)</div>
-      </div>
-
-      <div class="card card-pad" style="margin-bottom:16px">
-        <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Payout account</span>
-        <div id="payout-account-has" class="payout-account-row" style="border:1px solid var(--line-100)">
-          <div style="display:flex;align-items:center;gap:12px">
-            <span style="width:36px;height:24px;border-radius:4px;background:var(--ink-900);display:flex;align-items:center;justify-content:center;color:#fff" id="card-icon"></span>
-            <div><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)" id="payout-account-label">HDFC Bank &bull;&bull;&bull;&bull; 4421</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Payouts settle here monthly</div></div>
-          </div>
-          <span class="btn btn-secondary btn-sm" onclick="openModal('payout-account-modal')">Update</span>
-        </div>
-        <div id="payout-account-none" class="payout-account-row" style="border:1px dashed var(--line-150);display:none">
-          <div style="font:400 13px/19px var(--font-sans);color:var(--text-muted)">No payout account on file yet.</div>
-          <span class="btn btn-primary btn-sm" onclick="openModal('payout-account-modal')">Add account</span>
-        </div>
       </div>
 
       <div class="card" style="overflow:hidden">
@@ -272,14 +319,81 @@
 
 <!-- Payout account modal -->
 <div id="payout-account-modal" class="modal-overlay">
-  <div class="modal" style="width:400px;padding:24px">
+  <div class="modal" style="width:420px;padding:24px">
     <div class="modal-title">Payout account</div>
     <div class="modal-sub">We'll send your payouts to this bank account.</div>
-    <div style="margin-top:16px"><label class="field-label">Account number</label><input class="input" id="pa-acct-num" placeholder="e.g. 50100123456789"></div>
-    <div style="margin-top:12px"><label class="field-label">IFSC code</label><input class="input" id="pa-ifsc" placeholder="e.g. HDFC0001234"></div>
+    <div style="margin-top:16px">
+      <label class="field-label">Account number</label>
+      <input class="input" type="password" id="pa-acct-num" placeholder="Enter account number" autocomplete="off" oninput="checkPayoutAccountForm()">
+    </div>
+    <div style="margin-top:12px">
+      <label class="field-label">Confirm account number</label>
+      <input class="input" type="text" id="pa-acct-num-confirm" placeholder="Re-enter to confirm" autocomplete="off" oninput="checkPayoutAccountForm()">
+      <div id="pa-acct-mismatch" class="field-help" style="display:none;color:var(--danger-text)">Account numbers don't match.</div>
+    </div>
+    <div style="margin-top:12px"><label class="field-label">IFSC code</label><input class="input" id="pa-ifsc" placeholder="e.g. HDFC0001234" oninput="checkPayoutAccountForm()"></div>
+    <div style="margin-top:14px;display:flex;gap:8px;align-items:flex-start;border-radius:8px;background:var(--danger-bg);padding:10px 12px">
+      <span style="color:var(--danger-text);flex-shrink:0;font:600 13px/17px var(--font-sans)">&#9888;</span>
+      <span style="font:400 12px/17px var(--font-sans);color:var(--danger-text)">Double-check these details. An incorrect account number or IFSC code can send your payout to the wrong account and may cause loss of funds.</span>
+    </div>
     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
       <span class="btn btn-secondary" onclick="closeModal('payout-account-modal')">Cancel</span>
-      <span class="btn btn-primary" onclick="savePayoutAccount()">Save</span>
+      <span class="btn btn-primary" id="pa-continue-btn" disabled onclick="openPayoutAccountConfirm()">Continue</span>
+    </div>
+  </div>
+</div>
+
+<!-- Payout account change — confirm step -->
+<div id="payout-account-confirm-modal" class="modal-overlay">
+  <div class="modal" style="width:420px;padding:24px">
+    <div class="modal-title">Confirm payout account change</div>
+    <div class="modal-sub">Review carefully &mdash; payouts will start going to the new account.</div>
+    <div style="margin-top:18px;display:flex;align-items:center;gap:10px">
+      <div style="flex:1;min-width:0;text-align:center;border-radius:8px;box-shadow:0 0 0 1px var(--line-100);padding:12px 8px">
+        <div style="font:600 10px/14px var(--font-sans);color:var(--ink-300);text-transform:uppercase;letter-spacing:0.5px">Current</div>
+        <div id="pa-confirm-old" style="font:600 13px/18px var(--font-sans);color:var(--ink-900);margin-top:4px;word-break:break-word">&mdash;</div>
+      </div>
+      <span style="color:var(--ink-450);flex-shrink:0;font:400 18px/18px var(--font-sans)">&rarr;</span>
+      <div style="flex:1;min-width:0;text-align:center;border-radius:8px;box-shadow:0 0 0 1.5px var(--accent);padding:12px 8px">
+        <div style="font:600 10px/14px var(--font-sans);color:var(--accent);text-transform:uppercase;letter-spacing:0.5px">New</div>
+        <div id="pa-confirm-new" style="font:600 13px/18px var(--font-sans);color:var(--ink-900);margin-top:4px;word-break:break-word">&mdash;</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:8px;align-items:flex-start;border-radius:8px;background:var(--danger-bg);padding:10px 12px">
+      <span style="color:var(--danger-text);flex-shrink:0;font:600 13px/17px var(--font-sans)">&#9888;</span>
+      <span style="font:400 12px/17px var(--font-sans);color:var(--danger-text)">This cannot be undone once a payout has been sent to the new account. Wrong details may cause loss of funds.</span>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+      <span class="btn btn-secondary" onclick="closeModal('payout-account-confirm-modal');openModal('payout-account-modal')">&larr; Back</span>
+      <span class="btn btn-danger" onclick="confirmSavePayoutAccount()">Confirm change</span>
+    </div>
+  </div>
+</div>
+
+<!-- Logo upload + square crop modal -->
+<div id="logo-modal" class="modal-overlay">
+  <div class="modal" style="width:400px;padding:24px">
+    <div class="modal-title">Change logo</div>
+    <div class="modal-sub">Upload a square logo &mdash; PNG or JPG, at least 256&times;256px.</div>
+
+    <div id="logo-dropzone" style="margin-top:16px;height:64px;border-radius:8px;border:1px dashed var(--line-150);display:flex;align-items:center;gap:12px;padding:0 14px;cursor:pointer;box-sizing:border-box" onclick="document.getElementById('logo-file-input').click()">
+      <span id="logo-upload-icon" style="width:36px;height:36px;border-radius:6px;background:var(--line-100);color:var(--ink-500);flex-shrink:0;display:flex;align-items:center;justify-content:center"></span>
+      <div><div style="font:400 13px/18px var(--font-sans);color:var(--ink-800)" id="logo-dropzone-label">Upload a square logo</div><div class="field-help" style="margin-top:0">PNG or JPG, at least 256&times;256px</div></div>
+    </div>
+    <input type="file" accept="image/*" id="logo-file-input" style="display:none" onchange="onLogoFileSelected(event)">
+
+    <div id="logo-crop-area" style="display:none;margin-top:16px">
+      <div id="logo-crop-frame" style="width:240px;height:240px;margin:0 auto;border-radius:8px;box-shadow:0 0 0 1px var(--line-150);background-color:var(--line-100);background-repeat:no-repeat;cursor:grab;user-select:none"></div>
+      <div class="field-help" style="text-align:center;margin-top:8px">Drag to reposition</div>
+      <div style="margin-top:12px">
+        <label class="field-label">Zoom</label>
+        <input type="range" id="logo-zoom" min="100" max="300" value="100" style="width:100%" oninput="updateLogoCrop()">
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+      <span class="btn btn-secondary" onclick="closeModal('logo-modal')">Cancel</span>
+      <span class="btn btn-primary" id="logo-apply-btn" disabled onclick="applyLogoCrop()">Apply</span>
     </div>
   </div>
 </div>
@@ -299,6 +413,7 @@ document.getElementById('pg-next').style.transform = 'rotate(-90deg)';
 function togglePayoutDemo(hasPayouts) {
   document.getElementById('payout-has').style.display = hasPayouts ? '' : 'none';
   document.getElementById('payout-empty').style.display = hasPayouts ? 'none' : '';
+  document.getElementById('export-csv-btn').toggleAttribute('disabled', !hasPayouts);
 }
 
 document.getElementById('cycle-trend-icon').innerHTML = icon('trend', 10);
@@ -321,14 +436,43 @@ document.getElementById('cycle-trend-icon').innerHTML = icon('trend', 10);
 function togglePayoutAccountDemo(hasAccount) {
   document.getElementById('payout-account-has').style.display = hasAccount ? 'flex' : 'none';
   document.getElementById('payout-account-none').style.display = hasAccount ? 'none' : 'flex';
+  document.getElementById('payout-account-warning').style.display = hasAccount ? 'none' : '';
 }
-function savePayoutAccount() {
-  document.getElementById('payout-account-label').textContent = 'HDFC Bank •••• 4421';
+function bankNameFromIfsc(ifsc) {
+  var map = { HDFC: 'HDFC Bank', ICIC: 'ICICI Bank', SBIN: 'State Bank of India', UTIB: 'Axis Bank', KKBK: 'Kotak Mahindra Bank', YESB: 'Yes Bank', PUNB: 'Punjab National Bank', INDB: 'IndusInd Bank' };
+  return map[ifsc.slice(0, 4).toUpperCase()] || 'Bank account';
+}
+function checkPayoutAccountForm() {
+  var num = document.getElementById('pa-acct-num').value.trim();
+  var confirmNum = document.getElementById('pa-acct-num-confirm').value.trim();
+  var ifsc = document.getElementById('pa-ifsc').value.trim();
+  var mismatch = confirmNum.length > 0 && num !== confirmNum;
+  document.getElementById('pa-acct-mismatch').style.display = mismatch ? '' : 'none';
+  var valid = num.length >= 6 && confirmNum.length >= 6 && num === confirmNum && ifsc.length >= 6;
+  document.getElementById('pa-continue-btn').toggleAttribute('disabled', !valid);
+}
+function openPayoutAccountConfirm() {
+  if (document.getElementById('pa-continue-btn').hasAttribute('disabled')) return;
+  var num = document.getElementById('pa-acct-num').value.trim();
+  var ifsc = document.getElementById('pa-ifsc').value.trim().toUpperCase();
+  var noAccountYet = document.getElementById('payout-account-none').style.display !== 'none';
+  var oldLabel = noAccountYet ? 'No account on file' : document.getElementById('payout-account-label').textContent;
+  var newLabel = bankNameFromIfsc(ifsc) + ' •••• ' + num.slice(-4);
+  document.getElementById('pa-confirm-old').textContent = oldLabel;
+  document.getElementById('pa-confirm-new').textContent = newLabel;
+  closeModal('payout-account-modal');
+  openModal('payout-account-confirm-modal');
+}
+function confirmSavePayoutAccount() {
+  document.getElementById('payout-account-label').textContent = document.getElementById('pa-confirm-new').textContent;
   togglePayoutAccountDemo(true);
   document.getElementById('payout-account-demo-switch').value = 'has';
   document.getElementById('pa-acct-num').value = '';
+  document.getElementById('pa-acct-num-confirm').value = '';
   document.getElementById('pa-ifsc').value = '';
-  closeModal('payout-account-modal');
+  document.getElementById('pa-acct-mismatch').style.display = 'none';
+  document.getElementById('pa-continue-btn').setAttribute('disabled', '');
+  closeModal('payout-account-confirm-modal');
   showToast('Payout account updated.');
 }
 
@@ -450,6 +594,189 @@ document.getElementById('item-close-icon').innerHTML = icon('close', 12);
 document.getElementById('item-invoice-icon').innerHTML = icon('download', 12);
 document.getElementById('item-search-icon').innerHTML = icon('search', 12);
 document.getElementById('inv-print-icon').innerHTML = icon('download', 14);
+
+/* ---------- General tab: markdown description editor ---------- */
+function mdWrap(id, before, after, placeholder) {
+  var ta = document.getElementById(id);
+  var start = ta.selectionStart, end = ta.selectionEnd;
+  var selected = ta.value.slice(start, end) || placeholder || '';
+  ta.value = ta.value.slice(0, start) + before + selected + after + ta.value.slice(end);
+  ta.focus();
+  ta.selectionStart = start + before.length;
+  ta.selectionEnd = start + before.length + selected.length;
+}
+function mdBold() { mdWrap('gen-desc', '**', '**', 'bold text'); }
+function mdItalic() { mdWrap('gen-desc', '_', '_', 'italic text'); }
+function mdLink() { mdWrap('gen-desc', '[', '](https://)', 'link text'); }
+function mdList() {
+  var ta = document.getElementById('gen-desc');
+  var start = ta.selectionStart;
+  var before = ta.value.slice(0, start);
+  var lineStart = before.lastIndexOf('\n') + 1;
+  ta.value = ta.value.slice(0, lineStart) + '- ' + ta.value.slice(lineStart);
+  ta.focus();
+  ta.selectionStart = ta.selectionEnd = start + 2;
+}
+function mdEscape(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function mdToHtml(src) {
+  var html = mdEscape(src)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/_(.+?)_/g, '<em>$1</em>')
+    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  var lines = html.split('\n');
+  var out = [], inList = false;
+  lines.forEach(function (line) {
+    if (/^-\s+/.test(line)) {
+      if (!inList) { out.push('<ul style="margin:4px 0 4px 18px;padding:0">'); inList = true; }
+      out.push('<li>' + line.replace(/^-\s+/, '') + '</li>');
+    } else {
+      if (inList) { out.push('</ul>'); inList = false; }
+      if (line.trim()) out.push('<p style="margin:0 0 8px">' + line + '</p>');
+    }
+  });
+  if (inList) out.push('</ul>');
+  return out.join('') || '<span style="color:var(--text-placeholder)">Nothing to preview yet.</span>';
+}
+var mdPreviewOn = false;
+function toggleMdPreview() {
+  mdPreviewOn = !mdPreviewOn;
+  var ta = document.getElementById('gen-desc');
+  var pv = document.getElementById('gen-desc-preview');
+  if (mdPreviewOn) { pv.innerHTML = mdToHtml(ta.value); ta.style.display = 'none'; pv.style.display = 'block'; }
+  else { ta.style.display = ''; pv.style.display = 'none'; }
+  document.getElementById('md-write-tab').classList.toggle('active', !mdPreviewOn);
+  document.getElementById('md-preview-tab').classList.toggle('active', mdPreviewOn);
+}
+document.getElementById('md-link-icon').innerHTML = icon('externalLink', 11);
+
+(function populateSinceYears() {
+  var sel = document.getElementById('gen-since');
+  var html = '';
+  for (var y = 2026; y >= 2005; y--) {
+    html += '<option' + (y === 2019 ? ' selected' : '') + '>' + y + '</option>';
+  }
+  sel.innerHTML = html;
+})();
+
+/* ---------- General tab: validation ---------- */
+var genTouched = {};
+function markTouched(key) { genTouched[key] = true; validateGeneralForm(); }
+function setFieldError(key, inputId, message) {
+  var errEl = document.getElementById('err-' + key);
+  var inputEl = document.getElementById(inputId);
+  var show = !!(genTouched[key] && message);
+  if (errEl) { errEl.textContent = message || ''; errEl.style.display = show ? '' : 'none'; }
+  if (inputEl) inputEl.style.boxShadow = show ? '0 0 0 1px var(--danger-border) inset' : '';
+  return !!message;
+}
+function validateGeneralForm() {
+  var hasError = false;
+  var name = document.getElementById('gen-org-name').value.trim();
+  hasError = setFieldError('org-name', 'gen-org-name', name.length < 2 ? 'Organisation name must be at least 2 characters.' : '') || hasError;
+
+  var email = document.getElementById('gen-email').value.trim();
+  hasError = setFieldError('email', 'gen-email', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? '' : 'Enter a valid email address.') || hasError;
+
+  var phone = document.getElementById('gen-phone').value.trim();
+  hasError = setFieldError('phone', 'gen-phone', /^\+?[0-9 ()-]{7,16}$/.test(phone) ? '' : 'Enter a valid contact phone number.') || hasError;
+
+  var website = document.getElementById('gen-website').value.trim();
+  hasError = setFieldError('website', 'gen-website', (!website || /^https?:\/\/.+\..+/.test(website)) ? '' : 'Enter a full URL, starting with https://') || hasError;
+
+  var btn = document.getElementById('gen-save-btn');
+  if (btn) btn.toggleAttribute('disabled', hasError);
+  return !hasError;
+}
+function onWebsiteBlur() {
+  var el = document.getElementById('gen-website');
+  var v = el.value.trim();
+  if (v && !/^https?:\/\//i.test(v)) el.value = 'https://' + v;
+  markTouched('website');
+}
+function saveGeneralForm() {
+  if (!validateGeneralForm()) return;
+  showToast('Settings saved.');
+}
+validateGeneralForm();
+
+/* ---------- General tab: logo upload + square crop ---------- */
+var logoImg = null;
+var logoNatural = { w: 0, h: 0 };
+var logoBaseScale = 1;
+var logoPos = { x: 0, y: 0 };
+var logoDrag = null;
+
+function onLogoFileSelected(e) {
+  var file = e.target.files && e.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function (ev) {
+    var img = new Image();
+    img.onload = function () {
+      logoImg = img;
+      logoNatural = { w: img.naturalWidth, h: img.naturalHeight };
+      logoBaseScale = 240 / Math.min(logoNatural.w, logoNatural.h);
+      logoPos = { x: 0, y: 0 };
+      document.getElementById('logo-zoom').value = 100;
+      document.getElementById('logo-dropzone-label').textContent = file.name;
+      var frame = document.getElementById('logo-crop-frame');
+      frame.style.backgroundImage = 'url(' + ev.target.result + ')';
+      document.getElementById('logo-crop-area').style.display = '';
+      document.getElementById('logo-apply-btn').removeAttribute('disabled');
+      updateLogoCrop();
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function currentLogoScale() {
+  var zoom = parseFloat(document.getElementById('logo-zoom').value) / 100;
+  return logoBaseScale * zoom;
+}
+function updateLogoCrop() {
+  if (!logoImg) return;
+  var scale = currentLogoScale();
+  var dispW = logoNatural.w * scale;
+  var dispH = logoNatural.h * scale;
+  var minX = 240 - dispW;
+  var minY = 240 - dispH;
+  logoPos.x = Math.min(0, Math.max(minX, logoPos.x));
+  logoPos.y = Math.min(0, Math.max(minY, logoPos.y));
+  var frame = document.getElementById('logo-crop-frame');
+  frame.style.backgroundSize = dispW + 'px ' + dispH + 'px';
+  frame.style.backgroundPosition = logoPos.x + 'px ' + logoPos.y + 'px';
+}
+(function () {
+  var frame = document.getElementById('logo-crop-frame');
+  frame.addEventListener('mousedown', function (e) {
+    if (!logoImg) return;
+    logoDrag = { startX: e.clientX, startY: e.clientY, origX: logoPos.x, origY: logoPos.y };
+    frame.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', function (e) {
+    if (!logoDrag) return;
+    logoPos.x = logoDrag.origX + (e.clientX - logoDrag.startX);
+    logoPos.y = logoDrag.origY + (e.clientY - logoDrag.startY);
+    updateLogoCrop();
+  });
+  document.addEventListener('mouseup', function () {
+    if (logoDrag) { logoDrag = null; frame.style.cursor = 'grab'; }
+  });
+})();
+function applyLogoCrop() {
+  if (!logoImg) return;
+  var swatch = document.getElementById('org-logo-swatch');
+  var frame = document.getElementById('logo-crop-frame');
+  swatch.style.backgroundImage = frame.style.backgroundImage;
+  swatch.style.backgroundSize = frame.style.backgroundSize;
+  swatch.style.backgroundPosition = frame.style.backgroundPosition;
+  closeModal('logo-modal');
+  showToast('Logo updated.');
+}
+document.getElementById('logo-upload-icon').innerHTML = icon('upload', 14);
 </script>
 </body>
 </html>
