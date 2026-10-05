@@ -14,7 +14,6 @@ body{background:#fff}
 .feature{background:#fff;padding:28px}
 .feature-icon{width:36px;height:36px;border-radius:8px;background:var(--accent-tint);display:flex;align-items:center;justify-content:center}
 @media (max-width:860px){
-  .nav-links{display:none !important}
   .features-grid{grid-template-columns:1fr !important}
   .stats-grid{grid-template-columns:1fr 1fr !important;row-gap:24px !important}
   .steps-grid{grid-template-columns:1fr !important}
@@ -24,19 +23,29 @@ body{background:#fff}
 </head>
 <body>
 
-<div style="border-bottom:1px solid var(--line-100);position:sticky;top:0;background:#fff;z-index:20">
+<div class="marketing-header" style="border-bottom:1px solid var(--line-100);position:sticky;top:0;background:#fff;z-index:20">
   <div style="max-width:1152px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;box-sizing:border-box">
     <span class="rp-logo">Ratio</span>
-    <div class="nav-links" style="display:flex;align-items:center;gap:32px">
+    <div class="nav-links marketing-nav-links" style="display:flex;align-items:center;gap:32px">
       <a href="#apps-preview" class="nav-link">Apps</a>
       <a href="pricing.html" class="nav-link">Pricing</a>
       <a href="documentation.html" class="nav-link">Documentation</a>
       <a href="support.html" class="nav-link">Support</a>
     </div>
-    <div style="display:flex;align-items:center;gap:12px">
+    <div class="marketing-nav-links" style="display:flex;align-items:center;gap:12px">
       <a href="login.html" class="nav-link">Log in</a>
       <a href="onboarding.html" class="btn btn-primary" style="height:36px">Sign up</a>
     </div>
+    <div class="btn-icon marketing-hamburger" onclick="toggleMarketingNav()" id="marketing-hamburger-icon"></div>
+  </div>
+  <div id="marketing-mobile-panel" class="marketing-mobile-panel">
+    <a href="#apps-preview" onclick="toggleMarketingNav()">Apps</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="documentation.html">Documentation</a>
+    <a href="support.html">Support</a>
+    <div class="mp-divider"></div>
+    <a href="login.html">Log in</a>
+    <a href="onboarding.html" class="btn btn-primary" style="margin-top:6px;justify-content:center">Sign up</a>
   </div>
 </div>
 
@@ -175,6 +184,7 @@ document.querySelectorAll('.feature-icon').forEach(function (el, i) {
   el.innerHTML = icon(names[i], 16);
   el.querySelector('.rp-icon').style.color = 'var(--accent)';
 });
+document.getElementById('marketing-hamburger-icon').innerHTML = icon('menu', 18);
 </script>
 </body>
 </html>

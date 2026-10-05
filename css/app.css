@@ -222,3 +222,21 @@ textarea.input{resize:none;padding-top:8px;font-family:var(--font-sans)}
 }
 .mobile-scrim{position:fixed;inset:0;background:rgba(19,25,39,0.5);z-index:90;display:none}
 .mobile-scrim.open{display:block}
+
+/* ---------- Marketing pages (pre-auth): simple hamburger + dropdown panel ---------- */
+.marketing-hamburger{display:none}
+.marketing-mobile-panel{display:none}
+@media (max-width:860px){
+  .marketing-nav-links{display:none !important}
+  .marketing-hamburger{display:inline-flex}
+  .marketing-mobile-panel.open{display:flex}
+}
+.marketing-mobile-panel{
+  position:absolute;top:100%;left:0;right:0;background:#fff;
+  flex-direction:column;padding:4px 24px 16px;gap:2px;
+  box-shadow:var(--shadow-dropdown);z-index:60;
+}
+.marketing-mobile-panel a{height:40px;display:flex;align-items:center;font:400 15px/20px var(--font-sans);color:var(--text-strong)}
+.marketing-mobile-panel a:hover{text-decoration:none;color:var(--ink-900)}
+.marketing-mobile-panel .mp-divider{height:1px;background:var(--line-100);margin:6px 0}
+.marketing-header{position:relative}

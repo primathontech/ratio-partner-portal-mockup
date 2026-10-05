@@ -56,7 +56,7 @@ function renderShell(opts) {
     '<div id="acct-menu" class="dropdown-panel up" style="left:0;width:260px">' +
       '<div style="padding:8px 6px">' +
         '<div class="menu-item" style="border-radius:6px;background:var(--line-100)"><span class="org-avatar" style="width:24px;height:24px;font-size:11px;margin-right:10px">' + orgInitials + '</span>' + orgName + '<span style="margin-left:auto">' + icon('check', 12) + '</span></div>' +
-        '<div class="menu-item" style="border-radius:6px"><span class="org-avatar" style="width:24px;height:24px;font-size:11px;margin-right:10px">WA</span>Wellversed Agency</div>' +
+        '<div class="menu-item" style="border-radius:6px"><span class="org-avatar" style="width:24px;height:24px;font-size:11px;margin-right:10px">BC</span>Bloom Commerce</div>' +
       '</div>' +
       '<div style="border-top:1px solid var(--line-100);padding:6px">' +
         '<div class="menu-item" style="border-radius:6px">' + icon('plus', 14) + '<span style="margin-left:8px">Create organisation</span></div>' +
@@ -70,7 +70,7 @@ function renderShell(opts) {
     '<div id="notif-menu" class="dropdown-panel up" style="left:0;width:min(340px,calc(100vw - 24px))">' +
       '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line-100)"><span style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Notifications</span><span style="font:400 12px/16px var(--font-sans);color:var(--accent);cursor:pointer">Mark all as read</span></div>' +
       '<div>' +
-        '<div class="menu-item" style="height:auto;padding:12px 14px;flex-direction:column;align-items:flex-start;gap:2px;border-bottom:1px solid var(--line-100)"><span>You were invited to Wellversed Agency</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Team &middot; 2h ago</span></div>' +
+        '<div class="menu-item" style="height:auto;padding:12px 14px;flex-direction:column;align-items:flex-start;gap:2px;border-bottom:1px solid var(--line-100)"><span>You were invited to join Bloom Commerce</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Team &middot; 2h ago</span></div>' +
         '<div class="menu-item" style="height:auto;padding:12px 14px;flex-direction:column;align-items:flex-start;gap:2px;border-bottom:1px solid var(--line-100)"><span>Collaborator access approved on wellversed.ratio.win</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Stores &middot; 5h ago</span></div>' +
         '<div class="menu-item" style="height:auto;padding:12px 14px;flex-direction:column;align-items:flex-start;gap:2px"><span>Grant expires in 7 days on nutristar.ratio.win</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Stores &middot; Yesterday</span></div>' +
       '</div>' +

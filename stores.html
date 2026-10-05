@@ -24,7 +24,7 @@
 <div class="content content-wide">
   <div class="page-header-row">
     <span class="page-title">Stores</span>
-    <span class="btn btn-primary" onclick="openModal('request-modal')"><span id="req-plus"></span>Request store access</span>
+    <span class="btn btn-primary" onclick="openRequestModal()"><span id="req-plus"></span>Request store access</span>
   </div>
 
   <div class="tabrow">
@@ -67,57 +67,45 @@
 
 <!-- Request store access modal (first-time) -->
 <div id="request-modal" class="modal-overlay">
-  <div class="modal" style="width:440px;padding:24px">
-    <div class="modal-title">Request store access</div>
-    <div class="modal-sub">Ask the merchant for their store URL and the 4-digit collaborator code from their admin.</div>
+  <div class="modal" style="width:500px;max-height:86vh;display:flex;flex-direction:column;overflow:hidden;padding:0">
+    <div style="padding:20px 22px 0">
+      <div class="modal-title">Request store access</div>
+      <div class="modal-sub">Ask the merchant for their store URL and the 4-digit collaborator code from their admin.</div>
 
-    <div id="rate-limit-notice" style="display:none;margin-top:16px;border-radius:8px;background:var(--line-100);padding:12px 14px;gap:10px;align-items:flex-start">
-      <span id="rate-limit-icon" style="color:var(--ink-500);flex-shrink:0;margin-top:2px"></span>
-      <span style="font:400 13px/19px var(--font-sans);color:var(--ink-550)">Please wait for some time before raising another request.</span>
-    </div>
-
-    <div style="margin-top:16px"><label class="field-label">Store URL</label><input class="input" id="req-url" placeholder="wellversed.ratio.win"></div>
-    <div style="margin-top:12px;display:flex;gap:10px">
-      <div style="flex:1"><label class="field-label">Collaborator code</label><input class="input" id="req-code" placeholder="4271"></div>
-      <div style="flex:1"><label class="field-label">Duration</label><select class="input"><option>30 days</option><option>60 days</option><option>90 days</option><option>Open-ended</option></select></div>
-    </div>
-    <div style="margin-top:12px">
-      <label class="field-label">Scopes</label>
-      <div style="display:flex;flex-direction:column;gap:6px">
-        <div style="display:flex;align-items:center;gap:8px"><span class="checkbox checked" id="rq-s1"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">read_orders</span></div>
-        <div style="display:flex;align-items:center;gap:8px"><span class="checkbox" id="rq-s2"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">write_orders</span></div>
-        <div style="display:flex;align-items:center;gap:8px"><span class="checkbox checked" id="rq-s3"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">read_products</span></div>
+      <div id="rate-limit-notice" style="display:none;margin-top:16px;border-radius:8px;background:var(--line-100);padding:12px 14px;gap:10px;align-items:flex-start">
+        <span id="rate-limit-icon" style="color:var(--ink-500);flex-shrink:0;margin-top:2px"></span>
+        <span style="font:400 13px/19px var(--font-sans);color:var(--ink-550)">Please wait for some time before raising another request.</span>
       </div>
+
+      <div style="margin-top:16px"><label class="field-label">Store URL</label><input class="input" id="req-url" placeholder="wellversed.ratio.win" oninput="updateRequestValidity()"></div>
+      <div style="margin-top:12px;display:flex;gap:10px">
+        <div style="flex:1"><label class="field-label">Collaborator code</label><input class="input" id="req-code" placeholder="4271" maxlength="4" inputmode="numeric" oninput="updateRequestValidity()"></div>
+        <div style="flex:1"><label class="field-label">Duration</label><select class="input"><option>30 days</option><option>60 days</option><option>90 days</option><option>Open-ended</option></select></div>
+      </div>
+      <label class="field-label" style="margin-top:14px;display:block">Scopes</label>
     </div>
-    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+    <div style="flex:1;overflow-y:auto;padding:0 22px" id="req-scope-groups"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:14px 22px;border-top:1px solid var(--line-100)">
       <span class="btn btn-secondary" onclick="closeModal('request-modal')">Cancel</span>
-      <span class="btn btn-primary" onclick="submitRequest()">Send request</span>
+      <span class="btn btn-primary" id="req-submit-btn" onclick="submitRequest()">Send request</span>
     </div>
   </div>
 </div>
 
 <!-- Request additional permissions modal (Flow E) -->
 <div id="expand-modal" class="modal-overlay">
-  <div class="modal" style="width:440px;padding:24px">
-    <div class="modal-title">Request additional permissions</div>
-    <div class="modal-sub">on <b id="expand-store-name" style="color:var(--ink-900)"></b>. Your current access keeps working while this is reviewed.</div>
-
-    <div style="margin-top:16px">
-      <label class="field-label">Scopes</label>
-      <div style="display:flex;flex-direction:column;gap:6px">
-        <div style="display:flex;align-items:center;gap:8px"><span class="checkbox disabled-checked"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-300)">read_orders</span><span style="font:400 11px/14px var(--font-sans);color:var(--ink-300);margin-left:4px">Already granted</span></div>
-        <div style="display:flex;align-items:center;gap:8px"><span class="checkbox checked" id="ex-s1" onclick="toggleCheck(this)"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">write_orders</span></div>
-        <div style="display:flex;align-items:center;gap:8px"><span class="checkbox disabled-checked"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-300)">read_products</span><span style="font:400 11px/14px var(--font-sans);color:var(--ink-300);margin-left:4px">Already granted</span></div>
-        <div style="display:flex;align-items:center;gap:8px"><span class="checkbox" id="ex-s2" onclick="toggleCheck(this)"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">write_products</span></div>
-      </div>
+  <div class="modal" style="width:500px;max-height:86vh;display:flex;flex-direction:column;overflow:hidden;padding:0">
+    <div style="padding:20px 22px 0">
+      <div class="modal-title">Request additional permissions</div>
+      <div class="modal-sub">on <b id="expand-store-name" style="color:var(--ink-900)"></b>. Your current access keeps working while this is reviewed.</div>
+      <label class="field-label" style="margin-top:16px;display:block">Scopes &mdash; the full canonical list</label>
     </div>
-
-    <div style="margin-top:14px">
+    <div style="flex:1;overflow-y:auto;padding:0 22px" id="exp-scope-groups"></div>
+    <div style="padding:14px 22px 0">
       <label class="field-label">Why do you need this? <span style="color:var(--ink-300);font-weight:400">(optional &mdash; helps the merchant decide)</span></label>
-      <textarea class="input" style="height:64px" placeholder="e.g. we need to issue refunds directly from the app"></textarea>
+      <textarea class="input" id="exp-reason" style="height:56px" placeholder="e.g. we need to issue refunds directly from the app"></textarea>
     </div>
-
-    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:14px 22px;border-top:1px solid var(--line-100);margin-top:14px">
       <span class="btn btn-secondary" onclick="closeModal('expand-modal')">Cancel</span>
       <span class="btn btn-primary" onclick="submitExpand()">Send request</span>
     </div>
@@ -155,11 +143,67 @@ var STATUS_STYLE = {
   expired:  { label: 'Expired', expires: '12 days ago', pillClass: 'pill-neutral', canExpand: false, canCancel: false, canRevoke: false }
 };
 var ROWS = [
-  { key: 'wellversed', name: 'Wellversed', scopes: 'read_orders, write_orders +1', status: 'compound' },
-  { key: 'aqualogica', name: 'Aqualogica', scopes: 'read_products', status: 'sent' },
-  { key: 'kwik', name: 'Kwik Fashion', scopes: 'read_orders', status: 'expiring' },
-  { key: 'nooba', name: 'Nooba Foods', scopes: 'read_products', status: 'expired' }
+  { key: 'wellversed', name: 'Wellversed', scopes: 'read_orders, write_orders +1', status: 'compound', granted: ['read_orders', 'write_orders', 'read_products'] },
+  { key: 'aqualogica', name: 'Aqualogica', scopes: 'read_products', status: 'sent', granted: ['read_products'] },
+  { key: 'kwik', name: 'Kwik Fashion', scopes: 'read_orders', status: 'expiring', granted: ['read_orders'] },
+  { key: 'nooba', name: 'Nooba Foods', scopes: 'read_products', status: 'expired', granted: ['read_products'] }
 ];
+
+/* Shopify-style grouped scopes — read/write pairs per group, Analytics read-only (PRD3) */
+var SCOPE_DEFS = [
+  ['Products', ['read_products', 'write_products']],
+  ['Orders', ['read_orders', 'write_orders']],
+  ['Customers', ['read_customers', 'write_customers']],
+  ['Discounts', ['read_discounts', 'write_discounts']],
+  ['Inventory', ['read_inventory', 'write_inventory']],
+  ['Fulfillment', ['read_fulfillment', 'write_fulfillment']],
+  ['Content', ['read_content', 'write_content']],
+  ['Analytics', ['read_analytics']]
+];
+
+var reqSelected = { read_orders: true, read_products: true };
+function renderRequestScopes() {
+  document.getElementById('req-scope-groups').innerHTML = SCOPE_DEFS.map(function (g) {
+    var rows = g[1].map(function (name) {
+      var checked = !!reqSelected[name];
+      return '<div onclick="toggleRequestScope(\'' + name + '\')" style="display:flex;align-items:center;gap:10px;padding:5px 0;cursor:pointer">' +
+        '<span class="checkbox' + (checked ? ' checked' : '') + '">' + (checked ? icon('check', 9) : '') + '</span>' +
+        '<span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">' + name + '</span></div>';
+    }).join('');
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--line-100)"><div style="font:600 13px/18px var(--font-sans);color:var(--ink-900);margin-bottom:4px">' + g[0] + '</div>' + rows + '</div>';
+  }).join('');
+  updateRequestValidity();
+}
+function toggleRequestScope(name) {
+  reqSelected[name] = !reqSelected[name];
+  renderRequestScopes();
+}
+function updateRequestValidity() {
+  var anyScope = Object.keys(reqSelected).some(function (k) { return reqSelected[k]; });
+  var codeOk = /^\d{4}$/.test(document.getElementById('req-code').value);
+  document.getElementById('req-submit-btn').toggleAttribute('disabled', !(anyScope && codeOk));
+}
+
+function renderExpandScopes(granted) {
+  document.getElementById('exp-scope-groups').innerHTML = SCOPE_DEFS.map(function (g) {
+    var rows = g[1].map(function (name) {
+      var isGranted = granted.indexOf(name) !== -1;
+      if (isGranted) {
+        return '<div style="display:flex;align-items:center;gap:10px;padding:5px 0"><span class="checkbox disabled-checked"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-300)">' + name + '</span><span style="font:400 11px/14px var(--font-sans);color:var(--ink-300);margin-left:4px">Already granted</span></div>';
+      }
+      var checked = !!expSelected[name];
+      return '<div onclick="toggleExpandScope(\'' + name + '\')" style="display:flex;align-items:center;gap:10px;padding:5px 0;cursor:pointer">' +
+        '<span class="checkbox' + (checked ? ' checked' : '') + '">' + (checked ? icon('check', 9) : '') + '</span>' +
+        '<span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">' + name + '</span></div>';
+    }).join('');
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--line-100)"><div style="font:600 13px/18px var(--font-sans);color:var(--ink-900);margin-bottom:4px">' + g[0] + '</div>' + rows + '</div>';
+  }).join('');
+}
+var expSelected = {};
+function toggleExpandScope(name) {
+  expSelected[name] = !expSelected[name];
+  renderExpandScopes(ROWS.find(function (r) { return r.key === expandKey; }).granted);
+}
 var openMenuKey = null;
 
 function renderRows() {
@@ -196,9 +240,20 @@ document.addEventListener('click', function () {
   openMenuKey = null;
 });
 renderRows();
+renderRequestScopes();
+
+function openRequestModal() {
+  document.getElementById('req-url').value = '';
+  document.getElementById('req-code').value = '';
+  document.getElementById('rate-limit-notice').style.display = 'none';
+  reqSelected = { read_orders: true, read_products: true };
+  renderRequestScopes();
+  openModal('request-modal');
+}
 
 var requestAttempts = 0;
 function submitRequest() {
+  if (document.getElementById('req-submit-btn').hasAttribute('disabled')) return;
   requestAttempts++;
   if (requestAttempts >= 6) {
     document.getElementById('rate-limit-notice').style.display = 'flex';
@@ -215,6 +270,9 @@ function openExpand(key) {
   expandKey = key;
   var row = ROWS.find(function (r) { return r.key === key; });
   document.getElementById('expand-store-name').textContent = row.name;
+  document.getElementById('exp-reason').value = '';
+  expSelected = {};
+  renderExpandScopes(row.granted);
   openModal('expand-modal');
 }
 function submitExpand() {

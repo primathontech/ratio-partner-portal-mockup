@@ -23,7 +23,19 @@
 <div class="content">
   <div class="page-header-row">
     <span class="page-title">Apps</span>
-    <a href="app-create.html" class="btn btn-primary"><span id="create-plus"></span>Create app</a>
+    <div class="dropdown">
+      <span class="btn btn-primary" onclick="toggleDropdown('create-app-menu')"><span id="create-plus"></span>Create app</span>
+      <div id="create-app-menu" class="dropdown-panel" style="right:0;width:340px;padding:16px">
+        <div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">New to building on Ratio?</div>
+        <div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:2px">Scaffold an app from your terminal with the Ratio CLI.</div>
+        <div style="margin-top:10px;display:flex;align-items:center;gap:8px;border-radius:8px;background:var(--ink-900);padding:10px 12px">
+          <span style="flex:1;min-width:0;font:400 13px/18px var(--font-mono);color:#D8E0F0;overflow-x:auto;white-space:nowrap">npx @ratio/cli create app</span>
+          <span id="cli-copy-icon" style="color:#8C9BBF;cursor:pointer;flex-shrink:0" onclick="copyCliCommand(event)"></span>
+        </div>
+        <div style="margin-top:8px;font:400 12px/16px var(--font-sans);color:var(--ink-300)">Picks up your Ratio login and walks you through scopes and distribution from the terminal.</div>
+        <a href="app-create.html" class="btn btn-secondary" style="width:100%;margin-top:12px">Continue in browser</a>
+      </div>
+    </div>
   </div>
 
   <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
@@ -76,11 +88,17 @@
 </div>
 </div>
 
+<div id="toast" class="toast"></div>
 <script src="js/shell.js"></script>
 <script>
 renderShell({ active: 'apps' });
 document.getElementById('create-plus').innerHTML = icon('plus', 10);
 document.getElementById('apps-search-icon').innerHTML = icon('search', 12);
+document.getElementById('cli-copy-icon').innerHTML = icon('copy', 13);
+function copyCliCommand(e) {
+  e.stopPropagation();
+  showToast('Copied to clipboard: npx @ratio/cli create app');
+}
 document.querySelectorAll('.kebab-icon').forEach(function (el) { el.innerHTML = icon('kebab', 14); el.style.cursor = 'pointer'; });
 document.querySelectorAll('.filter-chip').forEach(function (chip) {
   chip.addEventListener('click', function () {

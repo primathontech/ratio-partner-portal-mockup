@@ -104,15 +104,18 @@
 
         <div class="card card-pad" style="margin-top:16px">
           <div style="display:flex;align-items:center;justify-content:space-between">
-            <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Pricing</span>
-            <span class="btn btn-secondary btn-sm">Create plan</span>
+            <div>
+              <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Pricing</span>
+              <div id="plan-count-note" style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px"></div>
+            </div>
+            <span class="btn btn-secondary btn-sm" onclick="openCreatePlan()"><span id="plan-plus"></span>Create plan</span>
           </div>
-          <div style="margin-top:14px;font:500 13px/18px var(--font-sans);color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px">Public plans</div>
-          <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
-            <div style="border:1px solid var(--line-100);border-radius:8px;padding:14px"><div style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Starter</div><div style="font:600 18px/24px var(--font-sans);color:var(--ink-900);margin-top:4px">&#8377;999<span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">/month</span></div><div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:6px">Up to 500 wishlist saves</div></div>
-            <div style="border:1px solid var(--line-100);border-radius:8px;padding:14px"><div style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Growth</div><div style="font:600 18px/24px var(--font-sans);color:var(--ink-900);margin-top:4px">&#8377;2,499<span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">/month</span></div><div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:6px">Unlimited saves, priority support</div></div>
-          </div>
-          <div style="margin-top:8px;font:400 12px/16px var(--font-sans);color:var(--ink-300)">18 merchants still on legacy pricing at &#8377;799/month.</div>
+          <div style="margin-top:16px;font:500 13px/18px var(--font-sans);color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px">Public plans</div>
+          <div id="public-plans" style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:10px"></div>
+          <div style="margin-top:8px;font:400 12px/16px var(--font-sans);color:var(--ink-300)">18 merchants still on legacy pricing at &#8377;799/month &mdash; grandfathered until they change plan themselves.</div>
+
+          <div style="margin-top:20px;font:500 13px/18px var(--font-sans);color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px">Private plans</div>
+          <div id="private-plans" class="empty-state" style="padding:24px 0"></div>
         </div>
       </div>
 
@@ -143,29 +146,51 @@
 
       <!-- Webhooks -->
       <div data-panelgroup="appdetail" data-panelkey="webhooks" style="display:none">
-        <div class="card card-pad">
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Endpoints</span>
-            <span class="btn btn-secondary btn-sm"><span id="endpoint-plus"></span>Create endpoint</span>
+        <div class="card card-pad" style="display:flex;gap:10px;align-items:flex-start">
+          <span style="color:var(--ink-500);flex-shrink:0;margin-top:2px" id="webhook-info-icon"></span>
+          <div style="font:400 13px/19px var(--font-sans);color:var(--ink-550)">Webhooks are declared in your app's manifest or registered at runtime via the Webhooks API &mdash; there's nothing to configure from this dashboard. This page is a read-only view of what's currently active. <a href="documentation.html#webhooks">How subscriptions work &rarr;</a></div>
+        </div>
+
+        <div class="card" style="margin-top:16px;padding:0">
+          <div style="padding:14px 16px;border-bottom:1px solid var(--line-100);display:flex;align-items:center;justify-content:space-between">
+            <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Subscriptions</span>
+            <span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">4 active &middot; up to 16 per topic</span>
           </div>
-          <div style="margin-top:14px;border:1px solid var(--line-100);border-radius:8px;padding:14px">
-            <div style="display:flex;align-items:center;justify-content:space-between">
-              <span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">https://wishlistpro.app/webhooks</span>
-              <span class="pill pill-success">Active</span>
-            </div>
-            <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px">
-              <span style="height:22px;border-radius:4px;background:var(--line-100);padding:0 8px;font:400 12px/22px var(--font-sans);color:var(--ink-550)">orders/create</span>
-              <span style="height:22px;border-radius:4px;background:var(--line-100);padding:0 8px;font:400 12px/22px var(--font-sans);color:var(--ink-550)">app/uninstalled</span>
-              <span style="height:22px;border-radius:4px;background:var(--line-100);padding:0 8px;font:400 12px/22px var(--font-sans);color:var(--ink-550)">customers/data_request</span>
-            </div>
+
+          <div style="padding:12px 16px 4px;font:500 12px/16px var(--font-sans);color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px">orders/create &middot; 2 subscriptions</div>
+          <div style="padding:10px 16px;border-bottom:1px solid var(--line-100);display:flex;align-items:center;gap:10px">
+            <span style="flex:1;min-width:0;font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">https://wishlistpro.app/webhooks/orders</span>
+            <span class="pill pill-info">Declarative &middot; v1.3.0</span>
+            <span class="pill pill-success">Active</span>
+          </div>
+          <div style="padding:10px 16px;border-bottom:1px solid var(--line-100);display:flex;align-items:center;gap:10px">
+            <span style="flex:1;min-width:0;font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">https://analytics.wishlistpro.app/ingest</span>
+            <span class="pill pill-info">API</span>
+            <span class="pill pill-success">Active</span>
+          </div>
+
+          <div style="padding:12px 16px 4px;font:500 12px/16px var(--font-sans);color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px">app/uninstalled &middot; 1 subscription</div>
+          <div style="padding:10px 16px;border-bottom:1px solid var(--line-100);display:flex;align-items:center;gap:10px">
+            <span style="flex:1;min-width:0;font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">https://wishlistpro.app/webhooks/uninstall</span>
+            <span class="pill pill-info">Declarative &middot; v1.3.0</span>
+            <span class="pill pill-success">Active</span>
+          </div>
+
+          <div style="padding:12px 16px 4px;font:500 12px/16px var(--font-sans);color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px">customers/data_request &middot; 1 subscription</div>
+          <div style="padding:10px 16px;display:flex;align-items:center;gap:10px">
+            <span style="flex:1;min-width:0;font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">https://wishlistpro.app/webhooks/compliance</span>
+            <span class="pill pill-info">Declarative &middot; v1.3.0</span>
+            <span class="pill pill-success">Active</span>
           </div>
         </div>
+
         <div class="card card-pad" style="margin-top:16px">
           <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Recent deliveries</span>
+          <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px">Each subscription retries and fails independently &mdash; one broken endpoint doesn't affect the others.</div>
           <div style="margin-top:10px">
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line-100)"><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">orders/create</span><span class="pill pill-success">Delivered</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">2m ago</span></div>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line-100)"><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">orders/create</span><span class="pill pill-success">Delivered</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">18m ago</span></div>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0"><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">app/uninstalled</span><span class="pill pill-danger">Failed</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">1h ago</span></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-100)"><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">orders/create</span><span style="flex:1;min-width:0;font:400 12px/16px var(--font-sans);color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">&rarr; /webhooks/orders</span><span class="pill pill-success">Delivered</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">2m ago</span></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-100)"><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">orders/create</span><span style="flex:1;min-width:0;font:400 12px/16px var(--font-sans);color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">&rarr; /ingest (analytics)</span><span class="pill pill-success">Delivered</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">2m ago</span></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:9px 0"><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">app/uninstalled</span><span style="flex:1;min-width:0;font:400 12px/16px var(--font-sans);color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">&rarr; /webhooks/uninstall</span><span class="pill pill-danger">Failed</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">1h ago</span></div>
           </div>
         </div>
       </div>
@@ -206,10 +231,10 @@
 
         <div style="margin-top:24px">
           <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Extension types</span>
-          <div style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-top:2px">Four ways this app can show up outside its own page.</div>
+          <div style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-top:2px">Three ways this app can show up outside its own page.</div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px">
 
           <div class="card card-pad">
             <div style="display:flex;align-items:center;gap:8px"><span style="color:var(--accent)" id="ext-icon-block"></span><span style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Theme app block</span></div>
@@ -225,14 +250,6 @@
             <div style="margin-top:10px;font:400 12px/18px var(--font-sans);color:var(--ink-300)"><b style="color:var(--ink-550);font-weight:500">Where it appears:</b> every page &mdash; injected into head, body, or the compliance region.</div>
             <div style="margin-top:6px;border-radius:7px;background:var(--line-100);padding:9px 11px;font:400 12px/17px var(--font-sans);color:var(--ink-550)"><b style="color:var(--ink-800)">Example:</b> a chat bubble or an announcement bar.</div>
             <span class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="openModal('ext-embed-modal')">Add theme app embed</span>
-          </div>
-
-          <div class="card card-pad">
-            <div style="display:flex;align-items:center;gap:8px"><span style="color:var(--accent)" id="ext-icon-proxy"></span><span style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">App proxy</span></div>
-            <p style="font:400 13px/19px var(--font-sans);color:var(--ink-550);margin-top:6px">Your own server, reachable at a URL under the merchant's own domain. Ratio signs and forwards the request &mdash; no CORS, no third-party cookie problem.</p>
-            <div style="margin-top:10px;font:400 12px/18px var(--font-sans);color:var(--ink-300)"><b style="color:var(--ink-550);font-weight:500">Where it appears:</b> one proxy root per app, at a subpath you choose.</div>
-            <div style="margin-top:6px;border-radius:7px;background:var(--line-100);padding:9px 11px;font:400 12px/17px var(--font-sans);color:var(--ink-550)"><b style="color:var(--ink-800)">Example:</b> <span style="font-family:var(--font-mono)">wellversed.ratio.win/apps/wishlist/rewards</span></div>
-            <span class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="openModal('ext-proxy-modal')">Add app proxy</span>
           </div>
 
           <div class="card card-pad">
@@ -298,26 +315,6 @@
   </div>
 </div>
 
-<!-- App proxy modal -->
-<div id="ext-proxy-modal" class="modal-overlay">
-  <div class="modal" style="width:460px;padding:24px">
-    <div class="modal-title">Add app proxy</div>
-    <div class="modal-sub">One proxy root per app. Requests are signed and stripped of cookies before they reach your server.</div>
-    <div style="margin-top:16px;display:flex;gap:10px">
-      <div style="flex:1"><label class="field-label">Subpath</label><input class="input" value="wishlist"></div>
-      <div style="flex:1"><label class="field-label">Your server URL</label><input class="input" value="https://wishlistpro.app/proxy"></div>
-    </div>
-    <div style="margin-top:12px">
-      <label class="field-label">Merchant-facing URL preview</label>
-      <div style="height:36px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset;display:flex;align-items:center;padding:0 12px;font-family:var(--font-mono);font-size:13px;color:var(--ink-800)">wellversed.ratio.win/apps/wishlist/*</div>
-    </div>
-    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
-      <span class="btn btn-secondary" onclick="closeModal('ext-proxy-modal')">Cancel</span>
-      <span class="btn btn-primary" onclick="closeModal('ext-proxy-modal');showToast('App proxy added')">Save proxy</span>
-    </div>
-  </div>
-</div>
-
 <!-- Admin UI extension modal -->
 <div id="ext-admin-modal" class="modal-overlay">
   <div class="modal" style="width:460px;padding:24px">
@@ -343,14 +340,113 @@
     </div>
   </div>
 </div>
+
+<!-- Create / edit plan modal -->
+<div id="plan-modal" class="modal-overlay">
+  <div class="modal" style="width:520px;max-height:86vh;display:flex;flex-direction:column;overflow:hidden;padding:0">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line-100);flex-shrink:0">
+      <div>
+        <div class="modal-title" id="plan-modal-title" style="font-size:16px">Create plan</div>
+        <div class="modal-sub" id="plan-modal-sub" style="margin-top:2px">Draft first, then publish when it's ready for merchants to see.</div>
+      </div>
+      <span onclick="closeModal('plan-modal')" style="color:var(--ink-500);cursor:pointer;flex-shrink:0;margin-left:12px" id="plan-close-icon"></span>
+    </div>
+
+    <div style="flex:1;overflow-y:auto;padding:18px 22px">
+
+      <label class="field-label">Plan name</label>
+      <input class="input" id="plan-name" placeholder="e.g. Growth">
+
+      <div style="margin-top:14px">
+        <label class="field-label">Billing type</label>
+        <select class="input" id="plan-type" onchange="onPlanTypeChange()">
+          <option value="free">Free</option>
+          <option value="monthly" selected>Monthly recurring</option>
+          <option value="yearly">Yearly recurring</option>
+          <option value="monthly_yearly">Monthly, with a yearly discount</option>
+          <option value="usage">Usage-based</option>
+          <option value="combined">Combined &mdash; recurring fee + usage</option>
+        </select>
+        <div class="field-help" id="plan-type-help">Standard SaaS pricing, billed on the 1st of each month.</div>
+      </div>
+
+      <div id="plan-row-monthly" style="margin-top:14px">
+        <label class="field-label">Monthly price (&#8377;)</label>
+        <input class="input" id="plan-monthly-price" placeholder="2499" inputmode="decimal">
+        <div class="field-help">&#8377;50 &ndash; &#8377;10,00,000, up to 2 decimal places.</div>
+      </div>
+
+      <div id="plan-row-yearly" style="margin-top:14px;display:none">
+        <label class="field-label">Yearly price (&#8377;)</label>
+        <input class="input" id="plan-yearly-price" placeholder="24990" inputmode="decimal">
+        <div class="field-help" id="plan-yearly-help">&#8377;500 &ndash; &#8377;1,20,00,000.</div>
+      </div>
+
+      <div id="plan-row-trial" style="margin-top:14px">
+        <label class="field-label">Trial (days)</label>
+        <input class="input" id="plan-trial" placeholder="0" value="0" inputmode="numeric">
+        <div class="field-help">0&ndash;30 days. Entitlement starts immediately; the first charge is deferred until the trial ends.</div>
+      </div>
+
+      <div id="plan-row-usage" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line-100);display:none">
+        <div style="font:600 13px/18px var(--font-sans);color:var(--ink-900);margin-bottom:10px">Usage meter</div>
+        <div style="display:flex;gap:10px">
+          <div style="flex:1"><label class="field-label">Meter</label><input class="input" id="plan-meter-name" placeholder="sms_sent"></div>
+          <div style="flex:1"><label class="field-label">Included units</label><input class="input" id="plan-meter-included" placeholder="5000" inputmode="numeric"></div>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:10px">
+          <div style="flex:1"><label class="field-label">Price per unit (&#8377;)</label><input class="input" id="plan-meter-price" placeholder="0.18" inputmode="decimal"></div>
+          <div style="flex:1"><label class="field-label">Capped at (&#8377; per month)</label><input class="input" id="plan-meter-cap" placeholder="25000" inputmode="decimal"></div>
+        </div>
+        <div class="field-help">The cap is shown to the merchant on the consent screen &mdash; it's their protection, not just yours.</div>
+      </div>
+
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line-100)">
+        <label class="field-label">Top features <span style="color:var(--ink-300);font-weight:400">(1&ndash;10 bullets)</span></label>
+        <div id="plan-features" style="display:flex;flex-direction:column;gap:8px"></div>
+        <span class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="addFeatureRow()"><span id="plan-feature-plus"></span>Add feature</span>
+      </div>
+
+      <div style="margin-top:14px">
+        <label class="field-label">Description <span style="color:var(--ink-300);font-weight:400">(shown on the plan-selection page)</span></label>
+        <textarea class="input" id="plan-description" style="height:60px" placeholder="Who this plan is for and what they get."></textarea>
+      </div>
+
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line-100)">
+        <label class="field-label">Audience</label>
+        <div style="display:flex;gap:8px">
+          <div onclick="pickPlanAudience('public')" id="plan-aud-public" style="flex:1;border-radius:8px;padding:10px 12px;cursor:pointer;box-shadow:0 0 0 1.5px var(--accent)"><div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">Public</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Any merchant can select it</div></div>
+          <div onclick="pickPlanAudience('private')" id="plan-aud-private" style="flex:1;border-radius:8px;padding:10px 12px;cursor:pointer;box-shadow:0 0 0 1px var(--line-100)"><div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">Private</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Only stores you name</div></div>
+        </div>
+        <div id="plan-aud-stores" style="margin-top:10px;display:none">
+          <div style="height:36px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset;display:flex;align-items:center;padding:0 12px;gap:8px">
+            <input placeholder="Search merchant by store domain" style="flex:1;border:none;outline:none;background:transparent;font:400 14px/20px var(--font-sans);color:var(--ink-800)">
+            <span class="btn btn-secondary" style="height:26px;padding:0 10px;font-size:13px">Add</span>
+          </div>
+          <div class="field-help">1&ndash;50 stores. Removing a store later stops new selection, not an existing subscription.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:14px 22px;border-top:1px solid var(--line-100);flex-shrink:0">
+      <span style="font:400 12px/16px var(--font-sans);color:var(--ink-300)" id="plan-status-note">Draft &mdash; not visible to merchants yet.</span>
+      <span style="display:flex;gap:8px">
+        <span class="btn btn-secondary" onclick="savePlanDraft()">Save as draft</span>
+        <span class="btn btn-primary" onclick="publishPlan()">Publish</span>
+      </span>
+    </div>
+  </div>
+</div>
 </div>
 
+<div id="toast" class="toast"></div>
 <script src="js/shell.js"></script>
 <script>
 renderShell({ active: 'apps' });
 document.getElementById('kebab-slot').innerHTML = icon('kebab', 16);
 document.getElementById('ext-link-icon').innerHTML = icon('externalLink', 10);
-document.getElementById('endpoint-plus').innerHTML = icon('plus', 10);
+document.getElementById('webhook-info-icon').innerHTML = icon('info', 14);
 document.querySelectorAll('.copy-icon').forEach(function (el) { el.innerHTML = icon('copy', 12); });
 document.querySelectorAll('.remove-x').forEach(function (el) { el.innerHTML = icon('close', 8); });
 document.querySelectorAll('.perm-check').forEach(function (el) { el.innerHTML = icon('check', 10); });
@@ -358,7 +454,6 @@ document.getElementById('ext-row-icon-1').innerHTML = icon('apps', 16);
 document.getElementById('ext-row-icon-2').innerHTML = icon('settings', 16);
 document.getElementById('ext-icon-block').innerHTML = icon('apps', 15);
 document.getElementById('ext-icon-embed').innerHTML = icon('trend', 15);
-document.getElementById('ext-icon-proxy').innerHTML = icon('externalLink', 13);
 document.getElementById('ext-icon-admin').innerHTML = icon('settings', 15);
 document.getElementById('embed-info-icon').innerHTML = icon('info', 13);
 
@@ -384,6 +479,191 @@ function toggleSecret() {
     : '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';
 }
 document.getElementById('eye-icon').innerHTML = icon('eye', 13);
+
+/* ---------- Pricing: plan list + create/edit plan modal (PRD4) ---------- */
+var PUBLIC_PLANS = [
+  { handle: 'starter', name: 'Starter', type: 'monthly', monthlyPrice: '999', trial: '0', features: ['Up to 500 wishlist saves'], description: 'For stores just getting started with wishlists.', audience: 'public' },
+  { handle: 'growth', name: 'Growth', type: 'monthly', monthlyPrice: '2499', trial: '14', features: ['Unlimited saves', 'Priority support'], description: 'For stores that have outgrown the basics.', audience: 'public' }
+];
+var PRIVATE_PLANS = [];
+var PLAN_TYPE_HELP = {
+  free: 'Creates a subscription with no charges. Good for a freemium tier.',
+  monthly: 'Standard SaaS pricing, billed on the 1st of each month.',
+  yearly: 'A discounted annual commitment, charged in full on approval.',
+  monthly_yearly: 'The merchant picks monthly or yearly at checkout. Yearly must be strictly cheaper than 12 &times; monthly.',
+  usage: 'No recurring fee &mdash; billed monthly in arrears from one usage meter, up to a cap.',
+  combined: 'A recurring fee plus a usage meter on the same plan.'
+};
+
+function renderPlanCard(p, isPrivate) {
+  var priceHtml = p.type === 'free' ? 'Free'
+    : p.type === 'yearly' ? '&#8377;' + p.monthlyPrice + '<span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">/year</span>'
+    : p.type === 'usage' ? 'Usage-based'
+    : '&#8377;' + (p.monthlyPrice || '0') + '<span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">/month</span>';
+  return '<div onclick="openEditPlan(\'' + p.handle + '\',' + !!isPrivate + ')" class="card" style="padding:14px;cursor:pointer">' +
+    '<div style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">' + p.name + '</div>' +
+    '<div style="font:600 18px/24px var(--font-sans);color:var(--ink-900);margin-top:4px">' + priceHtml + '</div>' +
+    '<div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:6px">' + (p.features[0] || '') + '</div>' +
+    '</div>';
+}
+function renderPlans() {
+  document.getElementById('public-plans').innerHTML = PUBLIC_PLANS.map(function (p) { return renderPlanCard(p, false); }).join('');
+  var priv = document.getElementById('private-plans');
+  if (!PRIVATE_PLANS.length) {
+    priv.innerHTML = '<p style="font:400 13px/19px var(--font-sans);color:var(--text-muted);margin:0;text-align:center">No private plans yet. Create one and name the stores that may select it.</p>';
+  } else {
+    priv.className = '';
+    priv.style.cssText = 'margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:10px';
+    priv.innerHTML = PRIVATE_PLANS.map(function (p) { return renderPlanCard(p, true); }).join('');
+  }
+  document.getElementById('plan-plus').innerHTML = icon('plus', 10);
+  document.getElementById('plan-count-note').textContent = PUBLIC_PLANS.length + ' of 8 public plans used';
+}
+renderPlans();
+
+var editingPlan = null;
+var editingPlanIsPrivate = false;
+
+function openCreatePlan() {
+  editingPlan = null;
+  editingPlanIsPrivate = false;
+  document.getElementById('plan-modal-title').textContent = 'Create plan';
+  document.getElementById('plan-modal-sub').textContent = "Draft first, then publish when it's ready for merchants to see.";
+  document.getElementById('plan-status-note').textContent = 'Draft — not visible to merchants yet.';
+  document.getElementById('plan-name').value = '';
+  document.getElementById('plan-type').value = 'monthly';
+  document.getElementById('plan-monthly-price').value = '';
+  document.getElementById('plan-yearly-price').value = '';
+  document.getElementById('plan-trial').value = '0';
+  document.getElementById('plan-meter-name').value = '';
+  document.getElementById('plan-meter-included').value = '';
+  document.getElementById('plan-meter-price').value = '';
+  document.getElementById('plan-meter-cap').value = '';
+  document.getElementById('plan-description').value = '';
+  planFeatures = [''];
+  renderFeatureRows();
+  pickPlanAudience('public');
+  onPlanTypeChange();
+  openModal('plan-modal');
+}
+
+function openEditPlan(handle, isPrivate) {
+  var list = isPrivate ? PRIVATE_PLANS : PUBLIC_PLANS;
+  var p = list.find(function (x) { return x.handle === handle; });
+  if (!p) return;
+  editingPlan = p;
+  editingPlanIsPrivate = isPrivate;
+  document.getElementById('plan-modal-title').textContent = 'Edit plan';
+  document.getElementById('plan-modal-sub').textContent = "Editing a live price mints a new version — merchants already subscribed keep today's price until they change plan.";
+  document.getElementById('plan-status-note').textContent = 'Active — visible to merchants now.';
+  document.getElementById('plan-name').value = p.name;
+  document.getElementById('plan-type').value = p.type;
+  document.getElementById('plan-monthly-price').value = p.monthlyPrice || '';
+  document.getElementById('plan-yearly-price').value = p.yearlyPrice || '';
+  document.getElementById('plan-trial').value = p.trial || '0';
+  document.getElementById('plan-meter-name').value = p.meterName || '';
+  document.getElementById('plan-meter-included').value = p.meterIncluded || '';
+  document.getElementById('plan-meter-price').value = p.meterPrice || '';
+  document.getElementById('plan-meter-cap').value = p.meterCap || '';
+  document.getElementById('plan-description').value = p.description || '';
+  planFeatures = p.features.slice();
+  renderFeatureRows();
+  pickPlanAudience(p.audience);
+  onPlanTypeChange();
+  openModal('plan-modal');
+}
+
+function onPlanTypeChange() {
+  var type = document.getElementById('plan-type').value;
+  document.getElementById('plan-type-help').innerHTML = PLAN_TYPE_HELP[type];
+  document.getElementById('plan-row-monthly').style.display = (type === 'monthly' || type === 'monthly_yearly' || type === 'combined') ? '' : 'none';
+  document.getElementById('plan-row-yearly').style.display = (type === 'yearly' || type === 'monthly_yearly') ? '' : 'none';
+  document.getElementById('plan-yearly-help').innerHTML = type === 'monthly_yearly'
+    ? '&#8377;500 – &#8377;1,20,00,000; must be strictly less than 12 &times; the monthly price above.'
+    : '&#8377;500 – &#8377;1,20,00,000.';
+  document.getElementById('plan-row-trial').style.display = type === 'free' ? 'none' : '';
+  document.getElementById('plan-row-usage').style.display = (type === 'usage' || type === 'combined') ? '' : 'none';
+}
+
+var planFeatures = [''];
+function renderFeatureRows() {
+  document.getElementById('plan-features').innerHTML = planFeatures.map(function (val, i) {
+    return '<div style="display:flex;gap:8px;align-items:center">' +
+      '<input class="input" value="' + val.replace(/"/g, '&quot;') + '" placeholder="e.g. Unlimited saves" oninput="planFeatures[' + i + ']=this.value">' +
+      (planFeatures.length > 1 ? '<span onclick="removeFeatureRow(' + i + ')" style="color:var(--ink-500);cursor:pointer;flex-shrink:0">' + icon('close', 10) + '</span>' : '') +
+      '</div>';
+  }).join('');
+}
+function addFeatureRow() {
+  if (planFeatures.length >= 10) return;
+  planFeatures.push('');
+  renderFeatureRows();
+}
+function removeFeatureRow(i) {
+  planFeatures.splice(i, 1);
+  renderFeatureRows();
+}
+
+function pickPlanAudience(which) {
+  document.getElementById('plan-aud-public').style.boxShadow = which === 'public' ? '0 0 0 1.5px var(--accent)' : '0 0 0 1px var(--line-100)';
+  document.getElementById('plan-aud-private').style.boxShadow = which === 'private' ? '0 0 0 1.5px var(--accent)' : '0 0 0 1px var(--line-100)';
+  document.getElementById('plan-aud-stores').style.display = which === 'private' ? '' : 'none';
+  document.getElementById('plan-aud-public').dataset.picked = which;
+}
+
+function collectPlanFromForm() {
+  return {
+    handle: editingPlan ? editingPlan.handle : (document.getElementById('plan-name').value.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 40) || 'plan_' + Date.now()),
+    name: document.getElementById('plan-name').value || 'Untitled plan',
+    type: document.getElementById('plan-type').value,
+    monthlyPrice: document.getElementById('plan-monthly-price').value,
+    yearlyPrice: document.getElementById('plan-yearly-price').value,
+    trial: document.getElementById('plan-trial').value,
+    meterName: document.getElementById('plan-meter-name').value,
+    meterIncluded: document.getElementById('plan-meter-included').value,
+    meterPrice: document.getElementById('plan-meter-price').value,
+    meterCap: document.getElementById('plan-meter-cap').value,
+    features: planFeatures.filter(function (f) { return f.trim(); }).length ? planFeatures.filter(function (f) { return f.trim(); }) : ['—'],
+    description: document.getElementById('plan-description').value,
+    audience: document.getElementById('plan-aud-public').dataset.picked || 'public'
+  };
+}
+
+function upsertPlan(plan) {
+  if (editingPlan) {
+    var wasPrivate = editingPlanIsPrivate;
+    var nowPrivate = plan.audience === 'private';
+    if (wasPrivate) PRIVATE_PLANS = PRIVATE_PLANS.filter(function (p) { return p.handle !== editingPlan.handle; });
+    else PUBLIC_PLANS = PUBLIC_PLANS.filter(function (p) { return p.handle !== editingPlan.handle; });
+    if (nowPrivate) PRIVATE_PLANS.push(plan); else PUBLIC_PLANS.push(plan);
+  } else {
+    if (plan.audience === 'private') PRIVATE_PLANS.push(plan); else PUBLIC_PLANS.push(plan);
+  }
+}
+
+function savePlanDraft() {
+  var plan = collectPlanFromForm();
+  upsertPlan(plan);
+  renderPlans();
+  closeModal('plan-modal');
+  showToast(plan.name + ' saved as a draft — not visible to merchants yet.');
+}
+
+function publishPlan() {
+  var plan = collectPlanFromForm();
+  if (!document.getElementById('plan-name').value.trim()) { showToast('Give the plan a name first.'); return; }
+  if (plan.type === 'monthly_yearly' && plan.monthlyPrice && plan.yearlyPrice && Number(plan.yearlyPrice) >= Number(plan.monthlyPrice) * 12) {
+    showToast('Yearly price must be less than 12× the monthly price.');
+    return;
+  }
+  upsertPlan(plan);
+  renderPlans();
+  closeModal('plan-modal');
+  showToast((editingPlan ? plan.name + ' updated — a new price version is in effect.' : plan.name + ' published — now visible on the marketplace and plan-selection page.'));
+}
+
+document.getElementById('plan-close-icon').innerHTML = icon('close', 12);
+document.getElementById('plan-feature-plus').innerHTML = icon('plus', 9);
 </script>
 </body>
 </html>

@@ -20,19 +20,29 @@ body{background:#fff}
 </head>
 <body>
 
-<div style="border-bottom:1px solid var(--line-100);position:sticky;top:0;background:#fff;z-index:20">
+<div class="marketing-header" style="border-bottom:1px solid var(--line-100);position:sticky;top:0;background:#fff;z-index:20">
   <div style="max-width:1152px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;box-sizing:border-box">
     <a href="landing.html" class="rp-logo" style="text-decoration:none">Ratio</a>
-    <div style="display:flex;align-items:center;gap:32px">
+    <div class="marketing-nav-links" style="display:flex;align-items:center;gap:32px">
       <a href="landing.html#apps-preview" class="nav-link">Apps</a>
       <a href="pricing.html" class="nav-link">Pricing</a>
       <a href="documentation.html" class="nav-link">Documentation</a>
       <a href="support.html" class="nav-link" style="color:var(--ink-900)">Support</a>
     </div>
-    <div style="display:flex;align-items:center;gap:12px">
+    <div class="marketing-nav-links" style="display:flex;align-items:center;gap:12px">
       <a href="login.html" class="nav-link">Log in</a>
       <a href="onboarding.html" class="btn btn-primary" style="height:36px">Sign up</a>
     </div>
+    <div class="btn-icon marketing-hamburger" onclick="toggleMarketingNav()" id="marketing-hamburger-icon"></div>
+  </div>
+  <div id="marketing-mobile-panel" class="marketing-mobile-panel">
+    <a href="landing.html#apps-preview">Apps</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="documentation.html">Documentation</a>
+    <a href="support.html">Support</a>
+    <div class="mp-divider"></div>
+    <a href="login.html">Log in</a>
+    <a href="onboarding.html" class="btn btn-primary" style="margin-top:6px;justify-content:center">Sign up</a>
   </div>
 </div>
 
@@ -85,6 +95,7 @@ body{background:#fff}
 
 <script>
 document.getElementById('support-search-icon').innerHTML = icon('search', 12);
+document.getElementById('marketing-hamburger-icon').innerHTML = icon('menu', 18);
 document.querySelectorAll('.faq-chevron').forEach(function (el) { el.innerHTML = icon('caret', 12); });
 </script>
 </body>

@@ -36,3 +36,10 @@ function icon(name, size) {
   var svg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="' + d + '"/></svg>';
   return '<span class="rp-icon" style="width:' + size + 'px;height:' + size + 'px">' + svg + '</span>';
 }
+
+/* Shared mobile nav toggle for the pre-auth marketing pages (landing, docs,
+   pricing, support, changelog, terms, privacy) — none of them load shell.js. */
+function toggleMarketingNav() {
+  var el = document.getElementById('marketing-mobile-panel');
+  if (el) el.classList.toggle('open');
+}
