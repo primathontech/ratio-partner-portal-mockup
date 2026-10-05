@@ -8,11 +8,8 @@
 <link rel="stylesheet" href="css/app.css">
 <script src="js/icons.js"></script>
 <style>
-.filter-chip{height:28px;border-radius:6px;padding:0 12px;display:inline-flex;align-items:center;font:400 13px/18px var(--font-sans);letter-spacing:-0.1px;cursor:pointer;transition:background var(--transition-control)}
-.filter-chip.active{background:var(--blue-100);color:var(--accent)}
-.filter-chip:not(.active){background:transparent;color:var(--ink-550)}
-.filter-chip:not(.active):hover{background:var(--line-100)}
 .apps-table .table-head-row, .apps-table .table-row{grid-template-columns:2.4fr 1fr 1fr 1fr 32px}
+.demo-version-switch{height:24px;border-radius:6px;padding:0 20px 0 8px;font:400 11px/22px var(--font-sans);color:var(--ink-300);background:var(--surface-page);box-shadow:0 0 0 1px var(--line-150) inset;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23A0ACC0' stroke-width='1.3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 7px center;background-size:8px 5px;position:fixed;top:16px;right:16px;z-index:50}
 </style>
 </head>
 <body>
@@ -26,67 +23,87 @@
     <div class="dropdown">
       <span class="btn btn-primary" onclick="toggleDropdown('create-app-menu')"><span id="create-plus"></span>Create app</span>
       <div id="create-app-menu" class="dropdown-panel" style="right:0;width:340px;padding:16px">
-        <div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">New to building on Ratio?</div>
-        <div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:2px">Scaffold an app from your terminal with the Ratio CLI.</div>
+        <div style="display:flex;align-items:baseline;gap:6px">
+          <span style="font:600 13px/18px var(--font-sans);color:var(--ink-900)">Create with Ratio CLI</span>
+          <span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">(Recommended)</span>
+        </div>
+        <div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:2px">Scaffolds the app and wires up auth and webhooks in one command.</div>
         <div style="margin-top:10px;display:flex;align-items:center;gap:8px;border-radius:8px;background:var(--ink-900);padding:10px 12px">
           <span style="flex:1;min-width:0;font:400 13px/18px var(--font-mono);color:#D8E0F0;overflow-x:auto;white-space:nowrap">npx @ratio/cli create app</span>
           <span id="cli-copy-icon" style="color:#8C9BBF;cursor:pointer;flex-shrink:0" onclick="copyCliCommand(event)"></span>
         </div>
-        <div style="margin-top:8px;font:400 12px/16px var(--font-sans);color:var(--ink-300)">Picks up your Ratio login and walks you through scopes and distribution from the terminal.</div>
-        <a href="app-create.html" class="btn btn-secondary" style="width:100%;margin-top:12px">Continue in browser</a>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--line-100)">
+          <a href="app-create.html" style="display:flex;align-items:center;gap:8px;text-decoration:none">
+            <span style="flex:1;font:500 13px/18px var(--font-sans);color:var(--ink-900)">Create app manually</span>
+            <span id="manual-caret-icon" style="color:var(--ink-500);transform:rotate(-90deg);display:inline-flex"></span>
+          </a>
+          <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px">Use the in-browser form instead</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-    <div style="height:32px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset,0 0 0 1px var(--line-100);padding:0 10px;display:flex;align-items:center;gap:8px;width:260px">
-      <span id="apps-search-icon" style="color:var(--ink-500)"></span>
-      <input placeholder="Search apps" style="flex:1;border:none;outline:none;background:transparent;font:400 13px/18px var(--font-sans);color:var(--ink-800)">
+  <div id="apps-has-state">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+      <div style="height:32px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset,0 0 0 1px var(--line-100);padding:0 10px;display:flex;align-items:center;gap:8px;width:260px">
+        <span id="apps-search-icon" style="color:var(--ink-500)"></span>
+        <input id="apps-search-input" oninput="filterApps(this.value)" placeholder="Search apps" style="flex:1;border:none;outline:none;background:transparent;font:400 13px/18px var(--font-sans);color:var(--ink-800)">
+      </div>
     </div>
-    <span class="filter-chip active">All</span>
-    <span class="filter-chip">Draft</span>
-    <span class="filter-chip">In review</span>
-    <span class="filter-chip">Published</span>
-    <span class="filter-chip">Rejected</span>
+
+    <div class="card apps-table" style="overflow:hidden">
+      <div class="table-head-row">
+        <span>Name</span><span>Status</span><span>Installs</span><span>Last updated</span><span></span>
+      </div>
+
+      <a href="app-detail.html" class="table-row">
+        <span class="cell-name"><span class="swatch" style="width:32px;height:32px;background:var(--blue-100)"></span><span class="truncate">Wishlist Pro</span></span>
+        <span class="pill pill-success">Published</span>
+        <span style="font:400 14px/20px var(--font-sans);color:var(--ink-550);font-variant-numeric:tabular-nums">1,204</span>
+        <span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">2 days ago</span>
+        <span class="kebab-icon" style="color:var(--ink-300)"></span>
+      </a>
+      <a href="app-detail.html" class="table-row">
+        <span class="cell-name"><span class="swatch" style="width:32px;height:32px;background:var(--warning-bg)"></span><span class="truncate">Loyalty Points</span></span>
+        <span class="pill pill-warning">In review</span>
+        <span style="font:400 14px/20px var(--font-sans);color:var(--ink-550);font-variant-numeric:tabular-nums">812</span>
+        <span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">5 hours ago</span>
+        <span class="kebab-icon" style="color:var(--ink-300)"></span>
+      </a>
+      <a href="app-detail.html" class="table-row">
+        <span class="cell-name"><span class="swatch" style="width:32px;height:32px;background:var(--line-100)"></span><span class="truncate">Size Finder</span></span>
+        <span class="pill pill-neutral">Draft</span>
+        <span style="font:400 14px/20px var(--font-sans);color:var(--ink-550);font-variant-numeric:tabular-nums">0</span>
+        <span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">Yesterday</span>
+        <span class="kebab-icon" style="color:var(--ink-300)"></span>
+      </a>
+      <a href="app-detail.html" class="table-row">
+        <span class="cell-name"><span class="swatch" style="width:32px;height:32px;background:var(--danger-bg)"></span><span class="truncate">Cart Recovery SMS</span></span>
+        <span class="pill pill-danger">Rejected</span>
+        <span style="font:400 14px/20px var(--font-sans);color:var(--ink-550);font-variant-numeric:tabular-nums">0</span>
+        <span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">1 week ago</span>
+        <span class="kebab-icon" style="color:var(--ink-300)"></span>
+      </a>
+    </div>
+    <div id="apps-no-results" class="card card-pad empty-state" style="display:none;margin-top:0">
+      <p style="max-width:none">No apps match your search.</p>
+    </div>
   </div>
 
-  <div class="card apps-table" style="overflow:hidden">
-    <div class="table-head-row">
-      <span>Name</span><span>Status</span><span>Installs</span><span>Last updated</span><span></span>
-    </div>
-
-    <a href="app-detail.html" class="table-row">
-      <span class="cell-name"><span class="swatch" style="width:32px;height:32px;background:var(--blue-100)"></span><span class="truncate">Wishlist Pro</span></span>
-      <span class="pill pill-success">Published</span>
-      <span style="font:400 14px/20px var(--font-sans);color:var(--ink-550);font-variant-numeric:tabular-nums">1,204</span>
-      <span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">2 days ago</span>
-      <span class="kebab-icon" style="color:var(--ink-300)"></span>
-    </a>
-    <a href="app-detail.html" class="table-row">
-      <span class="cell-name"><span class="swatch" style="width:32px;height:32px;background:var(--warning-bg)"></span><span class="truncate">Loyalty Points</span></span>
-      <span class="pill pill-warning">In review</span>
-      <span style="font:400 14px/20px var(--font-sans);color:var(--ink-550);font-variant-numeric:tabular-nums">812</span>
-      <span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">5 hours ago</span>
-      <span class="kebab-icon" style="color:var(--ink-300)"></span>
-    </a>
-    <a href="app-detail.html" class="table-row">
-      <span class="cell-name"><span class="swatch" style="width:32px;height:32px;background:var(--line-100)"></span><span class="truncate">Size Finder</span></span>
-      <span class="pill pill-neutral">Draft</span>
-      <span style="font:400 14px/20px var(--font-sans);color:var(--ink-550);font-variant-numeric:tabular-nums">0</span>
-      <span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">Yesterday</span>
-      <span class="kebab-icon" style="color:var(--ink-300)"></span>
-    </a>
-    <a href="app-detail.html" class="table-row">
-      <span class="cell-name"><span class="swatch" style="width:32px;height:32px;background:var(--danger-bg)"></span><span class="truncate">Cart Recovery SMS</span></span>
-      <span class="pill pill-danger">Rejected</span>
-      <span style="font:400 14px/20px var(--font-sans);color:var(--ink-550);font-variant-numeric:tabular-nums">0</span>
-      <span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">1 week ago</span>
-      <span class="kebab-icon" style="color:var(--ink-300)"></span>
-    </a>
+  <div id="apps-empty-state" class="card card-pad empty-state" style="display:none">
+    <div class="icon-wrap"><span id="apps-empty-icon" style="color:var(--ink-500)"></span></div>
+    <h3>No apps yet</h3>
+    <p>Create your first app to start building for merchants on Ratio.</p>
+    <div class="dropdown" style="display:inline-block;margin-top:16px"><span class="btn btn-primary" onclick="toggleDropdown('create-app-menu')"><span id="apps-empty-plus"></span>Create app</span></div>
   </div>
 
 </div>
 </div>
+
+<select class="demo-version-switch" id="apps-demo-switch" onchange="toggleAppsDemo(this.value === 'has')" title="Demo: apps list has apps or not">
+  <option value="has" selected>Has apps</option>
+  <option value="none">No apps yet</option>
+</select>
 
 <div id="toast" class="toast"></div>
 <script src="js/shell.js"></script>
@@ -95,17 +112,32 @@ renderShell({ active: 'apps' });
 document.getElementById('create-plus').innerHTML = icon('plus', 10);
 document.getElementById('apps-search-icon').innerHTML = icon('search', 12);
 document.getElementById('cli-copy-icon').innerHTML = icon('copy', 13);
+document.getElementById('manual-caret-icon').innerHTML = icon('caret', 12);
+document.getElementById('apps-empty-icon').innerHTML = icon('apps', 20);
+document.getElementById('apps-empty-plus').innerHTML = icon('plus', 10);
 function copyCliCommand(e) {
   e.stopPropagation();
   showToast('Copied to clipboard: npx @ratio/cli create app');
 }
 document.querySelectorAll('.kebab-icon').forEach(function (el) { el.innerHTML = icon('kebab', 14); el.style.cursor = 'pointer'; });
-document.querySelectorAll('.filter-chip').forEach(function (chip) {
-  chip.addEventListener('click', function () {
-    document.querySelectorAll('.filter-chip').forEach(function (c) { c.classList.remove('active'); });
-    chip.classList.add('active');
+
+function filterApps(query) {
+  var q = query.trim().toLowerCase();
+  var rows = document.querySelectorAll('.apps-table .table-row');
+  var anyMatch = false;
+  rows.forEach(function (row) {
+    var name = row.querySelector('.truncate').textContent.toLowerCase();
+    var match = !q || name.indexOf(q) !== -1;
+    row.style.display = match ? '' : 'none';
+    if (match) anyMatch = true;
   });
-});
+  document.getElementById('apps-no-results').style.display = (q && !anyMatch) ? '' : 'none';
+}
+
+function toggleAppsDemo(hasApps) {
+  document.getElementById('apps-has-state').style.display = hasApps ? '' : 'none';
+  document.getElementById('apps-empty-state').style.display = hasApps ? 'none' : '';
+}
 </script>
 </body>
 </html>
