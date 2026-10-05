@@ -23,6 +23,9 @@
 }
 .item-table-row{grid-template-columns:1fr 1.3fr 1.8fr 1.1fr 1fr}
 .item-table-row span:last-child{text-align:right}
+.item-apps-row{grid-template-columns:2fr 1fr 1fr}
+.item-apps-row span:last-child{text-align:right}
+.item-apps-row span:nth-child(2){text-align:right}
 @media print {
   body *{visibility:hidden}
   #payout-invoice-modal, #payout-invoice-modal *{visibility:visible}
@@ -157,7 +160,7 @@
         </div>
         <div style="margin-top:10px;font:600 30px/36px var(--font-sans);color:var(--ink-900);font-variant-numeric:tabular-nums">&#8377;3,398.50</div>
         <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px">Estimated amount, GST included</div>
-        <div style="margin-top:14px;font:400 13px/19px var(--font-sans);color:var(--ink-550)">Estimated payout date Oct 22, 2026 via bank account (HDFC Bank &bull;&bull;&bull;&bull; 4421)</div>
+        <div id="pending-payout-date-line" style="margin-top:14px;font:400 13px/19px var(--font-sans);color:var(--ink-550)">Estimated payout date Oct 22, 2026 via bank account (HDFC Bank &bull;&bull;&bull;&bull; 4421)</div>
       </div>
 
       <div class="card" style="overflow:hidden">
@@ -241,16 +244,16 @@
       </div>
 
       <div class="tabrow" style="margin-bottom:12px">
-        <span class="tab active">All</span>
-        <span class="tab">Apps</span>
+        <span class="tab active" data-tabkey="all" onclick="switchItemTab('all')">All</span>
+        <span class="tab" data-tabkey="apps" onclick="switchItemTab('apps')">Apps</span>
       </div>
       <div class="input" style="display:flex;align-items:center;gap:8px;margin-bottom:12px;height:36px">
         <span id="item-search-icon" style="color:var(--ink-500)"></span>
-        <input placeholder="Search by store, type, description, or amount" style="flex:1;border:none;outline:none;background:transparent;font:400 14px/20px var(--font-sans);color:var(--ink-800)">
+        <input id="item-search-input" oninput="filterItemRows()" placeholder="Search by store, type, description, or amount" style="flex:1;border:none;outline:none;background:transparent;font:400 14px/20px var(--font-sans);color:var(--ink-800)">
       </div>
 
       <div class="card" style="overflow:hidden">
-        <div class="table-head-row item-table-row" style="height:36px"><span>Date</span><span>Description</span><span>Type</span><span>Store</span><span>Amount</span></div>
+        <div id="item-table-head" class="table-head-row item-table-row" style="height:36px"><span>Date</span><span>Description</span><span>Type</span><span>Store</span><span>Amount</span></div>
         <div id="item-rows"></div>
       </div>
     </div>
@@ -345,27 +348,34 @@
 
 <!-- Payout account change — confirm step -->
 <div id="payout-account-confirm-modal" class="modal-overlay">
-  <div class="modal" style="width:420px;padding:24px">
-    <div class="modal-title">Confirm payout account change</div>
-    <div class="modal-sub">Review carefully &mdash; payouts will start going to the new account.</div>
-    <div style="margin-top:18px;display:flex;align-items:center;gap:10px">
-      <div style="flex:1;min-width:0;text-align:center;border-radius:8px;box-shadow:0 0 0 1px var(--line-100);padding:12px 8px">
-        <div style="font:600 10px/14px var(--font-sans);color:var(--ink-300);text-transform:uppercase;letter-spacing:0.5px">Current</div>
-        <div id="pa-confirm-old" style="font:600 13px/18px var(--font-sans);color:var(--ink-900);margin-top:4px;word-break:break-word">&mdash;</div>
-      </div>
-      <span style="color:var(--ink-450);flex-shrink:0;font:400 18px/18px var(--font-sans)">&rarr;</span>
-      <div style="flex:1;min-width:0;text-align:center;border-radius:8px;box-shadow:0 0 0 1.5px var(--accent);padding:12px 8px">
-        <div style="font:600 10px/14px var(--font-sans);color:var(--accent);text-transform:uppercase;letter-spacing:0.5px">New</div>
-        <div id="pa-confirm-new" style="font:600 13px/18px var(--font-sans);color:var(--ink-900);margin-top:4px;word-break:break-word">&mdash;</div>
+  <div class="modal" style="width:440px;padding:24px">
+    <div class="modal-title" id="pa-confirm-title">Confirm payout account change</div>
+    <div class="modal-sub" id="pa-confirm-sub">Review carefully &mdash; payouts will start going to the new account.</div>
+
+    <div id="pa-confirm-current-wrap" style="margin-top:16px">
+      <div class="field-label">Current</div>
+      <div id="pa-confirm-old" style="margin-top:3px;font:500 14px/20px var(--font-sans);color:var(--ink-900)">&mdash;</div>
+    </div>
+
+    <div style="margin-top:16px">
+      <div class="field-label" id="pa-confirm-new-label">New</div>
+      <div style="margin-top:4px;border-radius:10px;box-shadow:0 0 0 1.5px var(--accent);padding:14px;display:flex;gap:12px;align-items:center">
+        <span id="pa-confirm-bank-badge" style="width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font:700 10px/13px var(--font-sans);letter-spacing:0.2px;flex-shrink:0">&mdash;</span>
+        <div style="flex:1;min-width:0">
+          <div id="pa-confirm-bank-name" style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">&mdash;</div>
+          <div id="pa-confirm-acct-num" style="font:400 13px/18px var(--font-sans);color:var(--ink-550);margin-top:2px;font-variant-numeric:tabular-nums">&mdash;</div>
+          <div id="pa-confirm-ifsc" style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px">&mdash;</div>
+        </div>
       </div>
     </div>
+
     <div style="margin-top:16px;display:flex;gap:8px;align-items:flex-start;border-radius:8px;background:var(--danger-bg);padding:10px 12px">
       <span style="color:var(--danger-text);flex-shrink:0;font:600 13px/17px var(--font-sans)">&#9888;</span>
-      <span style="font:400 12px/17px var(--font-sans);color:var(--danger-text)">This cannot be undone once a payout has been sent to the new account. Wrong details may cause loss of funds.</span>
+      <span id="pa-confirm-warning-text" style="font:400 12px/17px var(--font-sans);color:var(--danger-text)">This cannot be undone once a payout has been sent to the new account. Wrong details may cause loss of funds.</span>
     </div>
     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
       <span class="btn btn-secondary" onclick="closeModal('payout-account-confirm-modal');openModal('payout-account-modal')">&larr; Back</span>
-      <span class="btn btn-danger" onclick="confirmSavePayoutAccount()">Confirm change</span>
+      <span class="btn btn-danger" id="pa-confirm-btn" onclick="confirmSavePayoutAccount()">Confirm change</span>
     </div>
   </div>
 </div>
@@ -437,10 +447,23 @@ function togglePayoutAccountDemo(hasAccount) {
   document.getElementById('payout-account-has').style.display = hasAccount ? 'flex' : 'none';
   document.getElementById('payout-account-none').style.display = hasAccount ? 'none' : 'flex';
   document.getElementById('payout-account-warning').style.display = hasAccount ? 'none' : '';
+  updatePendingPayoutLine();
+}
+function updatePendingPayoutLine() {
+  var el = document.getElementById('pending-payout-date-line');
+  if (!el) return;
+  var hasAccount = document.getElementById('payout-account-none').style.display === 'none';
+  el.textContent = hasAccount
+    ? ('Estimated payout date Oct 22, 2026 via bank account (' + document.getElementById('payout-account-label').textContent + ')')
+    : 'Estimated payout date Oct 22, 2026 — add a payout account below to receive it.';
 }
 function bankNameFromIfsc(ifsc) {
   var map = { HDFC: 'HDFC Bank', ICIC: 'ICICI Bank', SBIN: 'State Bank of India', UTIB: 'Axis Bank', KKBK: 'Kotak Mahindra Bank', YESB: 'Yes Bank', PUNB: 'Punjab National Bank', INDB: 'IndusInd Bank' };
   return map[ifsc.slice(0, 4).toUpperCase()] || 'Bank account';
+}
+function bankColorFromIfsc(ifsc) {
+  var map = { HDFC: '#004C8F', ICIC: '#B3131B', SBIN: '#22409A', UTIB: '#97144D', KKBK: '#ED1D24', YESB: '#003DA5', PUNB: '#8B1E3F', INDB: '#9A1750' };
+  return map[ifsc.slice(0, 4).toUpperCase()] || '#1F2937';
 }
 function checkPayoutAccountForm() {
   var num = document.getElementById('pa-acct-num').value.trim();
@@ -455,16 +478,41 @@ function openPayoutAccountConfirm() {
   if (document.getElementById('pa-continue-btn').hasAttribute('disabled')) return;
   var num = document.getElementById('pa-acct-num').value.trim();
   var ifsc = document.getElementById('pa-ifsc').value.trim().toUpperCase();
+  var bankName = bankNameFromIfsc(ifsc);
   var noAccountYet = document.getElementById('payout-account-none').style.display !== 'none';
-  var oldLabel = noAccountYet ? 'No account on file' : document.getElementById('payout-account-label').textContent;
-  var newLabel = bankNameFromIfsc(ifsc) + ' •••• ' + num.slice(-4);
-  document.getElementById('pa-confirm-old').textContent = oldLabel;
-  document.getElementById('pa-confirm-new').textContent = newLabel;
+
+  document.getElementById('pa-confirm-bank-badge').textContent = ifsc.slice(0, 4);
+  document.getElementById('pa-confirm-bank-badge').style.background = bankColorFromIfsc(ifsc);
+  document.getElementById('pa-confirm-bank-name').textContent = bankName;
+  document.getElementById('pa-confirm-acct-num').textContent = 'Account ending in ' + num.slice(-4);
+  document.getElementById('pa-confirm-ifsc').textContent = 'IFSC ' + ifsc;
+
+  if (noAccountYet) {
+    document.getElementById('pa-confirm-title').textContent = 'Add payout account';
+    document.getElementById('pa-confirm-sub').textContent = 'This is where we’ll send your payouts — double-check it’s correct.';
+    document.getElementById('pa-confirm-current-wrap').style.display = 'none';
+    document.getElementById('pa-confirm-new-label').textContent = 'Account to add';
+    document.getElementById('pa-confirm-warning-text').textContent = 'Double-check these details before confirming. An incorrect account number or IFSC code may cause loss of funds.';
+    document.getElementById('pa-confirm-btn').className = 'btn btn-primary';
+    document.getElementById('pa-confirm-btn').textContent = 'Add account';
+  } else {
+    document.getElementById('pa-confirm-title').textContent = 'Confirm payout account change';
+    document.getElementById('pa-confirm-sub').textContent = 'Review carefully — payouts will start going to the new account.';
+    document.getElementById('pa-confirm-current-wrap').style.display = '';
+    document.getElementById('pa-confirm-old').textContent = document.getElementById('payout-account-label').textContent;
+    document.getElementById('pa-confirm-new-label').textContent = 'New';
+    document.getElementById('pa-confirm-warning-text').textContent = 'This cannot be undone once a payout has been sent to the new account. Wrong details may cause loss of funds.';
+    document.getElementById('pa-confirm-btn').className = 'btn btn-danger';
+    document.getElementById('pa-confirm-btn').textContent = 'Confirm change';
+  }
+
   closeModal('payout-account-modal');
   openModal('payout-account-confirm-modal');
 }
 function confirmSavePayoutAccount() {
-  document.getElementById('payout-account-label').textContent = document.getElementById('pa-confirm-new').textContent;
+  var bankName = document.getElementById('pa-confirm-bank-name').textContent;
+  var last4 = document.getElementById('pa-confirm-acct-num').textContent.slice(-4);
+  document.getElementById('payout-account-label').textContent = bankName + ' •••• ' + last4;
   togglePayoutAccountDemo(true);
   document.getElementById('payout-account-demo-switch').value = 'has';
   document.getElementById('pa-acct-num').value = '';
@@ -524,6 +572,63 @@ var PAYOUT_TRANSACTIONS = {
   ]
 };
 var _currentItemPeriodId = null;
+var _itemTab = 'all';
+var _itemSearchQuery = '';
+
+function switchItemTab(key) {
+  _itemTab = key;
+  document.querySelectorAll('#payout-itemization-modal .tabrow .tab').forEach(function (el) {
+    el.classList.toggle('active', el.getAttribute('data-tabkey') === key);
+  });
+  renderItemRows();
+}
+function filterItemRows() {
+  _itemSearchQuery = document.getElementById('item-search-input').value.trim().toLowerCase();
+  renderItemRows();
+}
+function renderItemRows() {
+  var txns = PAYOUT_TRANSACTIONS[_currentItemPeriodId] || [];
+  var q = _itemSearchQuery;
+  var filtered = q ? txns.filter(function (t) {
+    return (t.date + ' ' + t.app + ' ' + t.type + ' ' + t.store + ' ' + formatINR(t.amount)).toLowerCase().indexOf(q) !== -1;
+  }) : txns;
+
+  var head = document.getElementById('item-table-head');
+  var rows = document.getElementById('item-rows');
+
+  if (_itemTab === 'apps') {
+    head.className = 'table-head-row item-apps-row';
+    head.innerHTML = '<span>App</span><span>Transactions</span><span>Total</span>';
+    var byApp = {};
+    var order = [];
+    filtered.forEach(function (t) {
+      if (!byApp[t.app]) { byApp[t.app] = { count: 0, total: 0 }; order.push(t.app); }
+      byApp[t.app].count++;
+      byApp[t.app].total += t.amount;
+    });
+    rows.innerHTML = order.length ? order.map(function (app) {
+      var d = byApp[app];
+      return '<div class="table-row item-apps-row" style="height:48px">' +
+        '<span style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">' + app + '</span>' +
+        '<span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">' + d.count + '</span>' +
+        '<span style="font:500 13px/18px var(--font-sans);font-variant-numeric:tabular-nums;color:' + (d.total < 0 ? 'var(--danger-text)' : 'var(--ink-900)') + '">' + formatINR(d.total) + '</span>' +
+      '</div>';
+    }).join('') : '<div style="padding:24px;text-align:center;font:400 13px/19px var(--font-sans);color:var(--text-muted)">No matching transactions.</div>';
+  } else {
+    head.className = 'table-head-row item-table-row';
+    head.innerHTML = '<span>Date</span><span>Description</span><span>Type</span><span>Store</span><span>Amount</span>';
+    rows.innerHTML = filtered.length ? filtered.map(function (t) {
+      var neg = t.amount < 0;
+      return '<div class="table-row item-table-row" style="height:48px">' +
+        '<span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">' + t.date + '</span>' +
+        '<span style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">' + t.app + '</span>' +
+        '<span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">' + t.type + '</span>' +
+        '<span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">' + t.store + '</span>' +
+        '<span style="font:500 13px/18px var(--font-sans);font-variant-numeric:tabular-nums;color:' + (neg ? 'var(--danger-text)' : 'var(--ink-900)') + '">' + formatINR(t.amount) + '</span>' +
+      '</div>';
+    }).join('') : '<div style="padding:24px;text-align:center;font:400 13px/19px var(--font-sans);color:var(--text-muted)">No matching transactions.</div>';
+  }
+}
 
 function formatINR(n) {
   var neg = n < 0;
@@ -544,16 +649,13 @@ function openPayoutItemization(periodId) {
     document.getElementById('item-total-amount').textContent = formatINR(total);
     document.getElementById('item-payout-detail').textContent = (meta.paid ? 'Paid ' + meta.payoutDate : 'Estimated payout date ' + meta.payoutDate) + ' via bank account (HDFC Bank •••• 4421)';
 
-    document.getElementById('item-rows').innerHTML = txns.length ? txns.map(function (t) {
-      var neg = t.amount < 0;
-      return '<div class="table-row item-table-row" style="height:48px">' +
-        '<span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">' + t.date + '</span>' +
-        '<span style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">' + t.app + '</span>' +
-        '<span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">' + t.type + '</span>' +
-        '<span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">' + t.store + '</span>' +
-        '<span style="font:500 13px/18px var(--font-sans);font-variant-numeric:tabular-nums;color:' + (neg ? 'var(--danger-text)' : 'var(--ink-900)') + '">' + formatINR(t.amount) + '</span>' +
-      '</div>';
-    }).join('') : '<div style="padding:24px;text-align:center;font:400 13px/19px var(--font-sans);color:var(--text-muted)">No transactions for this period.</div>';
+    _itemTab = 'all';
+    _itemSearchQuery = '';
+    document.getElementById('item-search-input').value = '';
+    document.querySelectorAll('#payout-itemization-modal .tabrow .tab').forEach(function (el) {
+      el.classList.toggle('active', el.getAttribute('data-tabkey') === 'all');
+    });
+    renderItemRows();
 
     openModal('payout-itemization-modal');
   } catch (e) {
