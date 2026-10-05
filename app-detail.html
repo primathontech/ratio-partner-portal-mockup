@@ -14,6 +14,17 @@
 .ov-card:hover{box-shadow:0 0 0 1px var(--line-150)}
 .versions-table .table-head-row, .versions-table .table-row{grid-template-columns:2fr 1.2fr 1.6fr 1.1fr 110px}
 .logs-table .table-head-row, .logs-table .table-row{grid-template-columns:40px 1.6fr 1.6fr 1.6fr 1.3fr}
+.demo-version-switch{height:24px;border-radius:6px;padding:0 20px 0 8px;font:400 11px/22px var(--font-sans);color:var(--ink-300);background:var(--surface-page);box-shadow:0 0 0 1px var(--line-150) inset;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23A0ACC0' stroke-width='1.3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 7px center;background-size:8px 5px;position:fixed;top:16px;right:16px;z-index:50}
+/* Step indicator, reused from the old Overview review stepper */
+.rev-step{flex:1;text-align:center;position:relative}
+.rev-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:600 12px/16px var(--font-sans);margin:0 auto;transition:background var(--transition-control),color var(--transition-control)}
+/* Selectable-card pattern, reused from the plan audience picker */
+.pick-card{border-radius:8px;padding:10px 12px;cursor:pointer;box-shadow:0 0 0 1px var(--line-100);transition:box-shadow var(--transition-control)}
+.pick-card.picked{box-shadow:0 0 0 1.5px var(--accent)}
+.pick-card .pick-title{font:500 13px/18px var(--font-sans);color:var(--ink-900)}
+.pick-card .pick-desc{font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px}
+.meter-card{border-radius:8px;box-shadow:0 0 0 1px var(--line-100);padding:12px;margin-top:10px}
+.tier-row{display:flex;gap:8px;align-items:center;margin-top:6px}
 </style>
 </head>
 <body>
@@ -235,20 +246,34 @@
 
       <!-- Plans -->
       <div data-panelgroup="appdetail" data-panelkey="plans" style="display:none">
-        <div class="card card-pad">
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <div>
-              <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Pricing</span>
-              <div id="plan-count-note" style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px"></div>
-            </div>
-            <span class="btn btn-secondary btn-sm" onclick="openCreatePlan()"><span id="plan-plus"></span>Create plan</span>
-          </div>
-          <div style="margin-top:16px;font:500 13px/18px var(--font-sans);color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px">Public plans</div>
-          <div id="public-plans" style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:10px"></div>
-          <div style="margin-top:8px;font:400 12px/16px var(--font-sans);color:var(--ink-300)">18 merchants still on legacy pricing at &#8377;799/month &mdash; grandfathered until they change plan themselves.</div>
+        <select class="demo-version-switch" id="plans-demo-switch" onchange="togglePlansDemo(this.value === 'has')" title="Demo: app has plans or not">
+          <option value="has" selected>Has plans</option>
+          <option value="none">No plans yet</option>
+        </select>
 
-          <div style="margin-top:20px;font:500 13px/18px var(--font-sans);color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px">Private plans</div>
-          <div id="private-plans" class="empty-state" style="padding:24px 0"></div>
+        <div id="plans-has-state">
+          <div class="card card-pad">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div>
+                <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Pricing</span>
+                <div id="plan-count-note" style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px"></div>
+              </div>
+              <span class="btn btn-secondary btn-sm" onclick="openCreatePlan()"><span id="plan-plus"></span>Create plan</span>
+            </div>
+            <div style="margin-top:16px;font:500 13px/18px var(--font-sans);color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px" id="plans-public-heading">Public plans</div>
+            <div id="public-plans" style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:10px"></div>
+            <div style="margin-top:8px;font:400 12px/16px var(--font-sans);color:var(--ink-300)">18 merchants still on legacy pricing at &#8377;799/month &mdash; grandfathered until they change plan themselves.</div>
+
+            <div style="margin-top:20px;font:500 13px/18px var(--font-sans);color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px" id="plans-private-heading">Private plans</div>
+            <div id="private-plans" class="empty-state" style="padding:24px 0"></div>
+          </div>
+        </div>
+
+        <div id="plans-empty-state" class="card card-pad empty-state" style="display:none">
+          <div class="icon-wrap"><span id="plans-empty-icon" style="color:var(--ink-500)"></span></div>
+          <h3>No plans yet</h3>
+          <p>Create your first plan to start charging merchants for this app.</p>
+          <span class="btn btn-primary" style="margin-top:16px" onclick="openCreatePlan()"><span id="plans-empty-plus"></span>Create your first plan</span>
         </div>
       </div>
 
@@ -601,7 +626,7 @@
 
 <!-- Create / edit plan modal -->
 <div id="plan-modal" class="modal-overlay">
-  <div class="modal" style="width:520px;max-height:86vh;display:flex;flex-direction:column;overflow:hidden;padding:0">
+  <div class="modal" style="width:560px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;padding:0">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line-100);flex-shrink:0">
       <div>
         <div class="modal-title" id="plan-modal-title" style="font-size:16px">Create plan</div>
@@ -610,71 +635,125 @@
       <span onclick="closeModal('plan-modal')" style="color:var(--ink-500);cursor:pointer;flex-shrink:0;margin-left:12px" id="plan-close-icon"></span>
     </div>
 
+    <div style="display:flex;padding:16px 22px 0;flex-shrink:0">
+      <div class="rev-step"><div class="rev-dot" id="plan-step-dot-1">1</div><div style="font:500 12px/16px var(--font-sans);color:var(--ink-900);margin-top:6px">Type</div></div>
+      <div class="rev-step"><div class="rev-dot" id="plan-step-dot-2">2</div><div style="font:500 12px/16px var(--font-sans);color:var(--ink-900);margin-top:6px">Pricing</div></div>
+      <div class="rev-step"><div class="rev-dot" id="plan-step-dot-3">3</div><div style="font:500 12px/16px var(--font-sans);color:var(--ink-900);margin-top:6px">Details</div></div>
+      <div class="rev-step"><div class="rev-dot" id="plan-step-dot-4">4</div><div style="font:500 12px/16px var(--font-sans);color:var(--ink-900);margin-top:6px">Review</div></div>
+    </div>
+
     <div style="flex:1;overflow-y:auto;padding:18px 22px">
 
-      <label class="field-label">Plan name</label>
-      <input class="input" id="plan-name" placeholder="e.g. Growth">
-
-      <div style="margin-top:14px">
-        <label class="field-label">Billing type</label>
-        <select class="input" id="plan-type" onchange="onPlanTypeChange()">
-          <option value="free">Free</option>
-          <option value="monthly" selected>Monthly recurring</option>
-          <option value="yearly">Yearly recurring</option>
-          <option value="monthly_yearly">Monthly, with a yearly discount</option>
-          <option value="usage">Usage-based</option>
-          <option value="combined">Combined &mdash; recurring fee + usage</option>
-        </select>
-        <div class="field-help" id="plan-type-help">Standard SaaS pricing, billed on the 1st of each month.</div>
-      </div>
-
-      <div id="plan-row-monthly" style="margin-top:14px">
-        <label class="field-label">Monthly price (&#8377;)</label>
-        <input class="input" id="plan-monthly-price" placeholder="2499" inputmode="decimal">
-        <div class="field-help">&#8377;50 &ndash; &#8377;10,00,000, up to 2 decimal places.</div>
-      </div>
-
-      <div id="plan-row-yearly" style="margin-top:14px;display:none">
-        <label class="field-label">Yearly price (&#8377;)</label>
-        <input class="input" id="plan-yearly-price" placeholder="24990" inputmode="decimal">
-        <div class="field-help" id="plan-yearly-help">&#8377;500 &ndash; &#8377;1,20,00,000.</div>
-      </div>
-
-      <div id="plan-row-trial" style="margin-top:14px">
-        <label class="field-label">Trial (days)</label>
-        <input class="input" id="plan-trial" placeholder="0" value="0" inputmode="numeric">
-        <div class="field-help">0&ndash;30 days. Entitlement starts immediately; the first charge is deferred until the trial ends.</div>
-      </div>
-
-      <div id="plan-row-usage" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line-100);display:none">
-        <div style="font:600 13px/18px var(--font-sans);color:var(--ink-900);margin-bottom:10px">Usage meter</div>
-        <div style="display:flex;gap:10px">
-          <div style="flex:1"><label class="field-label">Meter</label><input class="input" id="plan-meter-name" placeholder="sms_sent"></div>
-          <div style="flex:1"><label class="field-label">Included units</label><input class="input" id="plan-meter-included" placeholder="5000" inputmode="numeric"></div>
+      <!-- Step 1: what type of plan is this -->
+      <div id="plan-step-1">
+        <label class="field-label">What type of plan is this?</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+          <div class="pick-card" id="plan-type-card-free" onclick="pickPlanType('free')"><div class="pick-title">Free</div><div class="pick-desc">Freemium &mdash; a subscription with no charges.</div></div>
+          <div class="pick-card" id="plan-type-card-monthly" onclick="pickPlanType('monthly')"><div class="pick-title">Monthly recurring</div><div class="pick-desc">Standard SaaS pricing, billed on the 1st.</div></div>
+          <div class="pick-card" id="plan-type-card-yearly" onclick="pickPlanType('yearly')"><div class="pick-title">Yearly recurring</div><div class="pick-desc">A discounted annual commitment.</div></div>
+          <div class="pick-card" id="plan-type-card-monthly_yearly" onclick="pickPlanType('monthly_yearly')"><div class="pick-title">Monthly, yearly discount</div><div class="pick-desc">Merchant picks monthly or yearly at selection.</div></div>
+          <div class="pick-card" id="plan-type-card-usage" onclick="pickPlanType('usage')"><div class="pick-title">Usage-based</div><div class="pick-desc">No recurring fee &mdash; billed from usage meters.</div></div>
+          <div class="pick-card" id="plan-type-card-combined" onclick="pickPlanType('combined')"><div class="pick-title">Combined</div><div class="pick-desc">A recurring fee plus one or more usage meters.</div></div>
         </div>
-        <div style="margin-top:10px;display:flex;gap:10px">
-          <div style="flex:1"><label class="field-label">Price per unit (&#8377;)</label><input class="input" id="plan-meter-price" placeholder="0.18" inputmode="decimal"></div>
-          <div style="flex:1"><label class="field-label">Capped at (&#8377; per month)</label><input class="input" id="plan-meter-cap" placeholder="25000" inputmode="decimal"></div>
+
+        <div id="plan-usage-structure-wrap" style="margin-top:18px;padding-top:14px;border-top:1px solid var(--line-100);display:none">
+          <label class="field-label">Usage structure</label>
+          <div class="field-help" style="margin-top:0;margin-bottom:6px">How each billable unit is priced, after the included allowance.</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+            <div class="pick-card" id="plan-structure-card-fixed" onclick="pickUsageStructure('fixed')"><div class="pick-title">Fixed</div><div class="pick-desc">One rate per unit.</div></div>
+            <div class="pick-card" id="plan-structure-card-graduated" onclick="pickUsageStructure('graduated')"><div class="pick-title">Graduated</div><div class="pick-desc">Each unit priced at its tier.</div></div>
+            <div class="pick-card" id="plan-structure-card-volume" onclick="pickUsageStructure('volume')"><div class="pick-title">Volume</div><div class="pick-desc">Total usage sets the rate for all of it.</div></div>
+          </div>
         </div>
-        <div class="field-help">The cap is shown to the merchant on the consent screen &mdash; it's their protection, not just yours.</div>
       </div>
 
-      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line-100)">
-        <label class="field-label">Top features <span style="color:var(--ink-300);font-weight:400">(1&ndash;10 bullets)</span></label>
-        <div id="plan-features" style="display:flex;flex-direction:column;gap:8px"></div>
-        <span class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="addFeatureRow()"><span id="plan-feature-plus"></span>Add feature</span>
+      <!-- Step 2: type-specific configuration -->
+      <div id="plan-step-2" style="display:none">
+        <div id="plan-type-summary" style="display:none;margin-bottom:14px;padding:10px 12px;border-radius:8px;background:var(--line-100);font:500 13px/18px var(--font-sans);color:var(--ink-800)"></div>
+
+        <label class="field-label">Plan name</label>
+        <input class="input" id="plan-name" placeholder="e.g. Growth" oninput="clearFieldError('plan-name')">
+        <div class="field-help" id="plan-name-error" style="display:none;color:var(--danger-text)"></div>
+
+        <div id="plan-row-monthly" style="margin-top:14px">
+          <label class="field-label">Monthly price (&#8377;)</label>
+          <input class="input" id="plan-monthly-price" placeholder="2499" inputmode="decimal" oninput="clearFieldError('plan-monthly-price')">
+          <div class="field-help" id="plan-monthly-price-error" style="display:none;color:var(--danger-text)"></div>
+          <div class="field-help">&#8377;50 &ndash; &#8377;10,00,000, up to 2 decimal places.</div>
+        </div>
+
+        <div id="plan-row-yearly" style="margin-top:14px;display:none">
+          <label class="field-label">Yearly price (&#8377;)</label>
+          <input class="input" id="plan-yearly-price" placeholder="24990" inputmode="decimal" oninput="clearFieldError('plan-yearly-price')">
+          <div class="field-help" id="plan-yearly-price-error" style="display:none;color:var(--danger-text)"></div>
+          <div class="field-help" id="plan-yearly-help">&#8377;500 &ndash; &#8377;1,20,00,000.</div>
+        </div>
+
+        <div id="plan-row-usage" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line-100);display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="font:600 13px/18px var(--font-sans);color:var(--ink-900)">Usage meters <span style="color:var(--ink-300);font-weight:400">(1&ndash;5)</span></div>
+            <span class="btn btn-secondary btn-sm" id="plan-add-meter-btn" onclick="addMeter()"><span id="plan-meter-plus"></span>Add meter</span>
+          </div>
+          <div id="plan-meters"></div>
+          <div class="field-help" id="plan-meters-error" style="display:none;color:var(--danger-text)"></div>
+        </div>
+
+        <div id="plan-step2-empty-note" style="display:none;font:400 13px/19px var(--font-sans);color:var(--text-muted)">A free plan has nothing to price &mdash; it creates a subscription with no charges.</div>
       </div>
 
-      <div style="margin-top:14px">
-        <label class="field-label">Description <span style="color:var(--ink-300);font-weight:400">(shown on the plan-selection page)</span></label>
-        <textarea class="input" id="plan-description" style="height:60px" placeholder="Who this plan is for and what they get."></textarea>
+      <!-- Step 3: common fields -->
+      <div id="plan-step-3" style="display:none">
+        <div id="plan-row-trial">
+          <label class="field-label">Trial (days)</label>
+          <input class="input" id="plan-trial" placeholder="0" value="0" inputmode="numeric" oninput="clearFieldError('plan-trial')">
+          <div class="field-help" id="plan-trial-error" style="display:none;color:var(--danger-text)"></div>
+          <div class="field-help">0&ndash;30 days. Entitlement starts immediately; the first charge is deferred until the trial ends.</div>
+        </div>
+
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line-100)">
+          <label class="field-label">Top features <span style="color:var(--ink-300);font-weight:400">(1&ndash;10 bullets)</span></label>
+          <div id="plan-features" style="display:flex;flex-direction:column;gap:8px"></div>
+          <span class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="addFeatureRow()"><span id="plan-feature-plus"></span>Add feature</span>
+        </div>
+
+        <div style="margin-top:14px">
+          <label class="field-label">Description <span style="color:var(--ink-300);font-weight:400">(shown on the plan-selection page)</span></label>
+          <textarea class="input" id="plan-description" style="height:60px" placeholder="Who this plan is for and what they get." oninput="clearFieldError('plan-description')"></textarea>
+          <div class="field-help" id="plan-description-error" style="display:none;color:var(--danger-text)"></div>
+        </div>
+
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line-100)">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <label class="field-label" style="margin-bottom:0">Discount <span style="color:var(--ink-300);font-weight:400">(optional)</span></label>
+            <span class="checkbox" id="plan-discount-toggle" onclick="toggleDiscountEnabled()"></span>
+          </div>
+          <div id="plan-discount-fields" style="display:none;margin-top:10px">
+            <select class="input" id="plan-discount-type">
+              <option value="percent">Percentage off</option>
+              <option value="fixed">Fixed amount off</option>
+            </select>
+            <div style="display:flex;gap:10px;margin-top:10px">
+              <div style="flex:1"><label class="field-label">Value</label><input class="input" id="plan-discount-value" placeholder="10" inputmode="decimal"></div>
+              <div style="flex:1"><label class="field-label">For (months)</label><input class="input" id="plan-discount-months" placeholder="3" inputmode="numeric"></div>
+            </div>
+            <div class="field-help">1&ndash;100% or a fixed amount below the plan price, for 1&ndash;12 months.</div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line-100)" id="plan-row-sac">
+          <label class="field-label">SAC code <span style="color:var(--ink-300);font-weight:400">(GST services accounting code)</span></label>
+          <input class="input" id="plan-sac" placeholder="998431" oninput="clearFieldError('plan-sac')">
+          <div class="field-help" id="plan-sac-error" style="display:none;color:var(--danger-text)"></div>
+          <div class="field-help">Required for any plan priced above &#8377;0. No lookup &mdash; this is a mock field.</div>
+        </div>
       </div>
 
-      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line-100)">
+      <!-- Step 4: audience, welcome link, review -->
+      <div id="plan-step-4" style="display:none">
         <label class="field-label">Audience</label>
         <div style="display:flex;gap:8px">
-          <div onclick="pickPlanAudience('public')" id="plan-aud-public" style="flex:1;border-radius:8px;padding:10px 12px;cursor:pointer;box-shadow:0 0 0 1.5px var(--accent)"><div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">Public</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Any merchant can select it</div></div>
-          <div onclick="pickPlanAudience('private')" id="plan-aud-private" style="flex:1;border-radius:8px;padding:10px 12px;cursor:pointer;box-shadow:0 0 0 1px var(--line-100)"><div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">Private</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Only stores you name</div></div>
+          <div onclick="pickPlanAudience('public')" id="plan-aud-public" class="pick-card" style="flex:1"><div class="pick-title" id="plan-aud-public-title">Public</div><div class="pick-desc" id="plan-aud-public-desc">Any merchant can select it</div></div>
+          <div onclick="pickPlanAudience('private')" id="plan-aud-private" class="pick-card" style="flex:1"><div class="pick-title" id="plan-aud-private-title">Private</div><div class="pick-desc" id="plan-aud-private-desc">Only stores you name</div></div>
         </div>
         <div id="plan-aud-stores" style="margin-top:10px;display:none">
           <div style="height:36px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset;display:flex;align-items:center;padding:0 12px;gap:8px">
@@ -683,6 +762,18 @@
           </div>
           <div class="field-help">1&ndash;50 stores. Removing a store later stops new selection, not an existing subscription.</div>
         </div>
+
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line-100)">
+          <label class="field-label">Welcome link <span style="color:var(--ink-300);font-weight:400">(optional)</span></label>
+          <input class="input" id="plan-welcome-link" placeholder="https://wishlistpro.app/welcome" oninput="validateWelcomeLink()" onblur="validateWelcomeLink()">
+          <div class="field-help" id="plan-welcome-link-error" style="display:none;color:var(--danger-text)"></div>
+          <div class="field-help">Where the merchant lands after approving this plan &mdash; on a first subscribe, or a plan change. Leave blank and they land on the app's dashboard instead.</div>
+        </div>
+
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line-100)">
+          <label class="field-label">Review</label>
+          <div id="plan-review" style="margin-top:6px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100);padding:12px 14px;font:400 13px/20px var(--font-sans);color:var(--ink-800)"></div>
+        </div>
       </div>
 
     </div>
@@ -690,8 +781,10 @@
     <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:14px 22px;border-top:1px solid var(--line-100);flex-shrink:0">
       <span style="font:400 12px/16px var(--font-sans);color:var(--ink-300)" id="plan-status-note">Draft &mdash; not visible to merchants yet.</span>
       <span style="display:flex;gap:8px">
-        <span class="btn btn-secondary" onclick="savePlanDraft()">Save as draft</span>
-        <span class="btn btn-primary" onclick="publishPlan()">Publish</span>
+        <span class="btn btn-secondary" id="plan-back-btn" style="display:none" onclick="planWizardBack()">Back</span>
+        <span class="btn btn-primary" id="plan-next-btn" style="display:none" onclick="planWizardNext()">Next</span>
+        <span class="btn btn-secondary" id="plan-draft-btn" style="display:none" onclick="savePlanDraft()">Save as draft</span>
+        <span class="btn btn-primary" id="plan-publish-btn" style="display:none" onclick="publishPlan()">Publish</span>
       </span>
     </div>
   </div>
@@ -956,36 +1049,94 @@ document.getElementById('merchant-next-icon').innerHTML = icon('caret', 10);
 document.getElementById('merchant-next-icon').style.transform = 'rotate(-90deg)';
 
 /* ---------- Pricing: plan list + create/edit plan modal (PRD4) ---------- */
+// This app's own distribution type — Public or Private, fixed at creation (matches the
+// hardcoded pill in the Distribution tab). Drives the Plans tab's audience terminology.
+var APP_DISTRIBUTION_TYPE = 'public';
+
+function plansTerminology() {
+  if (APP_DISTRIBUTION_TYPE === 'private') {
+    return {
+      sectionPublic: 'Global audience',
+      sectionPrivate: 'Merchant custom',
+      audPublicTitle: 'Global audience',
+      audPublicDesc: 'Open to every merchant who already has access to install this private app',
+      audPrivateTitle: 'Merchant custom',
+      audPrivateDesc: 'A further-narrowed custom subset of specifically named merchants'
+    };
+  }
+  return {
+    sectionPublic: 'Public plans',
+    sectionPrivate: 'Private plans',
+    audPublicTitle: 'Public',
+    audPublicDesc: 'Any merchant can select it',
+    audPrivateTitle: 'Private',
+    audPrivateDesc: 'Only stores you name'
+  };
+}
+
 var PUBLIC_PLANS = [
   { handle: 'starter', name: 'Starter', type: 'monthly', monthlyPrice: '999', trial: '0', features: ['Up to 500 wishlist saves'], description: 'For stores just getting started with wishlists.', audience: 'public' },
-  { handle: 'growth', name: 'Growth', type: 'monthly', monthlyPrice: '2499', trial: '14', features: ['Unlimited saves', 'Priority support'], description: 'For stores that have outgrown the basics.', audience: 'public' }
+  { handle: 'growth', name: 'Growth', type: 'monthly', monthlyPrice: '2499', trial: '14', features: ['Unlimited saves', 'Priority support'], description: 'For stores that have outgrown the basics.', audience: 'public' },
+  { handle: 'scale', name: 'Scale', type: 'combined', usageStructure: 'graduated', monthlyPrice: '7999', trial: '14',
+    meters: [ { handle: 'sms_sent', included: '2000', unitPrice: '',
+      tiers: [ { upTo: '10000', price: '0.35' }, { upTo: '100000', price: '0.28' }, { upTo: '', price: '0.22' } ],
+      capMode: 'amount', capAmount: '25000', capAck: false } ],
+    features: ['Unlimited saves', 'Priority support', 'Dedicated WhatsApp alerts'],
+    description: 'For high-volume stores that need usage-based messaging on top of the core plan.',
+    audience: 'public', welcomeLink: 'https://wishlistpro.app/welcome/scale',
+    discount: { enabled: true, type: 'percent', value: '15', months: '3' }, sacCode: '998431' }
 ];
 var PRIVATE_PLANS = [];
-var PLAN_TYPE_HELP = {
-  free: 'Creates a subscription with no charges. Good for a freemium tier.',
-  monthly: 'Standard SaaS pricing, billed on the 1st of each month.',
-  yearly: 'A discounted annual commitment, charged in full on approval.',
-  monthly_yearly: 'The merchant picks monthly or yearly at checkout. Yearly must be strictly cheaper than 12 &times; monthly.',
-  usage: 'No recurring fee &mdash; billed monthly in arrears from one usage meter, up to a cap.',
-  combined: 'A recurring fee plus a usage meter on the same plan.'
+
+var PLAN_TYPE_META = {
+  free: { label: 'Free', help: 'Creates a subscription with no charges. Good for a freemium tier.' },
+  monthly: { label: 'Monthly recurring', help: 'Standard SaaS pricing, billed on the 1st of each month.' },
+  yearly: { label: 'Yearly recurring', help: 'A discounted annual commitment, charged in full on approval.' },
+  monthly_yearly: { label: 'Monthly, with a yearly discount', help: 'The merchant picks monthly or yearly at selection. Yearly must be strictly cheaper than 12 &times; monthly.' },
+  usage: { label: 'Usage-based', help: 'No recurring fee &mdash; billed monthly in arrears from usage meters, up to a cap.' },
+  combined: { label: 'Combined', help: 'A recurring fee plus one or more usage meters on the same plan.' }
+};
+var USAGE_STRUCTURE_META = {
+  fixed: { label: 'Fixed', help: 'One rate per unit after an included allowance.' },
+  graduated: { label: 'Graduated', help: 'Each unit priced at the tier it falls in.' },
+  volume: { label: 'Volume', help: 'Every unit priced at the tier the total lands in.' }
 };
 
+function planPriceLabel(p) {
+  if (p.type === 'free') return 'Free';
+  if (p.type === 'yearly') return '&#8377;' + (p.yearlyPrice || '0') + '<span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">/year</span>';
+  if (p.type === 'monthly_yearly') return '&#8377;' + (p.monthlyPrice || '0') + '<span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">/mo</span> <span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">or &#8377;' + (p.yearlyPrice || '0') + '/yr</span>';
+  if (p.type === 'usage') return 'Usage-based';
+  if (p.type === 'combined') return '&#8377;' + (p.monthlyPrice || '0') + '<span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">/month + usage</span>';
+  return '&#8377;' + (p.monthlyPrice || '0') + '<span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">/month</span>';
+}
+
 function renderPlanCard(p, isPrivate) {
-  var priceHtml = p.type === 'free' ? 'Free'
-    : p.type === 'yearly' ? '&#8377;' + p.monthlyPrice + '<span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">/year</span>'
-    : p.type === 'usage' ? 'Usage-based'
-    : '&#8377;' + (p.monthlyPrice || '0') + '<span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">/month</span>';
+  var meta = [];
+  if (p.type === 'usage' || p.type === 'combined') {
+    var n = (p.meters || []).length || 1;
+    meta.push(USAGE_STRUCTURE_META[p.usageStructure || 'fixed'].label + ' usage &middot; ' + n + ' meter' + (n > 1 ? 's' : ''));
+  }
+  if (p.discount && p.discount.enabled) {
+    meta.push((p.discount.type === 'percent' ? p.discount.value + '% off' : '&#8377;' + p.discount.value + ' off') + ' for ' + p.discount.months + ' mo');
+  }
   return '<div onclick="openEditPlan(\'' + p.handle + '\',' + !!isPrivate + ')" class="card" style="padding:14px;cursor:pointer">' +
     '<div style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">' + p.name + '</div>' +
-    '<div style="font:600 18px/24px var(--font-sans);color:var(--ink-900);margin-top:4px">' + priceHtml + '</div>' +
-    '<div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:6px">' + (p.features[0] || '') + '</div>' +
+    '<div style="font:600 18px/24px var(--font-sans);color:var(--ink-900);margin-top:4px">' + planPriceLabel(p) + '</div>' +
+    (meta.length ? '<div style="font:400 11px/16px var(--font-sans);color:var(--accent);margin-top:4px">' + meta.join(' &middot; ') + '</div>' : '') +
+    '<div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:6px">' + ((p.features && p.features[0]) || '') + '</div>' +
     '</div>';
 }
 function renderPlans() {
+  var term = plansTerminology();
+  document.getElementById('plans-public-heading').textContent = term.sectionPublic;
+  document.getElementById('plans-private-heading').textContent = term.sectionPrivate;
   document.getElementById('public-plans').innerHTML = PUBLIC_PLANS.map(function (p) { return renderPlanCard(p, false); }).join('');
   var priv = document.getElementById('private-plans');
   if (!PRIVATE_PLANS.length) {
-    priv.innerHTML = '<p style="font:400 13px/19px var(--font-sans);color:var(--text-muted);margin:0;text-align:center">No private plans yet. Create one and name the stores that may select it.</p>';
+    priv.className = 'empty-state';
+    priv.style.cssText = 'padding:24px 0';
+    priv.innerHTML = '<p style="font:400 13px/19px var(--font-sans);color:var(--text-muted);margin:0;text-align:center">No ' + term.sectionPrivate.toLowerCase() + ' yet. Create one and name the stores that may select it.</p>';
   } else {
     priv.className = '';
     priv.style.cssText = 'margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:10px';
@@ -996,71 +1147,133 @@ function renderPlans() {
 }
 renderPlans();
 
+function togglePlansDemo(hasPlans) {
+  document.getElementById('plans-has-state').style.display = hasPlans ? '' : 'none';
+  document.getElementById('plans-empty-state').style.display = hasPlans ? 'none' : '';
+}
+
+/* ---------- Plan wizard: shared state ---------- */
 var editingPlan = null;
 var editingPlanIsPrivate = false;
+var planWizardStep = 1;
+var planType = 'monthly';
+var planUsageStructure = 'fixed';
+var planFeatures = [''];
+var planMeters = [];
+var planDiscountEnabled = false;
 
-function openCreatePlan() {
-  editingPlan = null;
-  editingPlanIsPrivate = false;
-  document.getElementById('plan-modal-title').textContent = 'Create plan';
-  document.getElementById('plan-modal-sub').textContent = "Draft first, then publish when it's ready for merchants to see.";
-  document.getElementById('plan-status-note').textContent = 'Draft — not visible to merchants yet.';
-  document.getElementById('plan-name').value = '';
-  document.getElementById('plan-type').value = 'monthly';
-  document.getElementById('plan-monthly-price').value = '';
-  document.getElementById('plan-yearly-price').value = '';
-  document.getElementById('plan-trial').value = '0';
-  document.getElementById('plan-meter-name').value = '';
-  document.getElementById('plan-meter-included').value = '';
-  document.getElementById('plan-meter-price').value = '';
-  document.getElementById('plan-meter-cap').value = '';
-  document.getElementById('plan-description').value = '';
-  planFeatures = [''];
-  renderFeatureRows();
-  pickPlanAudience('public');
-  onPlanTypeChange();
-  openModal('plan-modal');
+function showFieldError(id, msg) {
+  var el = document.getElementById(id + '-error');
+  if (el) { el.textContent = msg; el.style.display = ''; }
+  return false;
+}
+function clearFieldError(id) {
+  var el = document.getElementById(id + '-error');
+  if (el) el.style.display = 'none';
 }
 
-function openEditPlan(handle, isPrivate) {
-  var list = isPrivate ? PRIVATE_PLANS : PUBLIC_PLANS;
-  var p = list.find(function (x) { return x.handle === handle; });
-  if (!p) return;
-  editingPlan = p;
-  editingPlanIsPrivate = isPrivate;
-  document.getElementById('plan-modal-title').textContent = 'Edit plan';
-  document.getElementById('plan-modal-sub').textContent = "Editing a live price mints a new version — merchants already subscribed keep today's price until they change plan.";
-  document.getElementById('plan-status-note').textContent = 'Active — visible to merchants now.';
-  document.getElementById('plan-name').value = p.name;
-  document.getElementById('plan-type').value = p.type;
-  document.getElementById('plan-monthly-price').value = p.monthlyPrice || '';
-  document.getElementById('plan-yearly-price').value = p.yearlyPrice || '';
-  document.getElementById('plan-trial').value = p.trial || '0';
-  document.getElementById('plan-meter-name').value = p.meterName || '';
-  document.getElementById('plan-meter-included').value = p.meterIncluded || '';
-  document.getElementById('plan-meter-price').value = p.meterPrice || '';
-  document.getElementById('plan-meter-cap').value = p.meterCap || '';
-  document.getElementById('plan-description').value = p.description || '';
-  planFeatures = p.features.slice();
-  renderFeatureRows();
-  pickPlanAudience(p.audience);
-  onPlanTypeChange();
-  openModal('plan-modal');
+/* ---------- Step 1: plan type + usage structure cards ---------- */
+function pickPlanType(type) {
+  planType = type;
+  ['free', 'monthly', 'yearly', 'monthly_yearly', 'usage', 'combined'].forEach(function (t) {
+    var el = document.getElementById('plan-type-card-' + t);
+    if (el) el.classList.toggle('picked', t === type);
+  });
+  var showStructure = (type === 'usage' || type === 'combined');
+  document.getElementById('plan-usage-structure-wrap').style.display = showStructure ? '' : 'none';
+  if (showStructure && !planMeters.length) planMeters = [newMeter()];
+}
+function pickUsageStructure(structure) {
+  planUsageStructure = structure;
+  ['fixed', 'graduated', 'volume'].forEach(function (s) {
+    var el = document.getElementById('plan-structure-card-' + s);
+    if (el) el.classList.toggle('picked', s === structure);
+  });
 }
 
-function onPlanTypeChange() {
-  var type = document.getElementById('plan-type').value;
-  document.getElementById('plan-type-help').innerHTML = PLAN_TYPE_HELP[type];
+/* ---------- Step 2: type-specific configuration ---------- */
+function renderStep2Fields() {
+  var type = planType;
   document.getElementById('plan-row-monthly').style.display = (type === 'monthly' || type === 'monthly_yearly' || type === 'combined') ? '' : 'none';
   document.getElementById('plan-row-yearly').style.display = (type === 'yearly' || type === 'monthly_yearly') ? '' : 'none';
   document.getElementById('plan-yearly-help').innerHTML = type === 'monthly_yearly'
     ? '&#8377;500 – &#8377;1,20,00,000; must be strictly less than 12 &times; the monthly price above.'
     : '&#8377;500 – &#8377;1,20,00,000.';
-  document.getElementById('plan-row-trial').style.display = type === 'free' ? 'none' : '';
   document.getElementById('plan-row-usage').style.display = (type === 'usage' || type === 'combined') ? '' : 'none';
+  document.getElementById('plan-step2-empty-note').style.display = (type === 'free') ? '' : 'none';
+  if (type === 'usage' || type === 'combined') renderMeters();
 }
 
-var planFeatures = [''];
+function newMeter() {
+  return { handle: '', included: '', unitPrice: '', tiers: [{ upTo: '', price: '' }, { upTo: '', price: '' }], capMode: 'amount', capAmount: '', capAck: false };
+}
+function addMeter() {
+  if (planMeters.length >= 5) return;
+  planMeters.push(newMeter());
+  renderMeters();
+}
+function removeMeter(i) {
+  planMeters.splice(i, 1);
+  renderMeters();
+}
+function addTier(mi) {
+  var m = planMeters[mi];
+  if (m.tiers.length >= 8) return;
+  m.tiers.splice(m.tiers.length - 1, 0, { upTo: '', price: '' });
+  renderMeters();
+}
+function removeTier(mi, ti) {
+  var m = planMeters[mi];
+  if (m.tiers.length <= 2) return;
+  m.tiers.splice(ti, 1);
+  renderMeters();
+}
+function toggleMeterCap(mi) {
+  var m = planMeters[mi];
+  m.capMode = m.capMode === 'none' ? 'amount' : 'none';
+  renderMeters();
+}
+function renderTiers(m, i) {
+  var rows = m.tiers.map(function (t, j) {
+    var isLast = j === m.tiers.length - 1;
+    var upToField = isLast
+      ? '<span style="flex:1;font:400 13px/18px var(--font-sans);color:var(--ink-300)">Unlimited above</span>'
+      : '<input class="input" style="flex:1" value="' + (t.upTo || '').replace(/"/g, '&quot;') + '" placeholder="up to N units" inputmode="numeric" oninput="planMeters[' + i + '].tiers[' + j + '].upTo=this.value">';
+    var removeBtn = m.tiers.length > 2 ? '<span onclick="removeTier(' + i + ',' + j + ')" style="color:var(--ink-500);cursor:pointer;flex-shrink:0">' + icon('close', 10) + '</span>' : '';
+    return '<div class="tier-row">' +
+      '<input class="input" style="flex:1" value="' + (t.price || '').replace(/"/g, '&quot;') + '" placeholder="price per unit" inputmode="decimal" oninput="planMeters[' + i + '].tiers[' + j + '].price=this.value">' +
+      upToField + removeBtn +
+    '</div>';
+  }).join('');
+  var addBtn = m.tiers.length < 8 ? '<span class="btn btn-secondary btn-sm" style="margin-top:6px" onclick="addTier(' + i + ')">' + icon('plus', 9) + 'Add tier</span>' : '';
+  return '<div style="margin-top:8px"><label class="field-label">Tiers <span style="color:var(--ink-300);font-weight:400">(2&ndash;8, last tier is unlimited)</span></label>' + rows + addBtn + '</div>';
+}
+function renderMeters() {
+  document.getElementById('plan-add-meter-btn').style.display = planMeters.length >= 5 ? 'none' : '';
+  document.getElementById('plan-meters').innerHTML = planMeters.map(function (m, i) {
+    var removeBtn = planMeters.length > 1 ? '<span onclick="removeMeter(' + i + ')" style="color:var(--ink-500);cursor:pointer">' + icon('close', 10) + '</span>' : '';
+    var priceField = planUsageStructure === 'fixed'
+      ? '<div style="margin-top:8px"><label class="field-label">Price per unit (&#8377;)</label><input class="input" value="' + (m.unitPrice || '').replace(/"/g, '&quot;') + '" placeholder="0.18" inputmode="decimal" oninput="planMeters[' + i + '].unitPrice=this.value"></div>'
+      : renderTiers(m, i);
+    var capCheckbox = '<span class="checkbox' + (m.capMode === 'none' ? ' checked' : '') + '" style="margin-right:8px;vertical-align:-2px" onclick="toggleMeterCap(' + i + ')">' + (m.capMode === 'none' ? icon('check', 9) : '') + '</span>';
+    var capField = m.capMode === 'none'
+      ? '<div class="field-help" style="color:var(--warning-text)">Uncapped &mdash; the merchant is billed for all usage above the included allowance, with no ceiling.</div>'
+      : '<input class="input" style="margin-top:6px" value="' + (m.capAmount || '').replace(/"/g, '&quot;') + '" placeholder="25000" inputmode="decimal" oninput="planMeters[' + i + '].capAmount=this.value">' +
+        '<div class="field-help">&#8377;100 &ndash; &#8377;25,00,000 per month. Shown to the merchant on the consent screen.</div>';
+    return '<div class="meter-card">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center"><div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">Meter ' + (i + 1) + '</div>' + removeBtn + '</div>' +
+      '<div style="display:flex;gap:10px;margin-top:8px">' +
+        '<div style="flex:1"><label class="field-label">Meter handle</label><input class="input" value="' + (m.handle || '').replace(/"/g, '&quot;') + '" placeholder="sms_sent" oninput="planMeters[' + i + '].handle=this.value"></div>' +
+        '<div style="flex:1"><label class="field-label">Included units</label><input class="input" value="' + (m.included || '').replace(/"/g, '&quot;') + '" placeholder="5000" inputmode="numeric" oninput="planMeters[' + i + '].included=this.value"></div>' +
+      '</div>' +
+      priceField +
+      '<label class="field-label" style="margin-top:10px;display:block;cursor:pointer">' + capCheckbox + 'No cap (requires merchant acknowledgement)</label>' +
+      capField +
+    '</div>';
+  }).join('');
+}
+
+/* ---------- Step 3: common fields ---------- */
 function renderFeatureRows() {
   document.getElementById('plan-features').innerHTML = planFeatures.map(function (val, i) {
     return '<div style="display:flex;gap:8px;align-items:center">' +
@@ -1079,28 +1292,288 @@ function removeFeatureRow(i) {
   renderFeatureRows();
 }
 
+function renderDiscountCheckbox() {
+  var el = document.getElementById('plan-discount-toggle');
+  el.classList.toggle('checked', planDiscountEnabled);
+  el.innerHTML = planDiscountEnabled ? icon('check', 9) : '';
+  document.getElementById('plan-discount-fields').style.display = planDiscountEnabled ? '' : 'none';
+}
+function toggleDiscountEnabled() {
+  planDiscountEnabled = !planDiscountEnabled;
+  renderDiscountCheckbox();
+}
+
+function planIsPriced() { return planType !== 'free'; }
+
+/* ---------- Step 4: audience + welcome link + review ---------- */
 function pickPlanAudience(which) {
-  document.getElementById('plan-aud-public').style.boxShadow = which === 'public' ? '0 0 0 1.5px var(--accent)' : '0 0 0 1px var(--line-100)';
-  document.getElementById('plan-aud-private').style.boxShadow = which === 'private' ? '0 0 0 1.5px var(--accent)' : '0 0 0 1px var(--line-100)';
+  document.getElementById('plan-aud-public').classList.toggle('picked', which === 'public');
+  document.getElementById('plan-aud-private').classList.toggle('picked', which === 'private');
   document.getElementById('plan-aud-stores').style.display = which === 'private' ? '' : 'none';
   document.getElementById('plan-aud-public').dataset.picked = which;
 }
+function refreshAudienceLabels() {
+  var term = plansTerminology();
+  document.getElementById('plan-aud-public-title').textContent = term.audPublicTitle;
+  document.getElementById('plan-aud-public-desc').textContent = term.audPublicDesc;
+  document.getElementById('plan-aud-private-title').textContent = term.audPrivateTitle;
+  document.getElementById('plan-aud-private-desc').textContent = term.audPrivateDesc;
+}
+function validateWelcomeLink() {
+  var val = document.getElementById('plan-welcome-link').value.trim();
+  var err = document.getElementById('plan-welcome-link-error');
+  var valid = true;
+  if (!val) { err.style.display = 'none'; }
+  else {
+    valid = /^https:\/\//.test(val) && val.length <= 500;
+    err.textContent = 'Must start with https:// and be 500 characters or fewer.';
+    err.style.display = valid ? 'none' : '';
+  }
+  if (planWizardStep === 4) renderPlanReview();
+  return valid;
+}
+function renderPlanReview() {
+  var name = document.getElementById('plan-name').value || 'Untitled plan';
+  var lines = [];
+  lines.push('<b>' + name + '</b> &mdash; ' + PLAN_TYPE_META[planType].label + ((planType === 'usage' || planType === 'combined') ? ' (' + USAGE_STRUCTURE_META[planUsageStructure].label + ' usage)' : ''));
+  if (planType === 'monthly' || planType === 'combined') lines.push('&#8377;' + (document.getElementById('plan-monthly-price').value || '0') + '/month');
+  if (planType === 'yearly' || planType === 'monthly_yearly') lines.push('&#8377;' + (document.getElementById('plan-yearly-price').value || '0') + '/year');
+  if (planType === 'monthly_yearly') lines.push('&#8377;' + (document.getElementById('plan-monthly-price').value || '0') + '/month alternative');
+  if (planType !== 'free') lines.push('Trial: ' + (document.getElementById('plan-trial').value || '0') + ' days');
+  if (planType === 'usage' || planType === 'combined') {
+    lines.push(planMeters.length + ' usage meter' + (planMeters.length > 1 ? 's' : '') + ', ' + USAGE_STRUCTURE_META[planUsageStructure].label.toLowerCase() + ' pricing');
+  }
+  var feats = planFeatures.filter(function (f) { return f.trim(); });
+  lines.push(feats.length + ' feature' + (feats.length === 1 ? '' : 's') + ' listed');
+  if (planDiscountEnabled) {
+    var dt = document.getElementById('plan-discount-type').value;
+    var dv = document.getElementById('plan-discount-value').value;
+    var dm = document.getElementById('plan-discount-months').value;
+    lines.push('Discount: ' + (dt === 'percent' ? dv + '% off' : '&#8377;' + dv + ' off') + ' for ' + dm + ' months');
+  }
+  var wl = document.getElementById('plan-welcome-link').value.trim();
+  lines.push('Welcome link: ' + (wl ? wl : 'none &mdash; merchant lands on the app dashboard'));
+  var aud = document.getElementById('plan-aud-public').dataset.picked || 'public';
+  var term = plansTerminology();
+  lines.push('Audience: ' + (aud === 'public' ? term.audPublicTitle : term.audPrivateTitle));
+  document.getElementById('plan-review').innerHTML = lines.map(function (l) { return '<div style="padding:4px 0">' + l + '</div>'; }).join('');
+}
+
+/* ---------- Wizard navigation ---------- */
+function planWizardStepStart() { return editingPlan ? 2 : 1; }
+function updateStepIndicator() {
+  for (var i = 1; i <= 4; i++) {
+    var dot = document.getElementById('plan-step-dot-' + i);
+    var done = i <= planWizardStep;
+    dot.style.background = done ? 'var(--accent)' : 'var(--line-100)';
+    dot.style.color = done ? '#fff' : 'var(--ink-500)';
+  }
+}
+function showStep(n) {
+  planWizardStep = n;
+  for (var i = 1; i <= 4; i++) {
+    document.getElementById('plan-step-' + i).style.display = (i === n) ? '' : 'none';
+  }
+  updateStepIndicator();
+  var start = planWizardStepStart();
+  document.getElementById('plan-back-btn').style.display = (n > start) ? '' : 'none';
+  document.getElementById('plan-next-btn').style.display = (n < 4) ? '' : 'none';
+  document.getElementById('plan-draft-btn').style.display = (n === 4) ? '' : 'none';
+  document.getElementById('plan-publish-btn').style.display = (n === 4) ? '' : 'none';
+  if (n === 2) renderStep2Fields();
+  if (n === 4) { refreshAudienceLabels(); renderPlanReview(); }
+}
+function validateStep1() { return true; }
+function validateStep2() {
+  var ok = true;
+  clearFieldError('plan-name'); clearFieldError('plan-monthly-price'); clearFieldError('plan-yearly-price');
+  document.getElementById('plan-meters-error').style.display = 'none';
+  var name = document.getElementById('plan-name').value.trim();
+  if (!name) { showFieldError('plan-name', 'Give the plan a name.'); ok = false; }
+  else if (name.length < 2 || name.length > 50) { showFieldError('plan-name', 'Name must be 2–50 characters.'); ok = false; }
+
+  if (planType === 'monthly' || planType === 'monthly_yearly' || planType === 'combined') {
+    var mp = parseFloat(document.getElementById('plan-monthly-price').value);
+    if (!mp || mp < 50 || mp > 1000000) { showFieldError('plan-monthly-price', '₹50 – ₹10,00,000 required.'); ok = false; }
+  }
+  if (planType === 'yearly' || planType === 'monthly_yearly') {
+    var yp = parseFloat(document.getElementById('plan-yearly-price').value);
+    if (!yp || yp < 500 || yp > 12000000) { showFieldError('plan-yearly-price', '₹500 – ₹1,20,00,000 required.'); ok = false; }
+    else if (planType === 'monthly_yearly') {
+      var mp2 = parseFloat(document.getElementById('plan-monthly-price').value) || 0;
+      if (yp >= mp2 * 12) { showFieldError('plan-yearly-price', 'Must be strictly less than 12 × the monthly price.'); ok = false; }
+    }
+  }
+  if (planType === 'usage' || planType === 'combined') {
+    var metersOk = planMeters.length > 0;
+    planMeters.forEach(function (m) {
+      if (!m.handle || !/^[a-z0-9_]{2,40}$/.test(m.handle)) metersOk = false;
+      if (m.included === '' || isNaN(Number(m.included)) || Number(m.included) < 0) metersOk = false;
+      if (planUsageStructure === 'fixed') {
+        if (!m.unitPrice || Number(m.unitPrice) <= 0) metersOk = false;
+      } else {
+        m.tiers.forEach(function (t, j) {
+          if (!t.price || Number(t.price) <= 0) metersOk = false;
+          if (j < m.tiers.length - 1 && (!t.upTo || Number(t.upTo) <= 0)) metersOk = false;
+        });
+      }
+      if (m.capMode === 'amount') {
+        var cap = Number(m.capAmount);
+        if (!cap || cap < 100 || cap > 2500000) metersOk = false;
+      }
+    });
+    if (!metersOk) {
+      document.getElementById('plan-meters-error').textContent = 'Every meter needs a valid handle, included units, price/tiers and cap before you continue.';
+      document.getElementById('plan-meters-error').style.display = '';
+      ok = false;
+    }
+  }
+  return ok;
+}
+function validateStep3() {
+  var ok = true;
+  clearFieldError('plan-trial'); clearFieldError('plan-description'); clearFieldError('plan-sac');
+  if (planType !== 'free') {
+    var trial = document.getElementById('plan-trial').value;
+    var t = Number(trial);
+    if (trial === '' || isNaN(t) || t < 0 || t > 30 || Math.floor(t) !== t) { showFieldError('plan-trial', 'Enter a whole number of days, 0–30.'); ok = false; }
+  }
+  var feats = planFeatures.filter(function (f) { return f.trim(); });
+  if (!feats.length) { showToast('Add at least one feature bullet.'); ok = false; }
+  var desc = document.getElementById('plan-description').value.trim();
+  if (desc.length < 10 || desc.length > 500) { showFieldError('plan-description', 'Description must be 10–500 characters.'); ok = false; }
+  if (planDiscountEnabled) {
+    var dType = document.getElementById('plan-discount-type').value;
+    var dv = Number(document.getElementById('plan-discount-value').value);
+    var dm = Number(document.getElementById('plan-discount-months').value);
+    if (!dv || dv <= 0 || (dType === 'percent' && dv > 100)) { showToast('Fix the discount value.'); ok = false; }
+    if (!dm || dm < 1 || dm > 12 || Math.floor(dm) !== dm) { showToast('Discount duration must be 1–12 months.'); ok = false; }
+  }
+  if (planIsPriced()) {
+    var sac = document.getElementById('plan-sac').value.trim();
+    if (!sac) { showFieldError('plan-sac', 'Required for any plan priced above ₹0.'); ok = false; }
+  }
+  return ok;
+}
+function validateStep4() {
+  return validateWelcomeLink();
+}
+function planWizardNext() {
+  if (planWizardStep === 1 && !validateStep1()) return;
+  if (planWizardStep === 2 && !validateStep2()) return;
+  if (planWizardStep === 3 && !validateStep3()) return;
+  showStep(planWizardStep + 1);
+}
+function planWizardBack() {
+  var start = planWizardStepStart();
+  if (planWizardStep > start) showStep(planWizardStep - 1);
+}
+
+/* ---------- Open / collect / save ---------- */
+function resetPlanMetaFields() {
+  document.getElementById('plan-welcome-link').value = '';
+  document.getElementById('plan-welcome-link-error').style.display = 'none';
+  document.getElementById('plan-sac').value = '';
+  document.getElementById('plan-discount-type').value = 'percent';
+  document.getElementById('plan-discount-value').value = '';
+  document.getElementById('plan-discount-months').value = '';
+  planDiscountEnabled = false;
+  renderDiscountCheckbox();
+  ['plan-name', 'plan-monthly-price', 'plan-yearly-price', 'plan-trial', 'plan-description', 'plan-sac'].forEach(clearFieldError);
+  document.getElementById('plan-meters-error').style.display = 'none';
+}
+
+function openCreatePlan() {
+  editingPlan = null;
+  editingPlanIsPrivate = false;
+  document.getElementById('plan-modal-title').textContent = 'Create plan';
+  document.getElementById('plan-modal-sub').textContent = "Draft first, then publish when it's ready for merchants to see.";
+  document.getElementById('plan-status-note').textContent = 'Draft — not visible to merchants yet.';
+  document.getElementById('plan-type-summary').style.display = 'none';
+  document.getElementById('plan-name').value = '';
+  document.getElementById('plan-monthly-price').value = '';
+  document.getElementById('plan-yearly-price').value = '';
+  document.getElementById('plan-trial').value = '0';
+  document.getElementById('plan-description').value = '';
+  planFeatures = [''];
+  renderFeatureRows();
+  planMeters = [newMeter()];
+  resetPlanMetaFields();
+  pickPlanType('monthly');
+  pickUsageStructure('fixed');
+  pickPlanAudience('public');
+  refreshAudienceLabels();
+  renderStep2Fields();
+  showStep(1);
+  openModal('plan-modal');
+}
+
+function openEditPlan(handle, isPrivate) {
+  var list = isPrivate ? PRIVATE_PLANS : PUBLIC_PLANS;
+  var p = list.find(function (x) { return x.handle === handle; });
+  if (!p) return;
+  editingPlan = p;
+  editingPlanIsPrivate = isPrivate;
+  document.getElementById('plan-modal-title').textContent = 'Edit plan';
+  document.getElementById('plan-modal-sub').textContent = "Editing a live price mints a new version — merchants already subscribed keep today's price until they change plan.";
+  document.getElementById('plan-status-note').textContent = 'Active — visible to merchants now.';
+
+  planType = p.type;
+  planUsageStructure = p.usageStructure || 'fixed';
+  pickPlanType(p.type);
+  pickUsageStructure(planUsageStructure);
+
+  var summaryText = 'Type: ' + PLAN_TYPE_META[p.type].label + ((p.type === 'usage' || p.type === 'combined') ? ' — usage: ' + USAGE_STRUCTURE_META[planUsageStructure].label : '');
+  document.getElementById('plan-type-summary').style.display = '';
+  document.getElementById('plan-type-summary').textContent = summaryText;
+
+  document.getElementById('plan-name').value = p.name;
+  document.getElementById('plan-monthly-price').value = p.monthlyPrice || '';
+  document.getElementById('plan-yearly-price').value = p.yearlyPrice || '';
+  document.getElementById('plan-trial').value = p.trial || '0';
+  document.getElementById('plan-description').value = p.description || '';
+  planFeatures = p.features.slice();
+  renderFeatureRows();
+  planMeters = p.meters ? JSON.parse(JSON.stringify(p.meters)) : [newMeter()];
+
+  resetPlanMetaFields();
+  document.getElementById('plan-welcome-link').value = p.welcomeLink || '';
+  document.getElementById('plan-sac').value = p.sacCode || '';
+  planDiscountEnabled = !!(p.discount && p.discount.enabled);
+  document.getElementById('plan-discount-type').value = (p.discount && p.discount.type) || 'percent';
+  document.getElementById('plan-discount-value').value = (p.discount && p.discount.value) || '';
+  document.getElementById('plan-discount-months').value = (p.discount && p.discount.months) || '';
+  renderDiscountCheckbox();
+
+  pickPlanAudience(p.audience);
+  refreshAudienceLabels();
+  renderStep2Fields();
+  showStep(2);
+  openModal('plan-modal');
+}
 
 function collectPlanFromForm() {
+  var isUsageLike = (planType === 'usage' || planType === 'combined');
   return {
     handle: editingPlan ? editingPlan.handle : (document.getElementById('plan-name').value.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 40) || 'plan_' + Date.now()),
     name: document.getElementById('plan-name').value || 'Untitled plan',
-    type: document.getElementById('plan-type').value,
+    type: planType,
+    usageStructure: isUsageLike ? planUsageStructure : undefined,
     monthlyPrice: document.getElementById('plan-monthly-price').value,
     yearlyPrice: document.getElementById('plan-yearly-price').value,
     trial: document.getElementById('plan-trial').value,
-    meterName: document.getElementById('plan-meter-name').value,
-    meterIncluded: document.getElementById('plan-meter-included').value,
-    meterPrice: document.getElementById('plan-meter-price').value,
-    meterCap: document.getElementById('plan-meter-cap').value,
+    meters: isUsageLike ? JSON.parse(JSON.stringify(planMeters)) : undefined,
     features: planFeatures.filter(function (f) { return f.trim(); }).length ? planFeatures.filter(function (f) { return f.trim(); }) : ['—'],
     description: document.getElementById('plan-description').value,
-    audience: document.getElementById('plan-aud-public').dataset.picked || 'public'
+    audience: document.getElementById('plan-aud-public').dataset.picked || 'public',
+    welcomeLink: document.getElementById('plan-welcome-link').value.trim(),
+    sacCode: document.getElementById('plan-sac').value.trim(),
+    discount: planDiscountEnabled ? {
+      enabled: true,
+      type: document.getElementById('plan-discount-type').value,
+      value: document.getElementById('plan-discount-value').value,
+      months: document.getElementById('plan-discount-months').value
+    } : null
   };
 }
 
@@ -1117,6 +1590,7 @@ function upsertPlan(plan) {
 }
 
 function savePlanDraft() {
+  if (!validateWelcomeLink()) { showToast('Fix the welcome link before saving.'); return; }
   var plan = collectPlanFromForm();
   upsertPlan(plan);
   renderPlans();
@@ -1125,8 +1599,9 @@ function savePlanDraft() {
 }
 
 function publishPlan() {
+  if (!validateStep4()) { showToast('Fix the welcome link before publishing.'); return; }
   var plan = collectPlanFromForm();
-  if (!document.getElementById('plan-name').value.trim()) { showToast('Give the plan a name first.'); return; }
+  if (!plan.name.trim()) { showToast('Give the plan a name first.'); return; }
   if (plan.type === 'monthly_yearly' && plan.monthlyPrice && plan.yearlyPrice && Number(plan.yearlyPrice) >= Number(plan.monthlyPrice) * 12) {
     showToast('Yearly price must be less than 12× the monthly price.');
     return;
@@ -1139,6 +1614,9 @@ function publishPlan() {
 
 document.getElementById('plan-close-icon').innerHTML = icon('close', 12);
 document.getElementById('plan-feature-plus').innerHTML = icon('plus', 9);
+document.getElementById('plan-meter-plus').innerHTML = icon('plus', 9);
+document.getElementById('plans-empty-icon').innerHTML = icon('card', 20);
+document.getElementById('plans-empty-plus').innerHTML = icon('plus', 10);
 
 /* ---------- Versions tab: list + drill-down detail ---------- */
 var VERSION_STATUS_META = {
