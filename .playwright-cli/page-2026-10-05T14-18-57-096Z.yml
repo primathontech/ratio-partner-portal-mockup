@@ -1,0 +1,57 @@
+- generic [active] [ref=f18e1]:
+  - generic [ref=f18e3]:
+    - link "Ratio" [ref=f18e4] [cursor=pointer]:
+      - /url: landing.html
+    - generic [ref=f18e5]:
+      - link "Apps" [ref=f18e6] [cursor=pointer]:
+        - /url: landing.html#apps-preview
+      - link "Pricing" [ref=f18e7] [cursor=pointer]:
+        - /url: pricing.html
+      - link "Documentation" [ref=f18e8] [cursor=pointer]:
+        - /url: documentation.html
+      - link "Support" [ref=f18e9] [cursor=pointer]:
+        - /url: support.html
+    - generic [ref=f18e10]:
+      - link "Log in" [ref=f18e11] [cursor=pointer]:
+        - /url: login.html
+      - link "Sign up" [ref=f18e12] [cursor=pointer]:
+        - /url: onboarding.html
+  - generic [ref=f18e13]:
+    - heading "Simple pricing for partners" [level=1] [ref=f18e14]
+    - paragraph [ref=f18e15]: Free to build and list. You only pay once merchants pay you.
+  - generic [ref=f18e16]:
+    - generic [ref=f18e17]:
+      - generic [ref=f18e18]: Build
+      - generic [ref=f18e19]: Free
+      - generic [ref=f18e20]: For every partner, always
+      - list [ref=f18e21]:
+        - listitem [ref=f18e22]: Unlimited apps in draft and review
+        - listitem [ref=f18e23]: One dev store per organisation
+        - listitem [ref=f18e24]: Full API and webhook access
+        - listitem [ref=f18e25]: Theme, admin and proxy extensions
+    - generic [ref=f18e26]:
+      - generic [ref=f18e27]: Most partners
+      - generic [ref=f18e28]: Platform fee
+      - generic [ref=f18e29]: ₹4,999/month
+      - generic [ref=f18e30]: Per published, publicly-listed app
+      - list [ref=f18e31]:
+        - listitem [ref=f18e32]: Everything in Build
+        - listitem [ref=f18e33]: Listed in the public app directory
+        - listitem [ref=f18e34]: Ratio handles merchant billing and GST invoicing
+        - listitem [ref=f18e35]: Install and review analytics
+    - generic [ref=f18e36]:
+      - generic [ref=f18e37]: Private
+      - generic [ref=f18e38]: Free
+      - generic [ref=f18e39]: For single-merchant and custom apps
+      - list [ref=f18e40]:
+        - listitem [ref=f18e41]: Everything in Build
+        - listitem [ref=f18e42]: Not listed publicly — install by merchant ID
+        - listitem [ref=f18e43]: No platform fee
+  - generic [ref=f18e44]:
+    - generic [ref=f18e45]: A note on revenue share
+    - paragraph [ref=f18e46]:
+      - text: The platform fee is flat, not a cut of what you charge merchants. If your app has paid plans, 100% of what a merchant pays goes to you minus the flat fee above — see your own invoices under
+      - link "Settings → Billing" [ref=f18e47] [cursor=pointer]:
+        - /url: settings.html
+      - text: once you're signed in.
+  - generic [ref=f18e48]: © 2026 Ratio. All rights reserved.

@@ -68,7 +68,7 @@ body{background:var(--surface-page)}
 
 <script src="../js/shell.js"></script>
 <script>
-document.getElementById('store-caret').innerHTML = icon('caret', 8);
+document.getElementById('store-caret').innerHTML = icon('caret', 12);
 document.getElementById('store-check-1').innerHTML = icon('check', 11);
 document.getElementById('disclaimer-icon').innerHTML = icon('lock', 12);
 
@@ -97,7 +97,7 @@ function renderAccordions() {
       '</div>';
   }).join('');
   document.getElementById('scope-accordions').innerHTML = html;
-  document.querySelectorAll('.acc-chevron').forEach(function (el) { el.innerHTML = icon('caret', 9); });
+  document.querySelectorAll('.acc-chevron').forEach(function (el) { el.innerHTML = icon('caret', 12); });
   document.querySelectorAll('.acc-check-icon').forEach(function (el) { el.innerHTML = icon('check', 11); });
   document.querySelectorAll('.acc-cat-icon').forEach(function (el) { el.innerHTML = icon(el.getAttribute('data-icon'), 11); el.style.color = 'var(--ink-500)'; });
   document.getElementById('acc-0').classList.add('open');

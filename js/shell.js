@@ -1,5 +1,10 @@
-/* Ratio Partner Portal mockup — shared top bar + side nav, injected into every
-   authenticated page. Expects two elements on the page: #shell-topbar, #shell-sidenav. */
+/* Ratio Partner Portal mockup — shared app shell v2.
+   Sidebar holds everything (logo, search, nav, account, notifications) with
+   no persistent desktop top bar — matches the current Ratio design system's
+   admin shell (see naman-prima/ratio-website: src/components/admin/shell.tsx).
+   On mobile, the sidebar becomes an off-canvas drawer behind a slim fixed bar.
+   Expects two elements on the page: #shell-topbar (becomes the mobile bar),
+   #shell-sidenav (becomes the sidebar). */
 
 var SHELL_NAV_ITEMS = [
   { key: 'home', label: 'Home', href: 'home.html', icon: 'home' },
@@ -32,7 +37,6 @@ function renderShell(opts) {
   var canTeam = opts.canTeam !== false;
   var canSettings = opts.canSettings !== false;
   var orgInitials = orgName.split(' ').map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase();
-  var userInitials = userName.split(' ').map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase();
 
   var topbarEl = document.getElementById('shell-topbar');
   var sidenavEl = document.getElementById('shell-sidenav');
@@ -44,101 +48,93 @@ function renderShell(opts) {
     return true;
   });
 
-  if (topbarEl) {
-    topbarEl.outerHTML =
-      '<div class="topbar">' +
-        '<div class="btn-icon hamburger-btn" onclick="openMobileNav()">' + icon('menu', 16) + '</div>' +
-        '<a href="landing.html" class="rp-logo" style="text-decoration:none">Ratio</a>' +
-        '<span class="divider-v hide-mobile"></span>' +
-        '<div class="dropdown">' +
-          '<div class="org-switch" onclick="toggleDropdown(\'org-menu\')">' +
+  var navHtml = navItems.map(function (i) {
+    return '<a href="' + i.href + '" class="' + (i.key === active ? 'active' : '') + '">' + icon(i.icon, 16) + '<span>' + i.label + '</span></a>';
+  }).join('');
+
+  var acctMenuHtml =
+    '<div id="acct-menu" class="dropdown-panel up" style="left:0;width:260px">' +
+      '<div style="padding:8px 6px">' +
+        '<div class="menu-item" style="border-radius:6px;background:var(--line-100)"><span class="org-avatar" style="width:24px;height:24px;font-size:11px;margin-right:10px">' + orgInitials + '</span>' + orgName + '<span style="margin-left:auto">' + icon('check', 12) + '</span></div>' +
+        '<div class="menu-item" style="border-radius:6px"><span class="org-avatar" style="width:24px;height:24px;font-size:11px;margin-right:10px">WA</span>Wellversed Agency</div>' +
+      '</div>' +
+      '<div style="border-top:1px solid var(--line-100);padding:6px">' +
+        '<div class="menu-item" style="border-radius:6px">' + icon('plus', 14) + '<span style="margin-left:8px">Create organisation</span></div>' +
+      '</div>' +
+      '<div style="border-top:1px solid var(--line-100);padding:8px 14px 6px"><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">' + userName + '</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">' + userEmail + '</div></div>' +
+      '<div style="padding:6px"><div class="menu-item" style="border-radius:6px">Profile</div></div>' +
+      '<div style="padding:6px 6px 8px;border-top:1px solid var(--line-100)"><a href="landing.html" class="menu-item" style="border-radius:6px">Log out</a><a href="landing.html" class="menu-item" style="border-radius:6px">Log out everywhere</a></div>' +
+    '</div>';
+
+  var notifMenuHtml =
+    '<div id="notif-menu" class="dropdown-panel up" style="left:0;width:min(340px,calc(100vw - 24px))">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line-100)"><span style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Notifications</span><span style="font:400 12px/16px var(--font-sans);color:var(--accent);cursor:pointer">Mark all as read</span></div>' +
+      '<div>' +
+        '<div class="menu-item" style="height:auto;padding:12px 14px;flex-direction:column;align-items:flex-start;gap:2px;border-bottom:1px solid var(--line-100)"><span>You were invited to Wellversed Agency</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Team &middot; 2h ago</span></div>' +
+        '<div class="menu-item" style="height:auto;padding:12px 14px;flex-direction:column;align-items:flex-start;gap:2px;border-bottom:1px solid var(--line-100)"><span>Collaborator access approved on wellversed.ratio.win</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Stores &middot; 5h ago</span></div>' +
+        '<div class="menu-item" style="height:auto;padding:12px 14px;flex-direction:column;align-items:flex-start;gap:2px"><span>Grant expires in 7 days on nutristar.ratio.win</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Stores &middot; Yesterday</span></div>' +
+      '</div>' +
+    '</div>';
+
+  var sidenavHtml =
+    '<div class="sidenav" id="sidenav-root">' +
+      '<a href="home.html" class="sidenav-logo" style="text-decoration:none"><span class="rp-logo">Ratio</span></a>' +
+      '<div class="dropdown search-box">' +
+        icon('search', 14) +
+        '<input id="shell-search-input" placeholder="Search apps, stores and team" oninput="shellSearch(this.value)" onfocus="openDropdown(\'search-results\')">' +
+        '<div id="search-results" class="dropdown-panel" style="top:42px;left:0;right:0;max-height:360px;overflow-y:auto;padding:6px 0"></div>' +
+      '</div>' +
+      '<nav class="sidenav-nav">' + navHtml + '</nav>' +
+      '<div class="sidenav-footer">' +
+        '<div class="dropdown" style="flex:1;min-width:0">' +
+          '<div class="sidenav-account" onclick="toggleDropdown(\'acct-menu\')">' +
             '<span class="org-avatar">' + orgInitials + '</span>' +
             '<span class="org-meta"><span class="name">' + orgName + '</span><span class="role">' + orgRole + '</span></span>' +
-            icon('caret', 8) +
+            icon('caret', 14) +
           '</div>' +
-          '<div id="org-menu" class="dropdown-panel" style="left:0;width:260px">' +
-            '<div style="padding:8px 6px">' +
-              '<div class="menu-item" style="border-radius:6px;background:var(--line-100)"><span class="org-avatar" style="width:24px;height:24px;font-size:11px;margin-right:10px">' + orgInitials + '</span>' + orgName + '<span style="margin-left:auto">' + icon('check', 12) + '</span></div>' +
-              '<div class="menu-item" style="border-radius:6px"><span class="org-avatar" style="width:24px;height:24px;font-size:11px;margin-right:10px">WA</span>Wellversed Agency</div>' +
-            '</div>' +
-            '<div style="border-top:1px solid var(--line-100);padding:6px">' +
-              '<div class="menu-item" style="border-radius:6px">' + icon('plus', 12) + '<span style="margin-left:8px">Create organisation</span></div>' +
-            '</div>' +
-          '</div>' +
+          acctMenuHtml +
         '</div>' +
-        '<div class="search-box">' +
-          icon('search', 12) +
-          '<input id="shell-search-input" placeholder="Search apps, stores and team" oninput="shellSearch(this.value)" onfocus="openDropdown(\'search-results\')">' +
-          '<span class="kbd">⌘</span><span class="kbd">K</span>' +
-          '<div id="search-results" class="dropdown-panel" style="top:42px;left:0;right:0;max-height:360px;overflow-y:auto;padding:6px 0"></div>' +
-        '</div>' +
-        '<div class="topbar-right">' +
-          '<div class="dropdown">' +
-            '<div class="btn-icon" onclick="toggleDropdown(\'notif-menu\')" style="position:relative">' +
-              icon('bell', 15) +
-              '<span style="position:absolute;top:5px;right:6px;min-width:14px;height:14px;padding:0 3px;box-sizing:border-box;border-radius:4px;background:var(--accent);box-shadow:0 0 0 1.5px #fff;font:600 9px/14px var(--font-sans);color:#fff;text-align:center">3</span>' +
-            '</div>' +
-            '<div id="notif-menu" class="dropdown-panel" style="right:0;width:340px">' +
-              '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line-100)"><span style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Notifications</span><span style="font:400 12px/16px var(--font-sans);color:var(--accent);cursor:pointer">Mark all as read</span></div>' +
-              '<div>' +
-                '<div class="menu-item" style="height:auto;padding:12px 14px;flex-direction:column;align-items:flex-start;gap:2px;border-bottom:1px solid var(--line-100)"><span>You were invited to Wellversed Agency</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Team · 2h ago</span></div>' +
-                '<div class="menu-item" style="height:auto;padding:12px 14px;flex-direction:column;align-items:flex-start;gap:2px;border-bottom:1px solid var(--line-100)"><span>Collaborator access approved on wellversed.ratio.win</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Stores · 5h ago</span></div>' +
-                '<div class="menu-item" style="height:auto;padding:12px 14px;flex-direction:column;align-items:flex-start;gap:2px"><span>Grant expires in 7 days on nutristar.ratio.win</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Stores · Yesterday</span></div>' +
-              '</div>' +
-            '</div>' +
+        '<div class="dropdown">' +
+          '<div class="btn-icon" onclick="toggleDropdown(\'notif-menu\')" style="position:relative">' +
+            icon('bell', 16) +
+            '<span style="position:absolute;top:5px;right:6px;min-width:14px;height:14px;padding:0 3px;box-sizing:border-box;border-radius:4px;background:var(--accent);box-shadow:0 0 0 1.5px #fff;font:600 9px/14px var(--font-sans);color:#fff;text-align:center">3</span>' +
           '</div>' +
-          '<div class="dropdown" style="margin-left:4px">' +
-            '<div class="btn-icon" onclick="toggleDropdown(\'acct-menu\')"><span class="acct-avatar">' + userInitials + '</span></div>' +
-            '<div id="acct-menu" class="dropdown-panel" style="right:0;width:220px">' +
-              '<div style="padding:12px 14px;border-bottom:1px solid var(--line-100)"><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">' + userName + '</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">' + userEmail + '</div></div>' +
-              '<div style="padding:6px 0"><div class="menu-item">Profile</div></div>' +
-              '<div style="padding:6px 0;border-top:1px solid var(--line-100)"><a href="landing.html" class="menu-item">Log out</a><a href="landing.html" class="menu-item">Log out everywhere</a></div>' +
-            '</div>' +
-          '</div>' +
+          notifMenuHtml +
         '</div>' +
-      '</div>';
-  }
+      '</div>' +
+    '</div>';
 
-  if (sidenavEl) {
-    sidenavEl.outerHTML = '<div class="sidenav">' + navItems.map(function (i) {
-      return '<a href="' + i.href + '" class="' + (i.key === active ? 'active' : '') + '">' + icon(i.icon, 16) + '<span>' + i.label + '</span></a>';
-    }).join('') + '</div>';
-  }
+  if (sidenavEl) sidenavEl.outerHTML = sidenavHtml;
 
-  /* Mobile nav drawer — the hamburger target. Rendered once per page load,
-     independent of #shell-sidenav (which CSS hides below 900px). */
-  if (!document.getElementById('mobile-drawer')) {
-    var drawerHtml =
-      '<div id="mobile-scrim" class="mobile-scrim" onclick="closeMobileNav()"></div>' +
-      '<div id="mobile-drawer" class="mobile-drawer">' +
-        '<div style="display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:60px;border-bottom:1px solid var(--line-100)">' +
-          '<span class="rp-logo" style="font-size:17px">Ratio</span>' +
-          '<div class="btn-icon" onclick="closeMobileNav()">' + icon('close', 14) + '</div>' +
-        '</div>' +
-        '<div class="dropdown" style="padding:12px 16px">' +
-          '<div class="search-box" style="max-width:none">' +
-            icon('search', 12) +
-            '<input placeholder="Search apps, stores and team" oninput="shellSearch(this.value, \'mobile-search-results\')">' +
+  if (topbarEl) {
+    topbarEl.outerHTML =
+      '<div class="mobilebar">' +
+        '<div class="btn-icon" onclick="openMobileNav()">' + icon('menu', 18) + '</div>' +
+        '<a href="landing.html" class="rp-logo" style="text-decoration:none;font-size:17px">Ratio</a>' +
+        '<span style="flex:1"></span>' +
+        '<div class="dropdown">' +
+          '<div class="btn-icon" onclick="toggleDropdown(\'mobile-notif-menu\')" style="position:relative">' +
+            icon('bell', 17) +
+            '<span style="position:absolute;top:5px;right:6px;min-width:14px;height:14px;padding:0 3px;box-sizing:border-box;border-radius:4px;background:var(--accent);box-shadow:0 0 0 1.5px #fff;font:600 9px/14px var(--font-sans);color:#fff;text-align:center">3</span>' +
           '</div>' +
-          '<div id="mobile-search-results" class="dropdown-panel" style="top:48px;left:16px;right:16px;max-height:300px;overflow-y:auto;padding:6px 0"></div>' +
+          notifMenuHtml.replace('id="notif-menu"', 'id="mobile-notif-menu"').replace('dropdown-panel up', 'dropdown-panel').replace('left:0;width:', 'right:0;top:44px;width:') +
         '</div>' +
-        '<div class="sidenav">' +
-          navItems.map(function (i) {
-            return '<a href="' + i.href + '" class="' + (i.key === active ? 'active' : '') + '">' + icon(i.icon, 16) + '<span>' + i.label + '</span></a>';
-          }).join('') +
-        '</div>' +
-      '</div>';
-    document.body.insertAdjacentHTML('beforeend', drawerHtml);
+      '</div>' +
+      '<div id="mobile-scrim" class="mobile-scrim" onclick="closeMobileNav()"></div>';
   }
 }
 
 function openMobileNav() {
-  document.getElementById('mobile-drawer').classList.add('open');
-  document.getElementById('mobile-scrim').classList.add('open');
+  var el = document.getElementById('sidenav-root');
+  if (el) el.classList.add('open');
+  var scrim = document.getElementById('mobile-scrim');
+  if (scrim) scrim.classList.add('open');
 }
 function closeMobileNav() {
-  document.getElementById('mobile-drawer').classList.remove('open');
-  document.getElementById('mobile-scrim').classList.remove('open');
+  var el = document.getElementById('sidenav-root');
+  if (el) el.classList.remove('open');
+  var scrim = document.getElementById('mobile-scrim');
+  if (scrim) scrim.classList.remove('open');
 }
 
 function shellSearch(q, panelId) {

@@ -1,0 +1,80 @@
+- generic [ref=f26e2]:
+  - generic [ref=f26e3]:
+    - link "Ratio" [ref=f26e4] [cursor=pointer]:
+      - /url: home.html
+    - textbox "Search apps, stores and team" [ref=f26e10]
+    - navigation [ref=f26e11]:
+      - link "Home" [ref=f26e12] [cursor=pointer]:
+        - /url: home.html
+      - link "Apps" [ref=f26e17] [cursor=pointer]:
+        - /url: apps.html
+      - link "Stores" [ref=f26e22] [cursor=pointer]:
+        - /url: stores.html
+      - link "Team" [ref=f26e27] [cursor=pointer]:
+        - /url: team.html
+      - link "Settings" [ref=f26e32] [cursor=pointer]:
+        - /url: settings.html
+    - generic [ref=f26e37]:
+      - generic [ref=f26e39] [cursor=pointer]:
+        - generic [ref=f26e40]: ND
+        - generic [ref=f26e41]:
+          - generic [ref=f26e42]: Nutristar Digital
+          - generic [ref=f26e43]: Organisation Owner
+      - generic [ref=f26e47]: "3"
+  - generic [ref=f26e53]:
+    - generic [ref=f26e54]:
+      - generic [ref=f26e55]: Team
+      - generic [ref=f26e56]: Invite people
+    - generic [ref=f26e62]:
+      - generic [ref=f26e63] [cursor=pointer]: Members
+      - generic [ref=f26e64] [cursor=pointer]: Roles
+      - generic [ref=f26e65] [cursor=pointer]: Security
+      - generic [ref=f26e66] [cursor=pointer]: Audit log
+    - generic [ref=f26e67]:
+      - generic [ref=f26e68]:
+        - generic [ref=f26e69]:
+          - generic [ref=f26e70]: User
+          - generic [ref=f26e71]: Status
+          - generic [ref=f26e72]: Roles
+        - generic [ref=f26e73]:
+          - generic [ref=f26e74]:
+            - generic [ref=f26e75]: AR
+            - generic [ref=f26e76]:
+              - generic [ref=f26e77]: Asha Rao
+              - text: asha@nutristar.in
+          - generic [ref=f26e78]: Active
+          - generic [ref=f26e79]: Organisation Owner
+          - generic [ref=f26e80] [cursor=pointer]
+        - generic [ref=f26e84]:
+          - generic [ref=f26e85]:
+            - generic [ref=f26e86]: KS
+            - generic [ref=f26e87]:
+              - generic [ref=f26e88]: Karan Shah
+              - text: karan@nutristar.in
+          - generic [ref=f26e89]: Active
+          - generic [ref=f26e90]: App Developer
+          - generic [ref=f26e91] [cursor=pointer]
+        - generic [ref=f26e95]:
+          - generic [ref=f26e96]:
+            - generic [ref=f26e97]: PN
+            - generic [ref=f26e98]:
+              - generic [ref=f26e99]: Priya Nair
+              - text: priya@nutristar.in
+          - generic [ref=f26e100]: Active
+          - generic [ref=f26e101]: Store Admin, App Developer
+          - generic [ref=f26e102] [cursor=pointer]
+        - generic [ref=f26e106]:
+          - generic [ref=f26e107]:
+            - generic [ref=f26e108]: RM
+            - generic [ref=f26e109]:
+              - generic [ref=f26e110]: Rahul Mehta
+              - text: rahul@nutristar.in
+          - generic [ref=f26e111]: Suspended
+          - generic [ref=f26e112]: Member
+          - generic [ref=f26e113] [cursor=pointer]
+      - generic [ref=f26e117]: Pending invitations
+      - generic [ref=f26e119]:
+        - generic [ref=f26e120]: deepa@nutristar.ininvited as Store User Admin · expires in 5 days
+        - generic [ref=f26e121]:
+          - generic [ref=f26e122] [cursor=pointer]: Resend
+          - generic [ref=f26e123] [cursor=pointer]: Revoke

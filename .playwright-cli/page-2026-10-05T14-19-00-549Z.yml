@@ -1,0 +1,47 @@
+- generic [active] [ref=f22e1]:
+  - generic [ref=f22e3]:
+    - link "Ratio" [ref=f22e4] [cursor=pointer]:
+      - /url: landing.html
+    - generic [ref=f22e5]:
+      - link "Apps" [ref=f22e6] [cursor=pointer]:
+        - /url: landing.html#apps-preview
+      - link "Pricing" [ref=f22e7] [cursor=pointer]:
+        - /url: pricing.html
+      - link "Documentation" [ref=f22e8] [cursor=pointer]:
+        - /url: documentation.html
+      - link "Support" [ref=f22e9] [cursor=pointer]:
+        - /url: support.html
+    - generic [ref=f22e10]:
+      - link "Log in" [ref=f22e11] [cursor=pointer]:
+        - /url: login.html
+      - link "Sign up" [ref=f22e12] [cursor=pointer]:
+        - /url: onboarding.html
+  - generic [ref=f22e13]:
+    - text: Privacy Policy
+    - paragraph [ref=f22e14]: Last updated September 1, 2026
+    - heading "1. What this covers" [level=2] [ref=f22e15]
+    - paragraph [ref=f22e16]: This policy describes how Ratio handles data about you and your organisation when you use the partner portal. It does not cover how your app handles merchant or shopper data — that is between you and the merchants who install your app, governed by your own privacy policy and the scopes they grant you.
+    - heading "2. Information we collect" [level=2] [ref=f22e17]
+    - list [ref=f22e18]:
+      - listitem [ref=f22e19]: "Account details: name, email, and authentication credentials for everyone in your organisation."
+      - listitem [ref=f22e20]: "Organisation details: legal name, country, billing contact, and payout information."
+      - listitem [ref=f22e21]: "Usage data: API call volume, webhook delivery logs, and extension activity, used for rate limiting, billing, and abuse prevention."
+    - heading "3. How we use it" [level=2] [ref=f22e22]
+    - paragraph [ref=f22e23]: "We use this information to operate the partner program: authenticating your team, enforcing scope and rate-limit boundaries, generating invoices, and reviewing apps for listing. We do not sell partner or organisation data."
+    - heading "4. Collaborator and store access data" [level=2] [ref=f22e24]
+    - paragraph [ref=f22e25]: When a merchant grants your organisation access to their store, Ratio logs the scopes granted, who approved them, and when they were narrowed or revoked, so both sides have an audit trail. This log is visible to the merchant and to Owners/Admins in your organisation.
+    - heading "5. Data retention" [level=2] [ref=f22e26]
+    - paragraph [ref=f22e27]: We retain organisation and billing records for as long as required for tax and compliance purposes, even after an organisation is closed. API tokens and store access are revoked immediately on termination.
+    - heading "6. Your rights" [level=2] [ref=f22e28]
+    - paragraph [ref=f22e29]:
+      - text: You can request a copy of, or deletion of, your personal account data by contacting
+      - link "partners@ratio.win" [ref=f22e30] [cursor=pointer]:
+        - /url: mailto:partners@ratio.win
+      - text: . Organisation-level records tied to billing or compliance may be retained as required by law.
+    - heading "7. Contact" [level=2] [ref=f22e31]
+    - paragraph [ref=f22e32]:
+      - text: Questions about this policy go to
+      - link "partners@ratio.win" [ref=f22e33] [cursor=pointer]:
+        - /url: mailto:partners@ratio.win
+      - text: .
+  - generic [ref=f22e34]: © 2026 Ratio. All rights reserved.

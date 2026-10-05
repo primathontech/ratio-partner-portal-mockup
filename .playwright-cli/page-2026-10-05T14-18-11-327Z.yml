@@ -1,0 +1,62 @@
+- generic [ref=f7e2]:
+  - generic [ref=f7e3]:
+    - link "Ratio" [ref=f7e4] [cursor=pointer]:
+      - /url: home.html
+    - textbox "Search apps, stores and team" [ref=f7e10]
+    - navigation [ref=f7e11]:
+      - link "Home" [ref=f7e12] [cursor=pointer]:
+        - /url: home.html
+      - link "Apps" [ref=f7e17] [cursor=pointer]:
+        - /url: apps.html
+      - link "Stores" [ref=f7e22] [cursor=pointer]:
+        - /url: stores.html
+      - link "Team" [ref=f7e27] [cursor=pointer]:
+        - /url: team.html
+      - link "Settings" [ref=f7e32] [cursor=pointer]:
+        - /url: settings.html
+    - generic [ref=f7e37]:
+      - generic [ref=f7e39] [cursor=pointer]:
+        - generic [ref=f7e40]: ND
+        - generic [ref=f7e41]:
+          - generic [ref=f7e42]: Nutristar Digital
+          - generic [ref=f7e43]: Organisation Owner
+      - generic [ref=f7e47]: "3"
+  - generic [ref=f7e53]:
+    - generic [ref=f7e54]:
+      - generic [ref=f7e55]: Stores
+      - generic [ref=f7e56] [cursor=pointer]: Request store access
+    - generic [ref=f7e61]:
+      - generic [ref=f7e62] [cursor=pointer]: Dev
+      - generic [ref=f7e63] [cursor=pointer]: Client transfer
+      - generic [ref=f7e64] [cursor=pointer]: Collaborations
+    - generic [ref=f7e66]:
+      - generic [ref=f7e67]:
+        - generic [ref=f7e68]: Store
+        - generic [ref=f7e69]: Status
+        - generic [ref=f7e70]: Scopes
+        - generic [ref=f7e71]: Expires
+      - generic [ref=f7e72]:
+        - generic [ref=f7e73]:
+          - generic [ref=f7e74]: Wellversed
+          - generic [ref=f7e76]: Active · Additional access requested
+          - generic [ref=f7e77]: read_orders, write_orders +1
+          - generic [ref=f7e78]: in 22 days
+          - generic [ref=f7e79] [cursor=pointer]
+        - generic [ref=f7e83]:
+          - generic [ref=f7e84]: Aqualogica
+          - generic [ref=f7e86]: Request sent
+          - generic [ref=f7e87]: read_products
+          - generic [ref=f7e88]: —
+          - generic [ref=f7e89] [cursor=pointer]
+        - generic [ref=f7e93]:
+          - generic [ref=f7e94]: Kwik Fashion
+          - generic [ref=f7e96]: Expires soon
+          - generic [ref=f7e97]: read_orders
+          - generic [ref=f7e98]: in 5 days
+          - generic [ref=f7e99] [cursor=pointer]
+        - generic [ref=f7e103]:
+          - generic [ref=f7e104]: Nooba Foods
+          - generic [ref=f7e106]: Expired
+          - generic [ref=f7e107]: read_products
+          - generic [ref=f7e108]: 12 days ago
+          - generic [ref=f7e109] [cursor=pointer]

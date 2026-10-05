@@ -1,0 +1,100 @@
+- generic [ref=f12e2]:
+  - generic [ref=f12e3]:
+    - link "Ratio" [ref=f12e4] [cursor=pointer]:
+      - /url: home.html
+    - textbox "Search apps, stores and team" [ref=f12e10]
+    - navigation [ref=f12e11]:
+      - link "Home" [ref=f12e12] [cursor=pointer]:
+        - /url: home.html
+      - link "Apps" [ref=f12e17] [cursor=pointer]:
+        - /url: apps.html
+      - link "Stores" [ref=f12e22] [cursor=pointer]:
+        - /url: stores.html
+      - link "Team" [ref=f12e27] [cursor=pointer]:
+        - /url: team.html
+      - link "Settings" [ref=f12e32] [cursor=pointer]:
+        - /url: settings.html
+    - generic [ref=f12e37]:
+      - generic [ref=f12e39] [cursor=pointer]:
+        - generic [ref=f12e40]: ND
+        - generic [ref=f12e41]:
+          - generic [ref=f12e42]: Nutristar Digital
+          - generic [ref=f12e43]: Organisation Owner
+      - generic [ref=f12e47]: "3"
+  - generic [ref=f12e53]:
+    - generic [ref=f12e54]:
+      - link "Apps" [ref=f12e55] [cursor=pointer]:
+        - /url: apps.html
+      - generic [ref=f12e56]: /
+      - generic [ref=f12e57]: Wishlist Pro
+    - generic [ref=f12e58]:
+      - generic [ref=f12e61]:
+        - generic [ref=f12e62]:
+          - generic [ref=f12e63]: Wishlist Pro
+          - generic [ref=f12e64]: Published
+        - generic [ref=f12e65]: 1,204 installs · Updated 2 days ago
+      - generic [ref=f12e66]:
+        - generic [ref=f12e67] [cursor=pointer]: View in store
+        - generic [ref=f12e68] [cursor=pointer]
+    - generic [ref=f12e72]:
+      - generic [ref=f12e73]:
+        - generic [ref=f12e74] [cursor=pointer]: Overview
+        - generic [ref=f12e75] [cursor=pointer]: Distribution
+        - generic [ref=f12e76] [cursor=pointer]: API keys
+        - generic [ref=f12e77] [cursor=pointer]: Webhooks
+        - generic [ref=f12e78] [cursor=pointer]: Extensions
+      - generic [ref=f12e119]:
+        - generic [ref=f12e120]:
+          - text: Requested permissions
+          - generic [ref=f12e121]:
+            - generic [ref=f12e122]:
+              - generic [ref=f12e127]: read_products
+              - generic [ref=f12e128]: See the catalogue
+            - generic [ref=f12e129]:
+              - generic [ref=f12e134]: read_orders
+              - generic [ref=f12e135]: See orders
+            - generic [ref=f12e136]:
+              - generic [ref=f12e141]: write_orders
+              - generic [ref=f12e142]: Edit and cancel orders
+        - generic [ref=f12e143]:
+          - text: Configured on this app
+          - generic [ref=f12e144]: Extensions this app already ships. Each one is added through the type cards below.
+        - generic [ref=f12e145]:
+          - generic [ref=f12e146]:
+            - generic [ref=f12e152]:
+              - generic [ref=f12e153]: Wishlist button — Theme app block
+              - generic [ref=f12e154]: Product page · added by 412 merchants
+            - generic [ref=f12e155]: Active
+          - generic [ref=f12e156]:
+            - generic [ref=f12e162]:
+              - generic [ref=f12e163]: Add to wishlist — Admin action
+              - generic [ref=f12e164]: Order page, More actions menu
+            - generic [ref=f12e165]: Active
+        - generic [ref=f12e166]:
+          - text: Extension types
+          - generic [ref=f12e167]: Four ways this app can show up outside its own page.
+        - generic [ref=f12e168]:
+          - generic [ref=f12e169]:
+            - generic [ref=f12e170]: Theme app block
+            - paragraph [ref=f12e176]: UI the merchant drags into a specific spot on a storefront page, from the theme editor's Add block → Apps menu.
+            - generic [ref=f12e177]: "Where it appears: inside one section of one template — product, cart, etc."
+            - generic [ref=f12e178]: "Example: a star-rating strip placed just under the product title."
+            - generic [ref=f12e179] [cursor=pointer]: Add theme app block
+          - generic [ref=f12e180]:
+            - generic [ref=f12e181]: Theme app embed
+            - paragraph [ref=f12e187]: UI or script that runs globally across the storefront, once the merchant flips it on under Theme settings → App embeds. Off by default after install.
+            - generic [ref=f12e188]: "Where it appears: every page — injected into head, body, or the compliance region."
+            - generic [ref=f12e189]: "Example: a chat bubble or an announcement bar."
+            - generic [ref=f12e190] [cursor=pointer]: Add theme app embed
+          - generic [ref=f12e191]:
+            - generic [ref=f12e192]: App proxy
+            - paragraph [ref=f12e198]: Your own server, reachable at a URL under the merchant's own domain. Ratio signs and forwards the request — no CORS, no third-party cookie problem.
+            - generic [ref=f12e199]: "Where it appears: one proxy root per app, at a subpath you choose."
+            - generic [ref=f12e200]: "Example: wellversed.ratio.win/apps/wishlist/rewards"
+            - generic [ref=f12e201] [cursor=pointer]: Add app proxy
+          - generic [ref=f12e202]:
+            - generic [ref=f12e203]: Admin UI extension
+            - paragraph [ref=f12e209]: An action, an inline block, or a print view rendered natively inside Ratio's merchant admin, in a sandboxed component model — no raw DOM access.
+            - generic [ref=f12e210]: "Where it appears: order/product pages, the More actions menu, or the Print menu."
+            - generic [ref=f12e211]: "Example: \"Add to wishlist\" in an order's More actions menu."
+            - generic [ref=f12e212] [cursor=pointer]: Add admin UI extension

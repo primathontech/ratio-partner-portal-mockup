@@ -1,0 +1,44 @@
+- generic [ref=f16e2]:
+  - link "Ratio" [ref=f16e3] [cursor=pointer]:
+    - /url: ../landing.html
+  - generic [ref=f16e5] [cursor=pointer]:
+    - generic [ref=f16e6]: Installing on
+    - generic [ref=f16e7]: WV
+    - generic [ref=f16e8]: wellversed.ratio.win
+  - generic [ref=f16e13]:
+    - generic [ref=f16e16]:
+      - generic [ref=f16e17]: Wishlist Pro
+      - generic [ref=f16e18]: by Nutristar Digital
+    - generic [ref=f16e19]: Let shoppers save products for later and get notified when a saved item goes on sale or back in stock.
+    - generic [ref=f16e20]:
+      - generic [ref=f16e21]: This app would like to
+      - generic [ref=f16e22]:
+        - generic [ref=f16e23]:
+          - generic [ref=f16e24] [cursor=pointer]:
+            - generic [ref=f16e25]: Products
+            - generic [ref=f16e31]: 1 permission
+          - generic [ref=f16e43]:
+            - generic [ref=f16e44]: View products
+            - generic [ref=f16e45]: read_products — see your catalogue, variants and collections
+        - generic [ref=f16e46]:
+          - generic [ref=f16e47] [cursor=pointer]:
+            - generic [ref=f16e48]: Orders
+            - generic [ref=f16e54]: 2 permissions
+          - generic [ref=f16e60]:
+            - generic [ref=f16e66]:
+              - generic [ref=f16e67]: View orders
+              - generic [ref=f16e68]: read_orders — see order details and status
+            - generic [ref=f16e74]:
+              - generic [ref=f16e75]: Edit orders
+              - generic [ref=f16e76]: write_orders — update, cancel and refund orders
+        - generic [ref=f16e78] [cursor=pointer]:
+          - generic [ref=f16e79]: Customers
+          - generic [ref=f16e85]: 1 permission
+        - generic [ref=f16e92] [cursor=pointer]:
+          - generic [ref=f16e93]: Store content
+          - generic [ref=f16e99]: 1 permission
+    - generic [ref=f16e105]: Wishlist Pro is built by Nutristar Digital, a partner on Ratio — not by Ratio itself. You can remove this app and its access at any time from Settings → Apps.
+    - generic [ref=f16e111]:
+      - generic [ref=f16e112] [cursor=pointer]: Deny
+      - generic [ref=f16e113] [cursor=pointer]: Approve and install
+  - generic [ref=f16e114]: You'll be redirected back to Wishlist Pro after this.

@@ -61,15 +61,20 @@ input,select,textarea{font-family:var(--font-sans)}
 .btn-danger:hover{background:var(--danger-bg);text-decoration:none;color:var(--danger-text)}
 .btn-danger-solid{background:var(--danger-text);color:#fff}
 .btn-danger-solid:hover{background:#A91818;color:#fff;text-decoration:none}
+.btn-ghost{background:transparent;color:var(--text-strong)}
+.btn-ghost:hover{background:var(--line-100);text-decoration:none;color:var(--text-strong)}
 .btn[disabled]{opacity:0.5;cursor:default;pointer-events:none}
 .btn-icon{width:32px;height:32px;padding:0;border-radius:var(--radius-6);background:transparent;display:inline-flex;align-items:center;justify-content:center;border:none;cursor:pointer;transition:background var(--transition-control)}
 .btn-icon:hover{background:var(--line-100)}
 
 /* ---------- Cards / layout ---------- */
-.card{border:1px solid var(--line-100);border-radius:var(--radius-10);background:var(--surface-white)}
+.card{border:none;box-shadow:var(--shadow-card);border-radius:var(--radius-8);background:var(--surface-white)}
 .card-pad{padding:20px 24px}
 .page{display:flex;align-items:flex-start;min-height:100vh;background:var(--surface-white)}
-.content{flex:1;min-width:0;box-sizing:border-box;padding:76px 32px 64px;max-width:var(--content-max);margin:0 auto}
+.content{flex:1;min-width:0;box-sizing:border-box;padding:32px 32px 64px;max-width:var(--content-max);margin:0 auto}
+@media (max-width:900px){
+  .content{padding:calc(var(--mobilebar-height) + 24px) 20px 64px}
+}
 .content-narrow{max-width:760px}
 .content-wide{max-width:1080px}
 .page-title{font:600 22px/28px var(--font-sans);color:var(--ink-900)}
@@ -85,6 +90,8 @@ input,select,textarea{font-family:var(--font-sans)}
 .pill-danger{background:var(--danger-bg);box-shadow:0 0 0 1px var(--danger-border) inset;color:var(--danger-text)}
 .pill-neutral{background:var(--neutral-bg);box-shadow:0 0 0 1px var(--neutral-border) inset;color:var(--neutral-text)}
 .pill-accent{background:var(--accent-tint);box-shadow:0 0 0 1px var(--accent) inset;color:var(--accent)}
+.pill-draft{background:var(--accent-tint);box-shadow:0 0 0 1px var(--accent) inset;color:var(--accent)}
+.pill-info{background:#fff;box-shadow:0 0 0 1px var(--line-150) inset;color:var(--text-strong)}
 .tag{height:18px;border-radius:var(--radius-4);padding:0 6px;display:inline-flex;align-items:center;font:500 10px/14px var(--font-sans);letter-spacing:0.3px;text-transform:uppercase;background:var(--accent-tint);color:var(--accent)}
 
 /* ---------- Tabs (section sub-nav, e.g. Stores/Team/Settings) ---------- */
@@ -148,9 +155,9 @@ textarea.input{resize:none;padding-top:8px;font-family:var(--font-sans)}
 .acc.open .acc-chevron{transform:rotate(180deg)}
 
 /* ---------- Modal ---------- */
-.modal-overlay{position:fixed;inset:0;background:rgba(26,44,68,0.5);z-index:100;display:none;align-items:center;justify-content:center}
+.modal-overlay{position:fixed;inset:0;background:rgba(19,25,39,0.4);z-index:100;display:none;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
-.modal{background:#fff;border-radius:var(--radius-12);box-sizing:border-box;max-width:92vw}
+.modal{background:#fff;border-radius:var(--radius-8);box-shadow:var(--shadow-modal);box-sizing:border-box;max-width:92vw}
 .modal-title{font:600 17px/22px var(--font-sans);color:var(--ink-900)}
 .modal-sub{font:400 13px/19px var(--font-sans);color:var(--text-muted);margin-top:4px}
 
@@ -158,49 +165,60 @@ textarea.input{resize:none;padding-top:8px;font-family:var(--font-sans)}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:200;background:var(--ink-900);color:#fff;border-radius:var(--radius-8);padding:12px 18px;max-width:420px;text-align:center;font:400 13px/19px var(--font-sans);display:none}
 .toast.open{display:block}
 
-/* ---------- Top bar ---------- */
-.topbar{
-  position:fixed;top:0;left:0;right:0;z-index:70;height:var(--topbar-height);
-  background:#fff;border-bottom:1px solid var(--line-100);
-  display:flex;align-items:center;gap:16px;padding:0 24px;box-sizing:border-box;
-}
-.topbar .divider-v{width:1px;height:24px;background:var(--line-200);flex-shrink:0}
-.org-switch{height:36px;border-radius:var(--radius-8);padding:0 8px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:background var(--transition-control)}
-.org-switch:hover{background:var(--line-100)}
-.org-avatar{width:26px;height:26px;border-radius:6px;background:var(--ink-900);display:flex;align-items:center;justify-content:center;font:600 12px/16px var(--font-sans);color:#fff;flex-shrink:0}
-.org-meta{display:flex;flex-direction:column;line-height:1.15}
-.org-meta .name{font:500 13px/16px var(--font-sans);letter-spacing:-0.1px;color:var(--ink-900);white-space:nowrap;max-width:160px;overflow:hidden;text-overflow:ellipsis}
-.org-meta .role{font:400 12px/15px var(--font-sans);color:var(--ink-450)}
-.search-box{height:36px;border-radius:var(--radius-8);background:var(--surface-page);box-shadow:0 0 0 1px var(--line-100) inset,0 0 0 1px var(--line-100);padding:0 12px;box-sizing:border-box;display:flex;align-items:center;gap:8px;flex:1;max-width:480px}
+/* ---------- Shared chrome primitives (search, dropdowns, menu items) ---------- */
+.search-box{height:36px;border-radius:var(--radius-8);background:var(--surface-page);box-shadow:0 0 0 1px var(--line-100) inset,0 0 0 1px var(--line-100);padding:0 12px;box-sizing:border-box;display:flex;align-items:center;gap:8px;flex:1;max-width:480px;transition:box-shadow var(--transition-control),background var(--transition-control)}
+.search-box:focus-within{background:#fff;box-shadow:0 0 0 1px var(--accent) inset,0 0 0 1px var(--accent)}
 .search-box input{flex:1;min-width:0;height:20px;border:none;outline:none;background:transparent;padding:0;font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)}
 .kbd{height:18px;min-width:18px;padding:0 4px;box-sizing:border-box;border-radius:4px;box-shadow:0 0 0 1px var(--line-150) inset;font:400 12px/18px var(--font-sans);color:var(--ink-450);text-align:center;display:inline-flex;align-items:center;justify-content:center}
-.topbar-right{display:flex;align-items:center;gap:4px;flex-shrink:0;margin-left:auto}
 .dropdown{position:relative}
-.dropdown-panel{position:absolute;top:44px;z-index:80;background:#fff;border-radius:var(--radius-8);box-shadow:0 0 0 1px #E3E9F0;box-sizing:border-box;overflow:hidden;display:none}
+.dropdown-panel{position:absolute;top:44px;z-index:80;background:#fff;border-radius:var(--radius-8);box-shadow:var(--shadow-dropdown);box-sizing:border-box;overflow:hidden;display:none}
 .dropdown-panel.open{display:block}
+.dropdown-panel.up{top:auto;bottom:calc(100% + 6px)}
+.org-avatar{width:26px;height:26px;border-radius:6px;background:var(--ink-900);display:flex;align-items:center;justify-content:center;font:600 12px/16px var(--font-sans);color:#fff;flex-shrink:0}
 .acct-avatar{width:26px;height:26px;border-radius:6px;background:var(--blue-100);display:flex;align-items:center;justify-content:center;font:600 12px/16px var(--font-sans);color:var(--accent)}
 .menu-item{height:34px;padding:0 14px;display:flex;align-items:center;font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800);cursor:pointer}
 .menu-item:hover{background:var(--line-100);text-decoration:none;color:var(--ink-800)}
 
-/* ---------- Side nav ---------- */
-.sidenav{width:var(--sidenav-width);flex-shrink:0;box-sizing:border-box;padding:16px 12px;display:flex;flex-direction:column;gap:2px;position:sticky;top:var(--topbar-height);height:calc(100vh - var(--topbar-height));overflow-y:auto;border-right:1px solid var(--line-100)}
-.sidenav a{height:34px;border-radius:var(--radius-6);padding:0 10px;box-sizing:border-box;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background var(--transition-control);color:var(--ink-800);font:400 14px/20px var(--font-sans);letter-spacing:-0.15px}
+/* ---------- Side nav (the whole app shell: logo, search, nav, account, notifications —
+   there is no persistent desktop top bar; see "Ratio New Design" v2 shell pattern) ---------- */
+.sidenav{
+  width:var(--sidenav-width);flex-shrink:0;box-sizing:border-box;
+  padding:16px 12px 12px;display:flex;flex-direction:column;gap:2px;
+  position:sticky;top:0;height:100vh;
+  border-right:1px solid var(--line-100);background:#fff;z-index:35;
+}
+/* Deliberately no overflow on .sidenav itself — overflow-y:auto here would
+   also clip horizontal overflow (the "auto makes the other axis auto too"
+   rule), cutting off dropdown panels that open wider than the sidebar.
+   .sidenav-nav below scrolls internally instead; header/footer stay put. */
+.sidenav-logo{flex-shrink:0;display:flex;align-items:center;padding:4px 10px 14px}
+.sidenav .search-box{max-width:none;flex:0 0 auto;margin-bottom:12px}
+.sidenav-nav{display:flex;flex-direction:column;gap:2px;flex:1;min-height:0;overflow-y:auto}
+.sidenav a{height:34px;border-radius:var(--radius-6);padding:0 10px;box-sizing:border-box;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background var(--transition-control);color:var(--ink-800);font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;flex-shrink:0}
 .sidenav a:hover{background:var(--line-100);text-decoration:none}
 .sidenav a.active{background:var(--line-100);color:var(--accent)}
+.sidenav-footer{flex-shrink:0;margin-top:8px;padding-top:10px;border-top:1px solid var(--line-150);display:flex;align-items:center;gap:2px}
+.sidenav-account{flex:1;min-width:0;display:flex;align-items:center;gap:8px;padding:6px;border-radius:var(--radius-6);cursor:pointer}
+.sidenav-account:hover{background:var(--line-100)}
+.sidenav-account .org-meta{min-width:0;flex:1;display:flex;flex-direction:column;line-height:1.15}
+.sidenav-account .org-meta .name{font:500 13px/16px var(--font-sans);letter-spacing:-0.1px;color:var(--ink-900);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sidenav-account .org-meta .role{font:400 12px/15px var(--font-sans);color:var(--ink-450);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* ---------- Hamburger + mobile nav drawer ---------- */
-.hamburger-btn{display:none}
+/* ---------- Mobile: slim fixed top bar + sidenav becomes an off-canvas drawer ---------- */
+.mobilebar{display:none}
 @media (max-width:900px){
-  .sidenav{display:none}
-  .search-box{display:none}
-  .hide-mobile{display:none}
-  .hamburger-btn{display:inline-flex}
-  .org-meta{display:none}
-  .topbar{gap:10px;padding:0 12px}
+  .mobilebar{
+    display:flex;position:fixed;top:0;left:0;right:0;z-index:70;height:var(--mobilebar-height);
+    background:#fff;border-bottom:1px solid var(--line-100);
+    align-items:center;gap:10px;padding:0 14px;box-sizing:border-box;
+  }
+  .sidenav{
+    position:fixed;top:0;left:0;bottom:0;height:100vh;z-index:95;
+    width:280px;max-width:84vw;
+    transform:translateX(-100%);transition:transform 220ms ease;
+    box-shadow:0 0 24px rgba(0,0,0,0.12);
+  }
+  .sidenav.open{transform:translateX(0)}
 }
 .mobile-scrim{position:fixed;inset:0;background:rgba(19,25,39,0.5);z-index:90;display:none}
 .mobile-scrim.open{display:block}
-.mobile-drawer{position:fixed;top:0;left:0;bottom:0;width:280px;max-width:84vw;background:#fff;z-index:95;transform:translateX(-100%);transition:transform 220ms ease;box-shadow:0 0 24px rgba(0,0,0,0.12);display:flex;flex-direction:column;overflow-y:auto}
-.mobile-drawer.open{transform:translateX(0)}
-.mobile-drawer .sidenav{display:flex;position:static;height:auto;width:auto;border-right:none;padding:4px 12px 16px}
-.mobile-drawer .search-box{display:flex}

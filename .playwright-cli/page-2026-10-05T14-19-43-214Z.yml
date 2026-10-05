@@ -1,0 +1,103 @@
+- generic [ref=f28e2]:
+  - generic [ref=f28e3]:
+    - link "Ratio" [ref=f28e4] [cursor=pointer]:
+      - /url: home.html
+    - textbox "Search apps, stores and team" [ref=f28e10]
+    - navigation [ref=f28e11]:
+      - link "Home" [ref=f28e12] [cursor=pointer]:
+        - /url: home.html
+      - link "Apps" [ref=f28e17] [cursor=pointer]:
+        - /url: apps.html
+      - link "Stores" [ref=f28e22] [cursor=pointer]:
+        - /url: stores.html
+      - link "Team" [ref=f28e27] [cursor=pointer]:
+        - /url: team.html
+      - link "Settings" [ref=f28e32] [cursor=pointer]:
+        - /url: settings.html
+    - generic [ref=f28e37]:
+      - generic [ref=f28e39] [cursor=pointer]:
+        - generic [ref=f28e40]: ND
+        - generic [ref=f28e41]:
+          - generic [ref=f28e42]: Nutristar Digital
+          - generic [ref=f28e43]: Organisation Owner
+      - generic [ref=f28e47]: "3"
+  - generic [ref=f28e53]:
+    - generic [ref=f28e55]:
+      - generic [ref=f28e56]: Good afternoon, Asha
+      - generic [ref=f28e57]: Nutristar Digital
+    - generic [ref=f28e58]:
+      - generic [ref=f28e59]:
+        - generic [ref=f28e60]: Get started with Ratio
+        - generic [ref=f28e61]: 1 of 3 done
+      - generic [ref=f28e64]:
+        - generic [ref=f28e65]:
+          - generic [ref=f28e66] [cursor=pointer]
+          - generic [ref=f28e67]:
+            - generic [ref=f28e68]: Invite your team
+            - generic [ref=f28e69]: Add teammates with the right roles
+        - generic [ref=f28e70]:
+          - generic [ref=f28e71] [cursor=pointer]
+          - generic [ref=f28e75]:
+            - generic [ref=f28e76]: Create a dev store
+            - generic [ref=f28e77]: Test your apps before publishing
+        - generic [ref=f28e78]:
+          - generic [ref=f28e79] [cursor=pointer]
+          - generic [ref=f28e80]:
+            - generic [ref=f28e81]: Create your first app
+            - generic [ref=f28e82]: Start from Apps → Create app
+    - generic [ref=f28e83]:
+      - generic [ref=f28e84]:
+        - generic [ref=f28e85]:
+          - generic [ref=f28e86]: Earnings
+          - generic [ref=f28e87]:
+            - generic [ref=f28e88]: ₹2,84,650
+            - generic [ref=f28e89]: 18%
+        - generic [ref=f28e93] [cursor=pointer]: Last 30 days
+      - generic [ref=f28e102]:
+        - generic [ref=f28e103]: 30 days ago
+        - generic [ref=f28e104]: Today
+    - generic [ref=f28e105]:
+      - link "Create app" [ref=f28e106] [cursor=pointer]:
+        - /url: app-create.html
+      - link "Create dev store" [ref=f28e112] [cursor=pointer]:
+        - /url: stores.html
+      - link "Request store access" [ref=f28e118] [cursor=pointer]:
+        - /url: stores.html
+    - generic [ref=f28e124]:
+      - generic [ref=f28e125]:
+        - generic [ref=f28e126]:
+          - generic [ref=f28e127]: Recent stores
+          - link "View all" [ref=f28e128] [cursor=pointer]:
+            - /url: stores.html
+        - link "Nutristar Digital nutristar-dev.ratio.win 2h ago" [ref=f28e129] [cursor=pointer]:
+          - /url: stores.html
+          - generic [ref=f28e131]:
+            - generic [ref=f28e132]: Nutristar Digital
+            - generic [ref=f28e133]: nutristar-dev.ratio.win
+          - generic [ref=f28e134]: 2h ago
+        - link "Wellversed wellversed.ratio.win Yesterday" [ref=f28e135] [cursor=pointer]:
+          - /url: stores.html
+          - generic [ref=f28e137]:
+            - generic [ref=f28e138]: Wellversed
+            - generic [ref=f28e139]: wellversed.ratio.win
+          - generic [ref=f28e140]: Yesterday
+        - link "Aqualogica aqualogica.ratio.win 3 days ago" [ref=f28e141] [cursor=pointer]:
+          - /url: stores.html
+          - generic [ref=f28e143]:
+            - generic [ref=f28e144]: Aqualogica
+            - generic [ref=f28e145]: aqualogica.ratio.win
+          - generic [ref=f28e146]: 3 days ago
+      - generic [ref=f28e147]:
+        - generic [ref=f28e148]: Activity
+        - generic [ref=f28e154]:
+          - generic [ref=f28e155]: Wishlist Pro was submitted for review
+          - generic [ref=f28e156]: 1h ago
+        - generic [ref=f28e162]:
+          - generic [ref=f28e163]: Collaborator access approved on wellversed.ratio.win
+          - generic [ref=f28e164]: 5h ago
+        - generic [ref=f28e170]:
+          - generic [ref=f28e171]: Karan Shah accepted your invitation
+          - generic [ref=f28e172]: Yesterday
+        - generic [ref=f28e178]:
+          - generic [ref=f28e179]: Loyalty Points was published
+          - generic [ref=f28e180]: 2 days ago

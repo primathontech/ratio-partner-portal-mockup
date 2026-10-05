@@ -1,0 +1,54 @@
+- generic [ref=f9e2]:
+  - generic [ref=f9e3]:
+    - link "Ratio" [ref=f9e4] [cursor=pointer]:
+      - /url: home.html
+    - textbox "Search apps, stores and team" [ref=f9e10]
+    - navigation [ref=f9e11]:
+      - link "Home" [ref=f9e12] [cursor=pointer]:
+        - /url: home.html
+      - link "Apps" [ref=f9e17] [cursor=pointer]:
+        - /url: apps.html
+      - link "Stores" [ref=f9e22] [cursor=pointer]:
+        - /url: stores.html
+      - link "Team" [ref=f9e27] [cursor=pointer]:
+        - /url: team.html
+      - link "Settings" [ref=f9e32] [cursor=pointer]:
+        - /url: settings.html
+    - generic [ref=f9e37]:
+      - generic [ref=f9e39] [cursor=pointer]:
+        - generic [ref=f9e40]: ND
+        - generic [ref=f9e41]:
+          - generic [ref=f9e42]: Nutristar Digital
+          - generic [ref=f9e43]: Organisation Owner
+      - generic [ref=f9e47]: "3"
+  - generic [ref=f9e53]:
+    - generic [ref=f9e54]: Settings
+    - generic [ref=f9e55]:
+      - generic [ref=f9e56] [cursor=pointer]: General
+      - generic [ref=f9e57] [cursor=pointer]: Billing
+      - generic [ref=f9e58] [cursor=pointer]: Danger zone
+    - generic [ref=f9e59]:
+      - generic [ref=f9e60]:
+        - text: Identity
+        - generic [ref=f9e61]: Change logo
+        - generic [ref=f9e64]:
+          - generic [ref=f9e65]: Organisation name
+          - textbox [ref=f9e66]: Nutristar Digital
+        - generic [ref=f9e67]:
+          - generic [ref=f9e68]: Country
+          - combobox [ref=f9e69]:
+            - option "India" [selected]
+            - option "United States"
+            - option "United Kingdom"
+        - generic [ref=f9e70]:
+          - generic [ref=f9e71]: Description
+          - textbox [ref=f9e72]: We build commerce apps and manage storefronts for D2C brands across India.
+      - generic [ref=f9e73]:
+        - text: Contact
+        - generic [ref=f9e74]:
+          - generic [ref=f9e75]: Support email
+          - textbox [ref=f9e76]: support@nutristar.in
+        - generic [ref=f9e77]:
+          - generic [ref=f9e78]: Website
+          - textbox [ref=f9e79]: https://nutristar.in
+      - generic [ref=f9e80]: Save changes
