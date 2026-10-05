@@ -60,20 +60,100 @@ function renderShell(opts) {
       '</div>' +
       '<div style="border-top:1px solid var(--line-100);padding:6px">' +
         '<div class="menu-item" style="border-radius:6px">' + icon('plus', 14) + '<span style="margin-left:8px">Create organisation</span></div>' +
+        '<div class="menu-item" style="border-radius:6px" onclick="openModal(\'invites-modal\')">' + icon('team', 14) + '<span style="margin-left:8px">Invitations</span></div>' +
       '</div>' +
       '<div style="border-top:1px solid var(--line-100);padding:8px 14px 6px"><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">' + userName + '</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">' + userEmail + '</div></div>' +
-      '<div style="padding:6px"><div class="menu-item" style="border-radius:6px">Profile</div></div>' +
+      '<div style="padding:6px"><div class="menu-item" style="border-radius:6px" onclick="openModal(\'profile-modal\')">Profile</div></div>' +
       '<div style="padding:6px 6px 8px;border-top:1px solid var(--line-100)"><a href="landing.html" class="menu-item" style="border-radius:6px">Log out</a><a href="landing.html" class="menu-item" style="border-radius:6px">Log out everywhere</a></div>' +
     '</div>';
 
-  var notifMenuHtml =
-    '<div id="notif-menu" class="dropdown-panel up" style="left:0;width:min(340px,calc(100vw - 24px))">' +
-      '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line-100)"><span style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Notifications</span><span style="font:400 12px/16px var(--font-sans);color:var(--accent);cursor:pointer">Mark all as read</span></div>' +
-      '<div>' +
-        '<div class="menu-item" style="height:auto;padding:12px 14px;flex-direction:column;align-items:flex-start;gap:2px;border-bottom:1px solid var(--line-100)"><span>You were invited to join Bloom Commerce</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Team &middot; 2h ago</span></div>' +
-        '<div class="menu-item" style="height:auto;padding:12px 14px;flex-direction:column;align-items:flex-start;gap:2px;border-bottom:1px solid var(--line-100)"><span>Collaborator access approved on wellversed.ratio.win</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Stores &middot; 5h ago</span></div>' +
-        '<div class="menu-item" style="height:auto;padding:12px 14px;flex-direction:column;align-items:flex-start;gap:2px"><span>Grant expires in 7 days on nutristar.ratio.win</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Stores &middot; Yesterday</span></div>' +
+  var invitesModalHtml =
+    '<div id="invites-modal" class="modal-overlay">' +
+      '<div class="modal" style="width:420px;padding:24px">' +
+        '<div class="modal-title">Your invitations</div>' +
+        '<div class="modal-sub">Organisations that have invited you to join.</div>' +
+        '<div id="invites-modal-list" style="margin-top:16px">' +
+          '<div class="invite-card-shell" data-org="Bloom Commerce" style="border-radius:10px;box-shadow:0 0 0 1px var(--line-100);padding:14px">' +
+            '<div style="display:flex;align-items:center;gap:10px">' +
+              '<span style="width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font:600 14px/18px var(--font-sans);color:#fff;flex-shrink:0;background:var(--ink-900)">BC</span>' +
+              '<div style="flex:1;min-width:0">' +
+                '<div style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Bloom Commerce</div>' +
+                '<div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:1px">Priya Nair invited you as <b style="color:var(--ink-800);font-weight:600">App Developer</b> &middot; expires in 6 days</div>' +
+              '</div>' +
+            '</div>' +
+            '<div style="display:flex;gap:8px;margin-top:12px">' +
+              '<span class="btn btn-primary btn-sm" style="flex:1;justify-content:center" onclick="acceptShellInvite(this)">Accept</span>' +
+              '<span class="btn btn-secondary btn-sm" style="flex:1;justify-content:center" onclick="declineShellInvite(this)">Decline</span>' +
+            '</div>' +
+          '</div>' +
+          '<div id="invites-modal-empty" style="display:none;text-align:center;padding:24px 0;font:400 13px/19px var(--font-sans);color:var(--text-muted)">No pending invitations.</div>' +
+        '</div>' +
+        '<div style="display:flex;justify-content:flex-end;margin-top:20px">' +
+          '<span class="btn btn-secondary" onclick="closeModal(\'invites-modal\')">Close</span>' +
+        '</div>' +
       '</div>' +
+    '</div>';
+
+  var profileModalHtml =
+    '<div id="profile-modal" class="modal-overlay">' +
+      '<div class="modal" style="width:440px;padding:24px;max-height:86vh;overflow-y:auto">' +
+        '<div class="modal-title">Profile</div>' +
+        '<div class="modal-sub">Your personal account &mdash; separate from organisation Settings.</div>' +
+        '<div style="display:flex;align-items:center;gap:12px;margin-top:18px">' +
+          '<span style="width:52px;height:52px;border-radius:50%;background:var(--accent-tint);color:var(--accent);display:flex;align-items:center;justify-content:center;font:600 16px/20px var(--font-sans);flex-shrink:0">' +
+            userName.split(' ').map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase() +
+          '</span>' +
+          '<span class="btn btn-secondary btn-sm">Change photo</span>' +
+        '</div>' +
+        '<div style="margin-top:16px"><label class="field-label">Full name</label><input class="input" value="' + userName + '"></div>' +
+        '<div style="margin-top:14px"><label class="field-label">Email</label><input class="input" value="' + userEmail + '"></div>' +
+        '<div style="font:400 12px/16px var(--font-sans);color:var(--ink-300);margin-top:6px">Email and password changes go through Ellora.</div>' +
+        '<div style="margin-top:14px"><span class="btn btn-secondary btn-sm">Change password</span></div>' +
+        '<div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--line-100)">' +
+          '<div style="border-radius:10px;box-shadow:0 0 0 1px var(--danger-border) inset;padding:14px">' +
+            '<div style="font:600 14px/20px var(--font-sans);color:var(--danger-text)">Delete your account</div>' +
+            '<div style="font:400 13px/19px var(--font-sans);color:var(--ink-500);margin-top:4px">Permanently remove your principal and every organisation membership it holds. This cannot be undone.</div>' +
+            '<span class="btn btn-danger btn-sm" style="margin-top:12px">Delete account</span>' +
+            '<div style="font:400 12px/16px var(--font-sans);color:var(--ink-300);margin-top:6px">Not yet available &mdash; planned for a future release.</div>' +
+          '</div>' +
+        '</div>' +
+        '<div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">' +
+          '<span class="btn btn-secondary" onclick="closeModal(\'profile-modal\')">Cancel</span>' +
+          '<span class="btn btn-primary" onclick="closeModal(\'profile-modal\');showToast(\'Profile updated\')">Save changes</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  var NOTIF_ITEMS = [
+    { icon: 'team', text: 'You were invited to join Bloom Commerce', cat: 'Team', time: '2h ago', onclick: "openModal('invites-modal')" },
+    { icon: 'team', text: 'Priya Nair accepted your invitation and joined Nutristar Digital', cat: 'Team', time: '1d ago', href: 'team.html' },
+    { icon: 'stores', text: 'Collaborator access approved on wellversed.ratio.win', cat: 'Stores', time: '5h ago', href: 'stores.html' },
+    { icon: 'stores', text: 'Grant expires in 7 days on nutristar.ratio.win', cat: 'Stores', time: 'Yesterday', href: 'stores.html' },
+    { icon: 'stores', text: 'Your request for additional permissions on Wellversed was approved', cat: 'Stores', time: '2d ago', href: 'stores.html' },
+    { icon: 'apps', text: 'Wishlist Pro was approved and published', cat: 'Apps', time: '3d ago', href: 'app-detail.html' },
+    { icon: 'apps', text: 'Loyalty Points needs changes before review can continue', cat: 'Apps', time: '4d ago', href: 'apps.html' },
+    { icon: 'apps', text: 'A webhook delivery to Wishlist Pro has been failing for 24 hours', cat: 'Apps', time: '6h ago', href: 'app-detail.html' },
+    { icon: 'card', text: 'Payout of ₹18,420 was sent to your account', cat: 'Payouts', time: '5d ago', href: 'settings.html' },
+    { icon: 'lock', text: 'New sign-in to your account from a new device', cat: 'Security', time: '1w ago', href: 'settings.html' }
+  ];
+  var notifItemsHtml = NOTIF_ITEMS.map(function (n, i) {
+    var border = (i < NOTIF_ITEMS.length - 1) ? ';border-bottom:1px solid var(--line-100)' : '';
+    var commonStyle = 'height:auto;padding:12px 14px;align-items:flex-start;gap:10px' + border;
+    var inner =
+      '<span style="width:28px;height:28px;border-radius:7px;background:var(--line-100);color:var(--ink-500);display:flex;align-items:center;justify-content:center;flex-shrink:0">' + icon(n.icon, 14) + '</span>' +
+      '<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">' +
+        '<span>' + n.text + '</span>' +
+        '<span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">' + n.cat + ' &middot; ' + n.time + '</span>' +
+      '</span>';
+    return n.href
+      ? '<a href="' + n.href + '" class="menu-item" style="' + commonStyle + '">' + inner + '</a>'
+      : '<div class="menu-item" style="' + commonStyle + '" onclick="' + n.onclick + '">' + inner + '</div>';
+  }).join('');
+
+  var notifMenuHtml =
+    '<div id="notif-menu" class="dropdown-panel up" style="left:0;width:min(360px,calc(100vw - 24px))">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line-100)"><span style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Notifications</span><span style="font:400 12px/16px var(--font-sans);color:var(--accent);cursor:pointer">Mark all as read</span></div>' +
+      '<div style="max-height:420px;overflow-y:auto">' + notifItemsHtml + '</div>' +
     '</div>';
 
   var sidenavHtml =
@@ -105,6 +185,10 @@ function renderShell(opts) {
     '</div>';
 
   if (sidenavEl) sidenavEl.outerHTML = sidenavHtml;
+
+  if (!document.getElementById('invites-modal')) {
+    document.body.insertAdjacentHTML('beforeend', invitesModalHtml + profileModalHtml);
+  }
 
   if (topbarEl) {
     topbarEl.outerHTML =
@@ -189,6 +273,26 @@ function openModal(id) {
 function closeModal(id) {
   var el = document.getElementById(id);
   if (el) el.classList.remove('open');
+}
+
+function acceptShellInvite(btn) {
+  var card = btn.closest('.invite-card-shell');
+  var org = card.getAttribute('data-org');
+  card.remove();
+  var list = document.getElementById('invites-modal-list');
+  if (list && !list.querySelector('.invite-card-shell')) {
+    document.getElementById('invites-modal-empty').style.display = '';
+  }
+  closeModal('invites-modal');
+  showToast('You’ve joined ' + org + ' — switch to it from the organisation menu.');
+}
+function declineShellInvite(btn) {
+  var card = btn.closest('.invite-card-shell');
+  card.remove();
+  var list = document.getElementById('invites-modal-list');
+  if (list && !list.querySelector('.invite-card-shell')) {
+    document.getElementById('invites-modal-empty').style.display = '';
+  }
 }
 
 function switchTab(groupName, key, evt) {
