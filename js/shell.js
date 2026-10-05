@@ -60,7 +60,7 @@ function renderShell(opts) {
       '</div>' +
       '<div style="border-top:1px solid var(--line-100);padding:6px">' +
         '<div class="menu-item" style="border-radius:6px">' + icon('plus', 14) + '<span style="margin-left:8px">Create organisation</span></div>' +
-        '<div class="menu-item" style="border-radius:6px" onclick="openModal(\'invites-modal\')">' + icon('team', 14) + '<span style="margin-left:8px">Invitations</span></div>' +
+        '<div class="menu-item" style="border-radius:6px" onclick="openModal(\'invites-modal\')">' + icon('team', 14) + '<span style="margin-left:8px">Invitations</span><span id="invites-badge" style="margin-left:auto;min-width:16px;height:16px;padding:0 4px;box-sizing:border-box;border-radius:8px;background:var(--accent);color:#fff;font:600 10px/16px var(--font-sans);text-align:center">1</span></div>' +
       '</div>' +
       '<div style="border-top:1px solid var(--line-100);padding:8px 14px 6px"><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">' + userName + '</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">' + userEmail + '</div></div>' +
       '<div style="padding:6px"><div class="menu-item" style="border-radius:6px" onclick="openModal(\'profile-modal\')">Profile</div></div>' +
@@ -189,6 +189,7 @@ function renderShell(opts) {
   if (!document.getElementById('invites-modal')) {
     document.body.insertAdjacentHTML('beforeend', invitesModalHtml + profileModalHtml);
   }
+  updateInviteBadge();
 
   if (topbarEl) {
     topbarEl.outerHTML =
@@ -275,6 +276,13 @@ function closeModal(id) {
   if (el) el.classList.remove('open');
 }
 
+function updateInviteBadge() {
+  var n = document.querySelectorAll('.invite-card-shell').length;
+  var el = document.getElementById('invites-badge');
+  if (!el) return;
+  el.textContent = n;
+  el.style.display = n ? '' : 'none';
+}
 function acceptShellInvite(btn) {
   var card = btn.closest('.invite-card-shell');
   var org = card.getAttribute('data-org');
@@ -283,6 +291,7 @@ function acceptShellInvite(btn) {
   if (list && !list.querySelector('.invite-card-shell')) {
     document.getElementById('invites-modal-empty').style.display = '';
   }
+  updateInviteBadge();
   closeModal('invites-modal');
   showToast('You’ve joined ' + org + ' — switch to it from the organisation menu.');
 }
@@ -293,6 +302,7 @@ function declineShellInvite(btn) {
   if (list && !list.querySelector('.invite-card-shell')) {
     document.getElementById('invites-modal-empty').style.display = '';
   }
+  updateInviteBadge();
 }
 
 function switchTab(groupName, key, evt) {
