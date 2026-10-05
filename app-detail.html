@@ -12,7 +12,7 @@
 @media (max-width:900px){.detail-layout{flex-direction:column}.subnav{width:100%;flex-direction:row;flex-wrap:wrap}}
 .ov-card{cursor:pointer;transition:box-shadow var(--transition-control)}
 .ov-card:hover{box-shadow:0 0 0 1px var(--line-150)}
-.versions-table .table-head-row, .versions-table .table-row{grid-template-columns:2fr 1.2fr 1.6fr 1.1fr 110px}
+.versions-table .table-head-row, .versions-table .table-row{grid-template-columns:2fr 1.2fr 1.6fr 1.3fr}
 .logs-table .table-head-row, .logs-table .table-row{grid-template-columns:40px 1.6fr 1.6fr 1.6fr 1.3fr}
 .demo-version-switch{height:24px;border-radius:6px;padding:0 20px 0 8px;font:400 11px/22px var(--font-sans);color:var(--ink-300);background:var(--surface-page);box-shadow:0 0 0 1px var(--line-150) inset;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23A0ACC0' stroke-width='1.3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 7px center;background-size:8px 5px;position:fixed;top:16px;right:16px;z-index:50}
 /* Step indicator, reused from the old Overview review stepper */
@@ -64,7 +64,7 @@
       <a class="tab" data-tabgroup="appdetail" data-tabkey="logs" onclick="switchTab('appdetail','logs',event)">Logs</a>
       <a class="tab" data-tabgroup="appdetail" data-tabkey="apikeys" onclick="switchTab('appdetail','apikeys',event)">API keys</a>
       <a class="tab" data-tabgroup="appdetail" data-tabkey="webhooks" onclick="switchTab('appdetail','webhooks',event)">Webhooks</a>
-      <a class="tab" data-tabgroup="appdetail" data-tabkey="extensions" onclick="switchTab('appdetail','extensions',event)">Extensions</a>
+      <a class="tab" data-tabgroup="appdetail" data-tabkey="extensions" onclick="switchTab('appdetail','extensions',event)">Extensions and configs</a>
     </div>
 
     <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:16px">
@@ -128,6 +128,16 @@
 
           <div style="margin-top:16px"><label class="field-label">App name</label><input class="input" id="listing-name" value="Wishlist Pro" oninput="onListingNameInput()"></div>
 
+          <div style="margin-top:16px;display:flex;align-items:center;gap:14px">
+            <span class="swatch" style="width:56px;height:56px;border-radius:10px;box-shadow:0 0 0 1px var(--line-150) inset;background:var(--blue-100);flex-shrink:0"></span>
+            <div><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">App icon</div><span class="btn btn-secondary btn-sm" style="margin-top:4px">Upload icon</span><div class="field-help">1200&times;1200px, PNG or JPG, 1MB max.</div></div>
+          </div>
+          <div style="margin-top:16px">
+            <div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Hero section image</div>
+            <div style="margin-top:10px;width:100%;max-width:560px;aspect-ratio:16/5;border-radius:10px;box-shadow:0 0 0 1px var(--line-150) inset;background:var(--surface-page);display:flex;align-items:center;justify-content:center"><span class="btn btn-secondary btn-sm">Upload hero image</span></div>
+            <div class="field-help">1600&times;500px, PNG or JPG, 2MB max.</div>
+          </div>
+
           <div style="margin-top:16px">
             <label class="field-label">Description</label>
             <div class="field-help" style="margin-top:0;margin-bottom:8px;max-width:560px">Shown on the app's listing page. Supports basic Markdown.</div>
@@ -167,19 +177,6 @@
         </div>
 
         <div class="card card-pad" style="margin-top:16px">
-          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Images</span>
-          <div style="margin-top:14px;display:flex;align-items:center;gap:14px">
-            <span class="swatch" style="width:56px;height:56px;border-radius:10px;box-shadow:0 0 0 1px var(--line-150) inset;background:var(--blue-100);flex-shrink:0"></span>
-            <div><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">App icon</div><span class="btn btn-secondary btn-sm" style="margin-top:4px">Upload icon</span><div class="field-help">1200&times;1200px, PNG or JPG, 1MB max.</div></div>
-          </div>
-          <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--line-100)">
-            <div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Hero section image</div>
-            <div style="margin-top:10px;width:100%;max-width:560px;aspect-ratio:16/5;border-radius:10px;box-shadow:0 0 0 1px var(--line-150) inset;background:var(--surface-page);display:flex;align-items:center;justify-content:center"><span class="btn btn-secondary btn-sm">Upload hero image</span></div>
-            <div class="field-help">1600&times;500px, PNG or JPG, 2MB max.</div>
-          </div>
-        </div>
-
-        <div class="card card-pad" style="margin-top:16px">
           <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Slug</span>
           <div class="field-help" style="display:block;margin-top:2px">The public URL merchants use to find this app.</div>
           <div style="margin-top:14px"><input class="input" id="listing-slug" value="wishlist-pro" oninput="validateListingSlug()"></div>
@@ -195,7 +192,7 @@
         <div class="card card-pad">
           <label class="field-label">Install URL</label>
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <div style="flex:1;min-width:260px;height:36px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset;display:flex;align-items:center;padding:0 12px;font-family:var(--font-mono);font-size:13px;color:var(--ink-800);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">https://partners.ratio.win/install/wishlist-pro</div>
+            <div style="flex:1;min-width:260px;height:36px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset;display:flex;align-items:center;padding:0 12px;font-family:var(--font-mono);font-size:13px;color:var(--ink-800);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="install-url-text"></div>
             <span class="copy-icon" style="color:var(--ink-500);cursor:pointer;flex-shrink:0" onclick="copyInstallUrl(event)"></span>
             <span class="btn btn-secondary btn-sm" style="flex-shrink:0" onclick="showToast(&quot;This would start the install flow on the merchant's store.&quot;)">Install app</span>
           </div>
@@ -286,7 +283,7 @@
             <div style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-top:2px">Every manifest this app has ever shipped. Releasing an older version publishes it as the active configuration &mdash; it doesn't delete or alter the ones in between.</div>
           </div>
           <div class="card versions-table" style="overflow:hidden">
-            <div class="table-head-row"><span>Version</span><span>Review status</span><span>Pending review</span><span>Current</span><span></span></div>
+            <div class="table-head-row"><span>Version</span><span>Review status</span><span>Pending review</span><span>Current / release</span></div>
             <div id="versions-rows"></div>
           </div>
         </div>
@@ -305,8 +302,6 @@
             </div>
             <div style="margin-top:12px;display:flex;gap:28px;flex-wrap:wrap">
               <div><div class="field-label" style="margin-bottom:2px">Created</div><div id="version-detail-created" style="font:400 13px/18px var(--font-sans);color:var(--ink-800)"></div></div>
-              <div><div class="field-label" style="margin-bottom:2px">Author</div><div id="version-detail-author" style="font:400 13px/18px var(--font-sans);color:var(--ink-800)"></div></div>
-              <div id="version-detail-name-wrap" style="display:none"><div class="field-label" style="margin-bottom:2px">Name</div><div id="version-detail-name" style="font:400 13px/18px var(--font-sans);color:var(--ink-800)"></div></div>
             </div>
           </div>
 
@@ -338,6 +333,19 @@
             </div>
             <textarea class="input" id="version-changelog-editor" style="height:100px" oninput="onVersionChangelogInput()"></textarea>
             <div class="input" id="version-changelog-preview" style="display:none;min-height:100px;height:auto;padding:10px 12px;font:400 14px/20px var(--font-sans);color:var(--ink-800)"></div>
+            <div id="version-changelog-save-wrap" style="margin-top:10px;display:flex;justify-content:flex-end">
+              <span class="btn btn-primary btn-sm" id="version-changelog-save-btn" onclick="saveVersionChangelog()">Save changelog</span>
+            </div>
+          </div>
+
+          <div class="card card-pad" style="margin-top:16px">
+            <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Configuration snapshot</span>
+            <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px">What this version carries &mdash; scopes, webhook topics, and extensions, as declared in its manifest.</div>
+            <div style="margin-top:10px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Scopes</span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800);text-align:right">read_products, read_orders, write_orders</span></div>
+              <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Webhook topics</span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800);text-align:right">orders/create, app/uninstalled, customers/data_request</span></div>
+              <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Extensions</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800);text-align:right">Wishlist button (Theme app block), Add to wishlist (Admin action)</span></div>
+            </div>
           </div>
 
         </div>
@@ -414,6 +422,14 @@
           <div style="font:400 13px/19px var(--font-sans);color:var(--ink-550)">Webhooks are declared in your app's manifest or registered at runtime via the Webhooks API &mdash; there's nothing to configure from this dashboard. This page is a read-only view of what's currently active. <a href="https://partners.ratio.win/docs#webhooks">How subscriptions work &rarr;</a></div>
         </div>
 
+        <div style="margin-top:16px;border-radius:8px;background:var(--accent-tint);padding:12px 14px;display:flex;gap:8px;align-items:flex-start">
+          <span style="color:var(--accent);flex-shrink:0;margin-top:2px" id="webhook-version-note-icon"></span>
+          <div>
+            <div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">Configs from the current active version <span class="pill pill-info" style="margin-left:4px">v1.3.0</span></div>
+            <div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:4px">This is tied to this app's active version &mdash; it changes whenever a new version is released.</div>
+          </div>
+        </div>
+
         <div class="card" style="margin-top:16px;padding:0">
           <div style="padding:14px 16px;border-bottom:1px solid var(--line-100);display:flex;align-items:center;justify-content:space-between">
             <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Subscriptions</span>
@@ -446,16 +462,6 @@
             <span class="pill pill-success">Active</span>
           </div>
         </div>
-
-        <div class="card card-pad" style="margin-top:16px">
-          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Recent deliveries</span>
-          <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px">Each subscription retries and fails independently &mdash; one broken endpoint doesn't affect the others.</div>
-          <div style="margin-top:10px">
-            <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-100)"><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">orders/create</span><span style="flex:1;min-width:0;font:400 12px/16px var(--font-sans);color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">&rarr; /webhooks/orders</span><span class="pill pill-success">Delivered</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">2m ago</span></div>
-            <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-100)"><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">orders/create</span><span style="flex:1;min-width:0;font:400 12px/16px var(--font-sans);color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">&rarr; /ingest (analytics)</span><span class="pill pill-success">Delivered</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">2m ago</span></div>
-            <div style="display:flex;align-items:center;gap:10px;padding:9px 0"><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">app/uninstalled</span><span style="flex:1;min-width:0;font:400 12px/16px var(--font-sans);color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">&rarr; /webhooks/uninstall</span><span class="pill pill-danger">Failed</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">1h ago</span></div>
-          </div>
-        </div>
       </div>
 
       <!-- Extensions -->
@@ -472,17 +478,20 @@
         <div style="margin-top:20px">
           <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Configured on this app</span>
           <div style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-top:2px">Extensions this app already ships. Each one is added through the type cards below.</div>
-          <div style="margin-top:10px;border-radius:8px;background:var(--accent-tint);padding:10px 14px;display:flex;gap:8px;align-items:flex-start">
+          <div style="margin-top:10px;border-radius:8px;background:var(--accent-tint);padding:12px 14px;display:flex;gap:8px;align-items:flex-start">
             <span style="color:var(--accent);flex-shrink:0;margin-top:2px" id="ext-version-note-icon"></span>
-            <span style="font:400 13px/19px var(--font-sans);color:var(--ink-800)">This reflects what's configured in app version <b>1.3.0</b> &mdash; the currently active release. Extensions and scopes are declared in your app's <span style="font-family:var(--font-mono)">ratio.config.jsonc</span> manifest and take effect the moment that version is released.</span>
+            <div>
+              <div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">Configs from the current active version <span class="pill pill-info" style="margin-left:4px">v1.3.0</span></div>
+              <div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:4px">This is tied to this app's active version &mdash; it changes whenever a new version is released.</div>
+            </div>
           </div>
         </div>
         <div class="card" style="margin-top:10px;padding:0">
           <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line-100)">
             <span class="swatch" style="width:32px;height:32px;border-radius:7px;background:var(--blue-100);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--accent)"><span id="ext-row-icon-1"></span></span>
             <div style="flex:1;min-width:0">
-              <div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">Wishlist button &mdash; Theme app block</div>
-              <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:1px">Product page &middot; added by 412 merchants</div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">Wishlist button</span><span class="pill pill-info">Theme app block</span></div>
+              <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:4px">Product page &middot; added by 412 merchants</div>
               <div style="font:400 12px/16px var(--font-sans);color:var(--ink-300);margin-top:2px">Settings schema: 2 fields &middot; targets the Product page section</div>
             </div>
             <span class="pill pill-success">Active</span>
@@ -490,8 +499,8 @@
           <div style="display:flex;align-items:center;gap:12px;padding:14px 16px">
             <span class="swatch" style="width:32px;height:32px;border-radius:7px;background:var(--blue-100);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--accent)"><span id="ext-row-icon-2"></span></span>
             <div style="flex:1;min-width:0">
-              <div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">Add to wishlist &mdash; Admin action</div>
-              <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:1px">Order page, More actions menu</div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">Add to wishlist</span><span class="pill pill-info">Admin action</span></div>
+              <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:4px">Order page, More actions menu</div>
               <div style="font:400 12px/16px var(--font-sans);color:var(--ink-300);margin-top:2px">Surface: order page &middot; kind: action (opens a modal from More actions)</div>
             </div>
             <span class="pill pill-success">Active</span>
@@ -804,14 +813,18 @@
   </div>
 </div>
 
-<!-- Log detail slide-over -->
-<div id="log-detail-backdrop" style="position:fixed;inset:0;background:rgba(19,25,39,0.4);z-index:150;display:none" onclick="closeLogDetail()"></div>
-<div id="log-detail-panel" style="position:fixed;top:0;right:0;height:100vh;width:420px;max-width:92vw;background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,0.12);overflow-y:auto;z-index:151;transform:translateX(100%);transition:transform 220ms ease">
-  <div style="padding:18px 20px;border-bottom:1px solid var(--line-100);display:flex;align-items:center;justify-content:space-between">
-    <span id="log-detail-status-badge"></span>
-    <span onclick="closeLogDetail()" style="color:var(--ink-500);cursor:pointer" id="log-detail-close-icon"></span>
+<!-- Log detail modal -->
+<div id="log-detail-modal" class="modal-overlay">
+  <div class="modal" style="width:640px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;padding:0">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line-100);flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="modal-title" style="font-size:16px">Log detail</span>
+        <span id="log-detail-status-badge"></span>
+      </div>
+      <span onclick="closeLogDetail()" style="color:var(--ink-500);cursor:pointer;flex-shrink:0;margin-left:12px" id="log-detail-close-icon"></span>
+    </div>
+    <div style="padding:18px 22px;overflow-y:auto;flex:1" id="log-detail-body"></div>
   </div>
-  <div style="padding:18px 20px" id="log-detail-body"></div>
 </div>
 
 <div id="toast" class="toast"></div>
@@ -948,9 +961,16 @@ function toggleSecret() {
 }
 document.getElementById('eye-icon').innerHTML = icon('eye', 13);
 
+/* Install URL: real OAuth-style install link, built from this app's own Client ID (API keys tab)
+   and redirect URL (Extensions tab's manifest-config block — "Allowed redirection URLs"). */
+var INSTALL_CLIENT_ID = '88ec0cdbfdf25eea1dcd339433b662';
+var INSTALL_REDIRECT_URL = 'https://wishlistpro.app/auth/callback';
+var INSTALL_URL = 'https://admin.ratio.win/app/oauth?client_id=' + INSTALL_CLIENT_ID + '&redirect_url=' + INSTALL_REDIRECT_URL;
+document.getElementById('install-url-text').textContent = INSTALL_URL;
+
 function copyInstallUrl(e) {
   if (e) e.stopPropagation();
-  showToast('Copied to clipboard: https://partners.ratio.win/install/wishlist-pro');
+  showToast('Copied to clipboard: ' + INSTALL_URL);
 }
 
 function sendTransferRequest() {
@@ -1629,18 +1649,18 @@ var VERSION_STATUS_META = {
 };
 
 var VERSIONS = [
-  { number: '1.7.0', name: '', status: 'draft', created: 'Oct 5, 2026', author: 'Asha Rao', changelog: '',
+  { number: '1.7.0', status: 'draft', created: 'Oct 5, 2026', changelog: '',
     activity: [
       { time: 'Oct 5, 2026, 9:02 AM', actor: 'Asha Rao', text: 'Created draft 1.7.0.' }
     ] },
-  { number: '1.6.0', name: 'Checkout perf pass', status: 'in_review', created: 'Oct 4, 2026', author: 'Asha Rao',
+  { number: '1.6.0', status: 'in_review', created: 'Oct 4, 2026',
     changelog: '- Minor performance improvements to the wishlist sync job.',
     activity: [
       { time: 'Oct 4, 2026, 2:15 PM', actor: 'Asha Rao', text: 'Created draft 1.6.0.' },
       { time: 'Oct 4, 2026, 4:40 PM', actor: 'Asha Rao', text: 'Submitted 1.6.0 for review.' },
       { time: 'Oct 5, 2026, 9:10 AM', actor: 'Ratio App Review', text: 'Review started.' }
     ] },
-  { number: '1.5.0', name: 'Wishlist sharing', status: 'approved', created: 'Oct 2, 2026', author: 'Karan Shah',
+  { number: '1.5.0', status: 'approved', created: 'Oct 2, 2026',
     changelog: '**New:** merchants can let shoppers share a wishlist via link.\n\n- Share button on the wishlist page\n- Read-only shared view, no login required',
     activity: [
       { time: 'Oct 2, 2026, 11:00 AM', actor: 'Karan Shah', text: 'Created draft 1.5.0.' },
@@ -1648,8 +1668,11 @@ var VERSIONS = [
       { time: 'Oct 3, 2026, 9:45 AM', actor: 'Ratio App Review', text: 'Review started.' },
       { time: 'Oct 4, 2026, 1:30 PM', actor: 'Ratio App Review', text: 'Approved — ready to release whenever you are.' }
     ] },
-  { number: '1.4.0', name: 'Bulk import', status: 'changes_requested', created: 'Sep 29, 2026', author: 'Karan Shah',
-    pending: ['Icon doesn’t meet the 1200×1200px minimum', 'Redirect URL must use https'],
+  { number: '1.4.0', status: 'changes_requested', created: 'Sep 29, 2026',
+    pending: [
+      { text: 'Icon doesn’t meet the 1200×1200px minimum', reviewer: 'Ratio App Review', time: 'Oct 1, 2026, 4:05 PM' },
+      { text: 'Redirect URL must use https', reviewer: 'Ratio App Review', time: 'Oct 1, 2026, 4:05 PM' }
+    ],
     changelog: '- Bulk CSV import for existing wishlists\n- Fixes a sync race condition on rapid add/remove',
     activity: [
       { time: 'Sep 29, 2026, 10:05 AM', actor: 'Karan Shah', text: 'Created draft 1.4.0.' },
@@ -1657,7 +1680,7 @@ var VERSIONS = [
       { time: 'Sep 30, 2026, 9:15 AM', actor: 'Ratio App Review', text: 'Review started.' },
       { time: 'Oct 1, 2026, 4:05 PM', actor: 'Ratio App Review', text: 'Changes requested — 2 items flagged, see below.' }
     ] },
-  { number: '1.3.0', name: '', status: 'published', current: true, created: 'Sep 20, 2026', author: 'Asha Rao',
+  { number: '1.3.0', status: 'published', current: true, created: 'Sep 20, 2026',
     changelog: '- Faster product sync\n- Fixed wishlist counter on the cart drawer',
     activity: [
       { time: 'Sep 20, 2026, 10:00 AM', actor: 'Asha Rao', text: 'Created draft 1.3.0.' },
@@ -1666,7 +1689,7 @@ var VERSIONS = [
       { time: 'Sep 23, 2026, 3:40 PM', actor: 'Ratio App Review', text: 'Approved.' },
       { time: 'Sep 24, 2026, 9:00 AM', actor: 'Asha Rao', text: 'Published 1.3.0 — now the active release.' }
     ] },
-  { number: '1.2.0', name: '', status: 'published', created: 'Jul 28, 2026', author: 'Asha Rao',
+  { number: '1.2.0', status: 'published', created: 'Jul 28, 2026',
     changelog: '- Added wishlist analytics to the admin action\n- Minor copy fixes',
     activity: [
       { time: 'Jul 28, 2026, 9:30 AM', actor: 'Asha Rao', text: 'Created draft 1.2.0.' },
@@ -1676,7 +1699,7 @@ var VERSIONS = [
       { time: 'Aug 2, 2026, 9:00 AM', actor: 'Asha Rao', text: 'Published 1.2.0 — became the active release.' },
       { time: 'Sep 24, 2026, 9:00 AM', actor: 'Asha Rao', text: 'Replaced by 1.3.0, which became the active release. 1.2.0 is retained, not deleted.' }
     ] },
-  { number: '1.1.0', name: '', status: 'published', created: 'Jun 10, 2026', author: 'Asha Rao',
+  { number: '1.1.0', status: 'published', created: 'Jun 10, 2026',
     changelog: '- Initial public release\n- Theme app block and admin action extensions',
     activity: [
       { time: 'Jun 10, 2026, 9:00 AM', actor: 'Asha Rao', text: 'Created draft 1.1.0.' },
@@ -1686,8 +1709,11 @@ var VERSIONS = [
       { time: 'Jun 14, 2026, 9:00 AM', actor: 'Asha Rao', text: 'Published 1.1.0 — became the active release.' },
       { time: 'Aug 2, 2026, 9:00 AM', actor: 'Asha Rao', text: 'Replaced by 1.2.0, which became the active release. 1.1.0 is retained, not deleted.' }
     ] },
-  { number: '1.0.0', name: '', status: 'rejected', created: 'May 1, 2026', author: 'Karan Shah',
-    pending: ['App requested write_customers without a documented use — scope not justified', 'Admin action surfaced on the Customer page without the required confirmation step'],
+  { number: '1.0.0', status: 'rejected', created: 'May 1, 2026',
+    pending: [
+      { text: 'App requested write_customers without a documented use — scope not justified', reviewer: 'Ratio App Review', time: 'May 6, 2026, 4:45 PM' },
+      { text: 'Admin action surfaced on the Customer page without the required confirmation step', reviewer: 'Ratio App Review', time: 'May 6, 2026, 4:45 PM' }
+    ],
     changelog: '- First submission attempt',
     activity: [
       { time: 'May 1, 2026, 10:00 AM', actor: 'Karan Shah', text: 'Created draft 1.0.0.' },
@@ -1703,23 +1729,22 @@ function findVersion(number) {
   return VERSIONS.filter(function (v) { return v.number === number; })[0];
 }
 
+function currentReleaseCellHtml(v) {
+  if (v.current) return '<span class="pill pill-success">Current release</span>';
+  if (v.status === 'published') return '<span class="btn btn-secondary btn-sm" onclick="releaseVersion(\'' + v.number + '\', event)">Release</span>';
+  return '<span style="color:var(--ink-300)">&mdash;</span>';
+}
 function renderVersionsList() {
   document.getElementById('versions-rows').innerHTML = VERSIONS.map(function (v) {
     var meta = VERSION_STATUS_META[v.status];
-    var nameHtml = v.name ? '<div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:1px">' + v.name + '</div>' : '';
     var pendingHtml = (v.status === 'changes_requested' && v.pending && v.pending.length)
       ? '<span style="font:500 13px/18px var(--font-sans);color:var(--warning-text)">' + v.pending.length + ' item' + (v.pending.length > 1 ? 's' : '') + ' pending</span>'
       : '<span style="color:var(--ink-300)">&mdash;</span>';
-    var currentHtml = v.current ? '<span class="pill pill-success">Current release</span>' : '';
-    var releaseHtml = (v.status === 'published' && !v.current)
-      ? '<span class="btn btn-secondary btn-sm" onclick="releaseVersion(\'' + v.number + '\', event)">Release</span>'
-      : '';
     return '<div class="table-row" style="display:grid;cursor:pointer" onclick="openVersionDetail(\'' + v.number + '\')">' +
-      '<span><span style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">' + v.number + '</span>' + nameHtml + '</span>' +
+      '<span><span style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">' + v.number + '</span></span>' +
       '<span><span class="pill ' + meta.pill + '">' + meta.label + '</span></span>' +
       '<span>' + pendingHtml + '</span>' +
-      '<span>' + currentHtml + '</span>' +
-      '<span>' + releaseHtml + '</span>' +
+      '<span>' + currentReleaseCellHtml(v) + '</span>' +
     '</div>';
   }).join('');
 }
@@ -1752,22 +1777,26 @@ function openVersionDetail(number) {
   document.getElementById('version-detail-status-pill').innerHTML = '<span class="pill ' + meta.pill + '">' + meta.label + '</span>';
   document.getElementById('version-detail-current-pill').innerHTML = v.current ? '<span class="pill pill-success">Current release</span>' : '';
   document.getElementById('version-detail-created').textContent = v.created;
-  document.getElementById('version-detail-author').textContent = v.author;
-
-  var nameWrap = document.getElementById('version-detail-name-wrap');
-  if (v.name) { nameWrap.style.display = ''; document.getElementById('version-detail-name').textContent = v.name; }
-  else { nameWrap.style.display = 'none'; }
 
   var releaseBtn = document.getElementById('version-detail-release-btn');
-  releaseBtn.innerHTML = (v.status === 'published' && !v.current)
-    ? '<span class="btn btn-primary btn-sm" onclick="releaseVersion(\'' + v.number + '\', event)">Release this version</span>'
-    : '';
+  if (v.status === 'draft') {
+    releaseBtn.innerHTML = '<span class="btn btn-primary btn-sm" onclick="submitVersionForReview(\'' + v.number + '\', event)">Send for review</span>';
+  } else if (v.status === 'approved') {
+    releaseBtn.innerHTML = '<span class="btn btn-primary btn-sm" onclick="publishVersion(\'' + v.number + '\', event)">Publish</span>';
+  } else if (v.status === 'published' && !v.current) {
+    releaseBtn.innerHTML = '<span class="btn btn-primary btn-sm" onclick="releaseVersion(\'' + v.number + '\', event)">Release this version</span>';
+  } else {
+    releaseBtn.innerHTML = '';
+  }
 
   var pendingCard = document.getElementById('version-pending-card');
   if ((v.status === 'changes_requested' || v.status === 'rejected') && v.pending && v.pending.length) {
     pendingCard.style.display = '';
     document.getElementById('version-pending-list').innerHTML = v.pending.map(function (item) {
-      return '<div style="display:flex;align-items:flex-start;gap:8px"><span style="color:var(--danger-text);flex-shrink:0;margin-top:3px">' + icon('close', 10) + '</span><span style="font:400 13px/19px var(--font-sans);color:var(--ink-800)">' + item + '</span></div>';
+      return '<div style="border-radius:8px;box-shadow:0 0 0 1px var(--line-100);padding:10px 12px">' +
+        '<div style="display:flex;align-items:flex-start;gap:8px"><span style="color:var(--danger-text);flex-shrink:0;margin-top:3px">' + icon('close', 10) + '</span><span style="font:400 13px/19px var(--font-sans);color:var(--ink-800)">' + item.text + '</span></div>' +
+        '<div style="margin-top:6px;margin-left:18px;font:400 12px/16px var(--font-sans);color:var(--text-muted)"><b style="font-weight:500;color:var(--ink-700)">' + item.reviewer + '</b> &middot; ' + item.time + '</div>' +
+      '</div>';
     }).join('');
   } else {
     pendingCard.style.display = 'none';
@@ -1793,6 +1822,8 @@ function openVersionDetail(number) {
   ta.style.opacity = frozen ? '0.65' : '';
   document.getElementById('version-changelog-toolbar').style.display = frozen ? 'none' : '';
   document.getElementById('version-changelog-frozen-note').style.display = frozen ? '' : 'none';
+  versionChangelogDirty = false;
+  updateChangelogSaveBtn();
 
   document.getElementById('versions-list-view').style.display = 'none';
   document.getElementById('versions-detail-view').style.display = '';
@@ -1804,9 +1835,64 @@ function backToVersionsList(evt) {
   document.getElementById('versions-list-view').style.display = '';
 }
 
+var versionChangelogDirty = false;
 function onVersionChangelogInput() {
   var v = findVersion(currentVersionDetailNumber);
   if (v) v.changelog = document.getElementById('version-changelog-editor').value;
+  versionChangelogDirty = true;
+  updateChangelogSaveBtn();
+}
+function updateChangelogSaveBtn() {
+  var v = findVersion(currentVersionDetailNumber);
+  var frozen = v && (v.status === 'approved' || v.status === 'published');
+  var wrap = document.getElementById('version-changelog-save-wrap');
+  var btn = document.getElementById('version-changelog-save-btn');
+  if (!v || frozen) { wrap.style.display = 'none'; return; }
+  wrap.style.display = '';
+  var enabled = versionChangelogDirty;
+  btn.classList.toggle('btn-primary', enabled);
+  btn.classList.toggle('btn-secondary', !enabled);
+  btn.style.opacity = enabled ? '' : '0.5';
+  btn.style.pointerEvents = enabled ? '' : 'none';
+}
+function saveVersionChangelog() {
+  if (!versionChangelogDirty) return;
+  var v = findVersion(currentVersionDetailNumber);
+  if (v) v.changelog = document.getElementById('version-changelog-editor').value;
+  versionChangelogDirty = false;
+  updateChangelogSaveBtn();
+  showToast('Changelog saved.');
+}
+
+/* ---------- Versions tab: draft → in_review (Send for review), approved → published (Publish) ---------- */
+function submitVersionForReview(number, evt) {
+  if (evt) evt.stopPropagation();
+  var v = findVersion(number);
+  if (!v) return;
+  v.status = 'in_review';
+  var now = 'Oct 5, 2026, ' + new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  v.activity.push({ time: now, actor: 'Asha Rao', text: 'Submitted for review.' });
+  renderVersionsList();
+  showToast(v.number + ' submitted for review.');
+  if (currentVersionDetailNumber === v.number) openVersionDetail(v.number);
+}
+
+function publishVersion(number, evt) {
+  if (evt) evt.stopPropagation();
+  var target = findVersion(number);
+  if (!target) return;
+  var prevCurrent = VERSIONS.filter(function (v) { return v.current; })[0];
+  VERSIONS.forEach(function (v) { v.current = false; });
+  target.status = 'published';
+  target.current = true;
+  var now = 'Oct 5, 2026, ' + new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  target.activity.push({ time: now, actor: 'Asha Rao', text: 'Published ' + target.number + ' — now the active release.' + (prevCurrent ? ' ' + prevCurrent.number + ' stays intact in the version history.' : '') });
+  if (prevCurrent) prevCurrent.activity.push({ time: now, actor: 'Asha Rao', text: target.number + ' was published, replacing this version as the active configuration. This version is retained, not deleted.' });
+  renderVersionsList();
+  showToast(target.number + ' is now published and the current release.');
+  if (currentVersionDetailNumber === target.number || (prevCurrent && currentVersionDetailNumber === prevCurrent.number)) {
+    openVersionDetail(currentVersionDetailNumber);
+  }
 }
 
 /* ---------- Versions tab: markdown changelog toolbar (re-scoped copy of settings.html's pattern) ---------- */
@@ -1873,43 +1959,63 @@ var LOG_ROWS = [
   { kind: 'graphql', op: 'productCollections', shop: 'wellversed.ratio.win', shopId: 'shop_48213', time: 'Oct 5, 2026, 10:42:11 AM', status: 'success',
     requestId: 'req_8f3a1c2e9b7d4f61', ip: '103.21.244.12', schema: 'Admin API', apiVersion: '2026-07', duration: '142 ms', cost: '38 of 1000 points',
     userAgent: 'Ratio-App/1.3.0 (+https://wishlistpro.app)', scopes: 'read_products, read_orders',
-    body: 'query ProductCollections($id: ID!) {\n  product(id: $id) {\n    collections(first: 10) {\n      edges { node { title } }\n    }\n  }\n}' },
+    body: 'query ProductCollections($id: ID!) {\n  product(id: $id) {\n    collections(first: 10) {\n      edges { node { title } }\n    }\n  }\n}',
+    response: '{\n  "data": {\n    "product": {\n      "collections": {\n        "edges": [\n          { "node": { "title": "Best sellers" } },\n          { "node": { "title": "New arrivals" } }\n        ]\n      }\n    }\n  }\n}' },
   { kind: 'webhook', topic: 'orders/create', shop: 'wellversed.ratio.win', shopId: 'shop_48213', time: 'Oct 5, 2026, 10:40:02 AM', status: 'success',
     webhookId: 'whk_3b9f2a71', apiVersion: '2026-07', responseTime: '212 ms', payloadSize: '1.4 KB', attempt: '1 of 5',
     uri: 'https://wishlistpro.app/webhooks/orders', subId: 'sub_7a21', subMethod: 'Declarative (ratio.config.jsonc)', deliveryMethod: 'HTTPS POST', hmac: '7sQn3fK9r2mXb4T1pLZcQ8w==',
-    headers: 'X-Ratio-Topic: orders/create\nX-Ratio-Shop-Domain: wellversed.ratio.win\nX-Ratio-Webhook-Id: whk_3b9f2a71\nX-Ratio-Hmac-Sha256: 7sQn3fK9r2mXb4T1pLZcQ8w==\nContent-Type: application/json' },
+    headers: 'X-Ratio-Topic: orders/create\nX-Ratio-Shop-Domain: wellversed.ratio.win\nX-Ratio-Webhook-Id: whk_3b9f2a71\nX-Ratio-Hmac-Sha256: 7sQn3fK9r2mXb4T1pLZcQ8w==\nContent-Type: application/json',
+    payload: '{\n  "id": 820982911946154508,\n  "order_number": 1024,\n  "shop_domain": "wellversed.ratio.win",\n  "total_price": "2499.00",\n  "line_items": [\n    { "product_id": 7812093481, "quantity": 1 }\n  ]\n}',
+    response: 'HTTP/1.1 200 OK\n\n{"success": true}' },
   { kind: 'graphql', op: 'mediaFilesByIds', shop: 'aqualogica.ratio.win', shopId: 'shop_91027', time: 'Oct 5, 2026, 10:35:47 AM', status: 'success',
     requestId: 'req_2c7e9a04f1b83d5e', ip: '103.21.244.18', schema: 'Admin API', apiVersion: '2026-07', duration: '88 ms', cost: '12 of 1000 points',
     userAgent: 'Ratio-App/1.3.0 (+https://wishlistpro.app)', scopes: 'read_products',
-    body: 'query MediaFilesByIds($ids: [ID!]!) {\n  nodes(ids: $ids) {\n    ... on MediaImage {\n      id\n      image { url }\n    }\n  }\n}' },
+    body: 'query MediaFilesByIds($ids: [ID!]!) {\n  nodes(ids: $ids) {\n    ... on MediaImage {\n      id\n      image { url }\n    }\n  }\n}',
+    response: '{\n  "data": {\n    "nodes": [\n      { "id": "gid://ratio/MediaImage/1", "image": { "url": "https://cdn.wishlistpro.app/1.jpg" } }\n    ]\n  }\n}' },
   { kind: 'webhook', topic: 'products/update', shop: 'nutristar-dev.ratio.win', shopId: 'shop_10044', time: 'Oct 5, 2026, 9:58:13 AM', status: 'error', errorCode: '400 Error',
     webhookId: 'whk_55d8c110', apiVersion: '2026-07', responseTime: '1.8 s', payloadSize: '2.1 KB', attempt: '3 of 5',
     uri: 'https://wishlistpro.app/webhooks/products', subId: 'sub_4f02', subMethod: 'Declarative (ratio.config.jsonc)', deliveryMethod: 'HTTPS POST', hmac: 'KxN2pQ7vL9mZ0eD3sRtYcA==',
-    headers: 'X-Ratio-Topic: products/update\nX-Ratio-Shop-Domain: nutristar-dev.ratio.win\nX-Ratio-Webhook-Id: whk_55d8c110\nX-Ratio-Hmac-Sha256: KxN2pQ7vL9mZ0eD3sRtYcA==\nContent-Type: application/json' },
+    headers: 'X-Ratio-Topic: products/update\nX-Ratio-Shop-Domain: nutristar-dev.ratio.win\nX-Ratio-Webhook-Id: whk_55d8c110\nX-Ratio-Hmac-Sha256: KxN2pQ7vL9mZ0eD3sRtYcA==\nContent-Type: application/json',
+    payload: '{\n  "id": 7812093481,\n  "title": "Linen wrap dress",\n  "shop_domain": "nutristar-dev.ratio.win",\n  "variants": [\n    { "id": 44120981, "price": "1899.00" }\n  ]\n}',
+    response: 'HTTP/1.1 400 Bad Request\n\n{"success": false, "error": "invalid_signature"}' },
   { kind: 'graphql', op: 'customerUpdate', shop: 'aqualogica.ratio.win', shopId: 'shop_91027', time: 'Oct 5, 2026, 9:30:02 AM', status: 'error', errorCode: 'Error',
     requestId: 'req_af401c9e3b7d2f06', ip: '103.21.244.18', schema: 'Admin API', apiVersion: '2026-07', duration: '206 ms', cost: '18 of 1000 points',
     userAgent: 'Ratio-App/1.3.0 (+https://wishlistpro.app)', scopes: 'read_orders, write_orders',
-    body: 'mutation CustomerUpdate($input: CustomerInput!) {\n  customerUpdate(input: $input) {\n    customer { id }\n    userErrors { field message }\n  }\n}' },
+    body: 'mutation CustomerUpdate($input: CustomerInput!) {\n  customerUpdate(input: $input) {\n    customer { id }\n    userErrors { field message }\n  }\n}',
+    response: '{\n  "data": {\n    "customerUpdate": {\n      "customer": null,\n      "userErrors": [\n        { "field": ["email"], "message": "has already been taken" }\n      ]\n    }\n  }\n}' },
+  { kind: 'api', method: 'POST', path: '/admin/api/2026-07/price_rules.json', shop: 'wellversed.ratio.win', shopId: 'shop_48213', time: 'Oct 5, 2026, 11:05:33 AM', status: 'success',
+    requestId: 'req_c91a4e7f0d2b5836', apiVersion: '2026-07', statusCode: '201 Created', duration: '176 ms',
+    body: '{\n  "price_rule": {\n    "title": "WISHLIST10",\n    "target_type": "line_item",\n    "value_type": "percentage",\n    "value": "-10.0",\n    "customer_selection": "all"\n  }\n}',
+    response: '{\n  "price_rule": {\n    "id": 88213094,\n    "title": "WISHLIST10",\n    "status": "active",\n    "created_at": "2026-10-05T11:05:33Z"\n  }\n}' },
   { kind: 'webhook', topic: 'app/uninstalled', shop: 'wellversed.ratio.win', shopId: 'shop_48213', time: 'Oct 4, 2026, 11:12:45 PM', status: 'success',
     webhookId: 'whk_0a61ffe2', apiVersion: '2026-07', responseTime: '164 ms', payloadSize: '0.6 KB', attempt: '1 of 5',
     uri: 'https://wishlistpro.app/webhooks/uninstall', subId: 'sub_9c10', subMethod: 'Declarative (ratio.config.jsonc)', deliveryMethod: 'HTTPS POST', hmac: 'Q7mTx1vD4nRzA9pLkC2wYe==',
-    headers: 'X-Ratio-Topic: app/uninstalled\nX-Ratio-Shop-Domain: wellversed.ratio.win\nX-Ratio-Webhook-Id: whk_0a61ffe2\nX-Ratio-Hmac-Sha256: Q7mTx1vD4nRzA9pLkC2wYe==\nContent-Type: application/json' },
+    headers: 'X-Ratio-Topic: app/uninstalled\nX-Ratio-Shop-Domain: wellversed.ratio.win\nX-Ratio-Webhook-Id: whk_0a61ffe2\nX-Ratio-Hmac-Sha256: Q7mTx1vD4nRzA9pLkC2wYe==\nContent-Type: application/json',
+    payload: '{\n  "shop_domain": "wellversed.ratio.win",\n  "shop_id": "shop_48213"\n}',
+    response: 'HTTP/1.1 200 OK\n\n{"success": true}' },
   { kind: 'graphql', op: 'productVariantsBulkUpdate', shop: 'wellversed.ratio.win', shopId: 'shop_48213', time: 'Oct 4, 2026, 8:05:19 PM', status: 'success',
     requestId: 'req_5e9d21a6c4f0b837', ip: '103.21.244.12', schema: 'Admin API', apiVersion: '2026-07', duration: '310 ms', cost: '64 of 1000 points',
     userAgent: 'Ratio-App/1.3.0 (+https://wishlistpro.app)', scopes: 'read_products, write_orders',
-    body: 'mutation ProductVariantsBulkUpdate($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {\n  productVariantsBulkUpdate(productId: $productId, variants: $variants) {\n    product { id }\n  }\n}' },
+    body: 'mutation ProductVariantsBulkUpdate($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {\n  productVariantsBulkUpdate(productId: $productId, variants: $variants) {\n    product { id }\n  }\n}',
+    response: '{\n  "data": {\n    "productVariantsBulkUpdate": {\n      "product": { "id": "gid://ratio/Product/7812093481" },\n      "userErrors": []\n    }\n  }\n}' },
+  { kind: 'api', method: 'GET', path: '/admin/api/2026-07/shop.json', shop: 'aqualogica.ratio.win', shopId: 'shop_91027', time: 'Oct 4, 2026, 7:20:41 PM', status: 'success',
+    requestId: 'req_11b3f2a9c7e04d58', apiVersion: '2026-07', statusCode: '200 OK', duration: '64 ms',
+    body: '(no request body — GET request)',
+    response: '{\n  "shop": {\n    "id": "shop_91027",\n    "name": "Aqualogica",\n    "domain": "aqualogica.ratio.win",\n    "plan_name": "Growth"\n  }\n}' },
   { kind: 'webhook', topic: 'customers/data_request', shop: 'aqualogica.ratio.win', shopId: 'shop_91027', time: 'Oct 4, 2026, 6:48:02 PM', status: 'success',
     webhookId: 'whk_7712ab3e', apiVersion: '2026-07', responseTime: '198 ms', payloadSize: '0.8 KB', attempt: '1 of 5',
     uri: 'https://wishlistpro.app/webhooks/compliance', subId: 'sub_2b77', subMethod: 'Declarative (ratio.config.jsonc)', deliveryMethod: 'HTTPS POST', hmac: 'Vb3wRkD8mLq1zX6cT0pYnE==',
-    headers: 'X-Ratio-Topic: customers/data_request\nX-Ratio-Shop-Domain: aqualogica.ratio.win\nX-Ratio-Webhook-Id: whk_7712ab3e\nX-Ratio-Hmac-Sha256: Vb3wRkD8mLq1zX6cT0pYnE==\nContent-Type: application/json' }
+    headers: 'X-Ratio-Topic: customers/data_request\nX-Ratio-Shop-Domain: aqualogica.ratio.win\nX-Ratio-Webhook-Id: whk_7712ab3e\nX-Ratio-Hmac-Sha256: Vb3wRkD8mLq1zX6cT0pYnE==\nContent-Type: application/json',
+    payload: '{\n  "shop_domain": "aqualogica.ratio.win",\n  "customer": { "id": 55123, "email": "shopper@example.com" },\n  "orders_requested": [820982911946154508]\n}',
+    response: 'HTTP/1.1 200 OK\n\n{"success": true}' }
 ];
 
 function renderLogsRow(r, idx) {
   var statusIcon = r.status === 'success'
     ? '<span style="color:var(--success-text)">' + icon('check', 12) + '</span>'
     : '<span style="width:8px;height:8px;border-radius:50%;background:var(--danger-text);display:inline-block"></span>';
-  var typeLabel = r.kind === 'graphql' ? 'GraphQL request' : 'Webhook / Event';
-  var detail = r.kind === 'graphql' ? r.op : r.topic;
+  var typeLabel = r.kind === 'graphql' ? 'GraphQL request' : r.kind === 'api' ? 'API request' : 'Webhook / Event';
+  var detail = r.kind === 'graphql' ? r.op : r.kind === 'api' ? (r.method + ' ' + r.path) : r.topic;
   return '<div class="table-row" style="display:grid;cursor:pointer" onclick="openLogDetail(' + idx + ')">' +
     '<span style="display:flex;align-items:center;justify-content:center">' + statusIcon + '</span>' +
     '<span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">' + typeLabel + '</span>' +
@@ -1974,7 +2080,8 @@ function renderGraphqlDetail(r) {
     fieldRow('Shop', '<a href="stores.html">' + r.shop + '</a>') +
     idRow('Shop ID', r.shopId) +
     moreDetailsBlock('log-more-graphql', fieldRow('User agent', r.userAgent) + fieldRow('Scope categories', r.scopes)) +
-    '<div style="margin-top:4px"><div class="field-label" style="margin-bottom:6px">Operation body</div>' + codeBlock(r.body) + '</div>';
+    '<div style="margin-top:4px"><div class="field-label" style="margin-bottom:6px">Operation body</div>' + codeBlock(r.body) + '</div>' +
+    '<div style="margin-top:14px"><div class="field-label" style="margin-bottom:6px">Response body</div>' + codeBlock(r.response) + '</div>';
 }
 function renderWebhookDetail(r) {
   return fieldRow('Type', 'Webhook / Event') +
@@ -1993,7 +2100,22 @@ function renderWebhookDetail(r) {
       fieldRow('Delivery method', r.deliveryMethod) +
       idRow('HMAC signature', r.hmac)
     ) +
-    '<div style="margin-top:4px"><div class="field-label" style="margin-bottom:6px">Headers</div>' + codeBlock(r.headers) + '</div>';
+    '<div style="margin-top:4px"><div class="field-label" style="margin-bottom:6px">Webhook payload</div>' + codeBlock(r.payload) + '</div>' +
+    '<div style="margin-top:14px"><div class="field-label" style="margin-bottom:6px">Headers</div>' + codeBlock(r.headers) + '</div>' +
+    '<div style="margin-top:14px"><div class="field-label" style="margin-bottom:6px">Response</div>' + codeBlock(r.response) + '</div>';
+}
+function renderApiDetail(r) {
+  return fieldRow('Type', 'API request') +
+    fieldRow('Time', r.time) +
+    idRow('Request ID', r.requestId) +
+    fieldRow('Method + Path', '<span style="font-family:var(--font-mono)">' + r.method + ' ' + r.path + '</span>') +
+    fieldRow('Status code', r.statusCode) +
+    fieldRow('API version', r.apiVersion) +
+    fieldRow('Duration', r.duration) +
+    fieldRow('Shop', '<a href="stores.html">' + r.shop + '</a>') +
+    idRow('Shop ID', r.shopId) +
+    '<div style="margin-top:4px"><div class="field-label" style="margin-bottom:6px">Request body</div>' + codeBlock(r.body) + '</div>' +
+    '<div style="margin-top:14px"><div class="field-label" style="margin-bottom:6px">Response body</div>' + codeBlock(r.response) + '</div>';
 }
 
 function openLogDetail(idx) {
@@ -2003,14 +2125,13 @@ function openLogDetail(idx) {
     ? '<span class="pill pill-success">OK</span>'
     : '<span class="pill pill-danger">' + (r.errorCode || 'Error') + '</span>';
   document.getElementById('log-detail-status-badge').innerHTML = badge;
-  document.getElementById('log-detail-body').innerHTML = (r.kind === 'graphql') ? renderGraphqlDetail(r) : renderWebhookDetail(r);
+  var detailHtml = r.kind === 'graphql' ? renderGraphqlDetail(r) : r.kind === 'api' ? renderApiDetail(r) : renderWebhookDetail(r);
+  document.getElementById('log-detail-body').innerHTML = detailHtml;
   document.querySelectorAll('#log-detail-body .copy-icon').forEach(function (el) { el.innerHTML = icon('copy', 12); });
-  document.getElementById('log-detail-backdrop').style.display = '';
-  document.getElementById('log-detail-panel').style.transform = 'translateX(0)';
+  openModal('log-detail-modal');
 }
 function closeLogDetail() {
-  document.getElementById('log-detail-panel').style.transform = 'translateX(100%)';
-  document.getElementById('log-detail-backdrop').style.display = 'none';
+  closeModal('log-detail-modal');
 }
 </script>
 </body>
