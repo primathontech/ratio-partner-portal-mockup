@@ -143,6 +143,22 @@
       <div id="payout-account-warning" style="display:none;margin-top:10px;font:500 12px/17px var(--font-sans);color:var(--danger-text)">Payments cannot be processed until a payout account is added.</div>
     </div>
 
+    <div class="card card-pad" style="margin-bottom:16px">
+      <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Billing information</span>
+      <div id="billing-info-has" class="payout-account-row" style="border:1px solid var(--line-100)">
+        <div>
+          <div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)" id="billing-info-label">Nutristar Digital</div>
+          <div style="font:400 12px/17px var(--font-sans);color:var(--text-muted)" id="billing-info-sub">14/2 Richmond Road, Bengaluru, Karnataka 560025 &bull; GSTIN 29AAJCN5678K1Z2</div>
+        </div>
+        <span class="btn btn-secondary btn-sm" onclick="openBillingInfoModal()">Update</span>
+      </div>
+      <div id="billing-info-none" class="payout-account-row" style="border:1px dashed var(--line-150);display:none">
+        <div style="font:400 13px/19px var(--font-sans);color:var(--text-muted)">No billing details on file yet.</div>
+        <span class="btn btn-primary btn-sm" onclick="openBillingInfoModal()">Add details</span>
+      </div>
+      <div style="margin-top:10px;font:400 12px/17px var(--font-sans);color:var(--ink-300)">Used as the "Bill to" details on your GST payout invoices.</div>
+    </div>
+
     <div id="payout-has">
       <div class="card card-pad" style="margin-bottom:16px">
         <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">This month so far</span>
@@ -292,9 +308,9 @@
       <div style="margin-top:26px;display:flex;gap:40px;flex-wrap:wrap">
         <div style="flex:1;min-width:200px">
           <div style="font:600 11px/16px var(--font-sans);letter-spacing:0.5px;color:var(--ink-300);text-transform:uppercase">Bill to</div>
-          <div style="font:600 14px/20px var(--font-sans);color:var(--ink-900);margin-top:4px">Nutristar Digital</div>
-          <div style="font:400 13px/19px var(--font-sans);color:var(--ink-550);margin-top:2px">14/2 Richmond Road<br>Bengaluru, Karnataka 560025<br>India</div>
-          <div style="font:400 12px/17px var(--font-sans);color:var(--ink-300);margin-top:4px">GSTIN 29AAJCN5678K1Z2</div>
+          <div id="inv-billto-name" style="font:600 14px/20px var(--font-sans);color:var(--ink-900);margin-top:4px">Nutristar Digital</div>
+          <div id="inv-billto-address" style="font:400 13px/19px var(--font-sans);color:var(--ink-550);margin-top:2px">14/2 Richmond Road<br>Bengaluru, Karnataka 560025<br>India</div>
+          <div id="inv-billto-gstin" style="font:400 12px/17px var(--font-sans);color:var(--ink-300);margin-top:4px">GSTIN 29AAJCN5678K1Z2</div>
         </div>
         <div style="flex:1;min-width:200px">
           <div style="font:600 11px/16px var(--font-sans);letter-spacing:0.5px;color:var(--ink-300);text-transform:uppercase">Timeline</div>
@@ -319,6 +335,46 @@
   <option value="has" selected>Account on file</option>
   <option value="none">No account yet</option>
 </select>
+<select class="demo-version-switch" id="billing-info-demo-switch" style="top:76px" onchange="toggleBillingInfoDemo(this.value === 'has')" title="Demo: billing information on file or not">
+  <option value="has" selected>Billing info on file</option>
+  <option value="none">No billing info yet</option>
+</select>
+
+<!-- Billing information modal -->
+<div id="billing-info-modal" class="modal-overlay">
+  <div class="modal" style="width:460px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;padding:0">
+    <div style="padding:24px 24px 0">
+      <div class="modal-title">Billing information</div>
+      <div class="modal-sub">This appears as the "Bill to" details on your GST payout invoices.</div>
+    </div>
+    <div style="padding:20px 24px;overflow-y:auto;flex:1">
+      <div style="margin-bottom:14px"><label class="field-label">Business name</label><input class="input" id="bi-business-name" placeholder="Nutristar Digital"></div>
+      <div style="margin-bottom:14px"><label class="field-label">GST tax ID (GSTIN)</label><input class="input" id="bi-gstin" placeholder="29AAJCN5678K1Z2" style="text-transform:uppercase"></div>
+      <div style="margin-bottom:14px"><label class="field-label">Business email</label><input class="input" id="bi-business-email" placeholder="you@company.com"></div>
+      <div style="margin-bottom:14px"><label class="field-label">Support email</label><input class="input" id="bi-support-email" placeholder="support@company.com"></div>
+      <div style="margin-bottom:14px"><label class="field-label">Phone number</label><input class="input" type="tel" id="bi-phone" placeholder="+91 98765 43210"></div>
+      <div style="margin-bottom:14px"><label class="field-label">Address 1</label><input class="input" id="bi-address1" placeholder="Street address"></div>
+      <div style="margin-bottom:14px"><label class="field-label">Address 2</label><input class="input" id="bi-address2" placeholder="Apartment, suite, etc. (optional)"></div>
+      <div style="display:flex;gap:12px;margin-bottom:14px">
+        <div style="flex:1"><label class="field-label">City</label><input class="input" id="bi-city"></div>
+        <div style="flex:1"><label class="field-label">ZIP / Postal code</label><input class="input" id="bi-zip"></div>
+      </div>
+      <div style="display:flex;gap:12px;margin-bottom:6px">
+        <div style="flex:1"><label class="field-label">State</label>
+          <select class="input" id="bi-state"><option>Andhra Pradesh</option><option>Delhi</option><option>Gujarat</option><option>Haryana</option><option>Karnataka</option><option>Kerala</option><option>Maharashtra</option><option>Tamil Nadu</option><option>Telangana</option><option>Uttar Pradesh</option><option>West Bengal</option><option>Other</option></select>
+        </div>
+        <div style="flex:1"><label class="field-label">Country</label>
+          <select class="input" id="bi-country"><option>India</option><option>United States</option><option>United Kingdom</option><option>United Arab Emirates</option><option>Singapore</option><option>Other</option></select>
+        </div>
+      </div>
+      <div style="font:400 12px/18px var(--font-sans);color:var(--ink-300);margin-top:10px">Provide your registered business address. This is required to generate GST-compliant invoices for your payouts. <a href="https://partners.ratio.win/docs#billing">Learn more about GST invoicing</a>.</div>
+    </div>
+    <div class="no-print" style="display:flex;justify-content:flex-end;gap:8px;padding:14px 24px;border-top:1px solid var(--line-100);flex-shrink:0">
+      <span class="btn btn-secondary" onclick="closeModal('billing-info-modal')">Cancel</span>
+      <span class="btn btn-primary" onclick="saveBillingInfo()">Save</span>
+    </div>
+  </div>
+</div>
 
 <!-- Payout account modal -->
 <div id="payout-account-modal" class="modal-overlay">
@@ -457,6 +513,77 @@ function updatePendingPayoutLine() {
     ? ('Estimated payout date Oct 22, 2026 via bank account (' + document.getElementById('payout-account-label').textContent + ')')
     : 'Estimated payout date Oct 22, 2026 — add a payout account below to receive it.';
 }
+var BILLING_INFO = {
+  businessName: 'Nutristar Digital',
+  gstin: '29AAJCN5678K1Z2',
+  businessEmail: 'aakash.singh@gokwik.co',
+  supportEmail: 'support@nutristar.in',
+  phone: '+91 98765 43210',
+  address1: '14/2 Richmond Road',
+  address2: '',
+  city: 'Bengaluru',
+  zip: '560025',
+  state: 'Karnataka',
+  country: 'India'
+};
+var billingInfoOnFile = true;
+function renderBillingInfoCard() {
+  document.getElementById('billing-info-has').style.display = billingInfoOnFile ? 'flex' : 'none';
+  document.getElementById('billing-info-none').style.display = billingInfoOnFile ? 'none' : 'flex';
+  if (billingInfoOnFile) {
+    document.getElementById('billing-info-label').textContent = BILLING_INFO.businessName;
+    document.getElementById('billing-info-sub').textContent = BILLING_INFO.address1 + ', ' + BILLING_INFO.city + ', ' + BILLING_INFO.state + ' ' + BILLING_INFO.zip + ' • GSTIN ' + BILLING_INFO.gstin;
+  }
+}
+function toggleBillingInfoDemo(hasInfo) {
+  billingInfoOnFile = hasInfo;
+  renderBillingInfoCard();
+}
+function openBillingInfoModal() {
+  document.getElementById('bi-business-name').value = BILLING_INFO.businessName;
+  document.getElementById('bi-gstin').value = BILLING_INFO.gstin;
+  document.getElementById('bi-business-email').value = BILLING_INFO.businessEmail;
+  document.getElementById('bi-support-email').value = BILLING_INFO.supportEmail;
+  document.getElementById('bi-phone').value = BILLING_INFO.phone;
+  document.getElementById('bi-address1').value = BILLING_INFO.address1;
+  document.getElementById('bi-address2').value = BILLING_INFO.address2;
+  document.getElementById('bi-city').value = BILLING_INFO.city;
+  document.getElementById('bi-zip').value = BILLING_INFO.zip;
+  document.getElementById('bi-state').value = BILLING_INFO.state;
+  document.getElementById('bi-country').value = BILLING_INFO.country;
+  openModal('billing-info-modal');
+}
+function saveBillingInfo() {
+  var name = document.getElementById('bi-business-name').value.trim();
+  var gstin = document.getElementById('bi-gstin').value.trim().toUpperCase();
+  var address1 = document.getElementById('bi-address1').value.trim();
+  var city = document.getElementById('bi-city').value.trim();
+  var zip = document.getElementById('bi-zip').value.trim();
+  if (!name || !gstin || !address1 || !city || !zip) {
+    showToast('Please fill in business name, GSTIN, and your full address.');
+    return;
+  }
+  BILLING_INFO = {
+    businessName: name,
+    gstin: gstin,
+    businessEmail: document.getElementById('bi-business-email').value.trim(),
+    supportEmail: document.getElementById('bi-support-email').value.trim(),
+    phone: document.getElementById('bi-phone').value.trim(),
+    address1: address1,
+    address2: document.getElementById('bi-address2').value.trim(),
+    city: city,
+    zip: zip,
+    state: document.getElementById('bi-state').value,
+    country: document.getElementById('bi-country').value
+  };
+  billingInfoOnFile = true;
+  document.getElementById('billing-info-demo-switch').value = 'has';
+  renderBillingInfoCard();
+  closeModal('billing-info-modal');
+  showToast('Billing information saved.');
+}
+renderBillingInfoCard();
+
 function bankNameFromIfsc(ifsc) {
   var map = { HDFC: 'HDFC Bank', ICIC: 'ICICI Bank', SBIN: 'State Bank of India', UTIB: 'Axis Bank', KKBK: 'Kotak Mahindra Bank', YESB: 'Yes Bank', PUNB: 'Punjab National Bank', INDB: 'IndusInd Bank' };
   return map[ifsc.slice(0, 4).toUpperCase()] || 'Bank account';
@@ -688,6 +815,16 @@ function openPayoutInvoice() {
     'Invoice issued: ' + meta.payoutDate + '<br>' +
     (meta.paid ? 'Payout sent: ' + meta.payoutDate : 'Payout scheduled: ' + meta.payoutDate) + '<br>' +
     'Invoice generated: Oct 5, 2026';
+
+  if (billingInfoOnFile) {
+    document.getElementById('inv-billto-name').textContent = BILLING_INFO.businessName;
+    document.getElementById('inv-billto-address').innerHTML = BILLING_INFO.address1 + (BILLING_INFO.address2 ? ', ' + BILLING_INFO.address2 : '') + '<br>' + BILLING_INFO.city + ', ' + BILLING_INFO.state + ' ' + BILLING_INFO.zip + '<br>' + BILLING_INFO.country;
+    document.getElementById('inv-billto-gstin').textContent = 'GSTIN ' + BILLING_INFO.gstin;
+  } else {
+    document.getElementById('inv-billto-name').textContent = 'Billing details not added';
+    document.getElementById('inv-billto-address').innerHTML = 'Add your business billing information under Settings → Payouts to complete this invoice.';
+    document.getElementById('inv-billto-gstin').textContent = '';
+  }
 
   openModal('payout-invoice-modal');
 }
