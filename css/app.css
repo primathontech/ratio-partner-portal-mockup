@@ -25,7 +25,7 @@ input,select,textarea{font-family:var(--font-sans)}
   display:block;
 }
 
-/* Logo placeholder — real Ratio wordmark PNG to be swapped in (see readme) */
+/* Ratio wordmark — "RAT" + a blue slash + "O", matching the brand logo */
 .rp-logo{
   font:700 20px/1 var(--font-sans);
   letter-spacing:-0.5px;
@@ -34,7 +34,12 @@ input,select,textarea{font-family:var(--font-sans)}
   align-items:center;
   white-space:nowrap;
 }
-.rp-logo::after{content:"";}
+.rp-logo-slash{
+  display:inline-block;
+  color:var(--accent);
+  transform:skewX(-10deg);
+  margin:0 1px;
+}
 
 /* ---------- Buttons ---------- */
 .btn{

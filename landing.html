@@ -15,9 +15,21 @@ body{background:#fff}
 .feature-icon{width:36px;height:36px;border-radius:8px;background:var(--accent-tint);display:flex;align-items:center;justify-content:center}
 @media (max-width:860px){
   .features-grid{grid-template-columns:1fr !important}
-  .stats-grid{grid-template-columns:1fr 1fr !important;row-gap:24px !important}
+  .stats-grid{grid-template-columns:1fr !important;row-gap:24px !important}
   .steps-grid{grid-template-columns:1fr !important}
   .footer-cols{grid-template-columns:1fr 1fr !important;row-gap:28px !important}
+}
+@keyframes hero-drawline{to{stroke-dashoffset:0}}
+@keyframes hero-fadepoly{to{opacity:0.08}}
+@keyframes hero-livepulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero-nav-item{height:30px;border-radius:6px;padding:0 8px;display:flex;align-items:center;gap:8px;font:400 13px/18px var(--font-sans);color:var(--ink-700);white-space:nowrap}
+.hero-nav-active{background:var(--line-100);color:var(--accent)}
+.hero-nav-icon{display:inline-flex;width:14px;height:14px;flex-shrink:0}
+@media (max-width:600px){
+  #dashboard-preview .hero-nav-item > span:last-child{display:none}
+  #dashboard-preview .hero-sidebar{width:44px !important}
+  #dashboard-preview .hero-sidebar-logo{display:none}
+  #dashboard-preview .hero-nav-item{justify-content:center;padding:0}
 }
 </style>
 </head>
@@ -25,10 +37,9 @@ body{background:#fff}
 
 <div class="marketing-header" style="border-bottom:1px solid var(--line-100);position:sticky;top:0;background:#fff;z-index:20">
   <div style="max-width:1152px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;box-sizing:border-box">
-    <span class="rp-logo">Ratio</span>
+    <span class="rp-logo">RAT<span class="rp-logo-slash">/</span>O</span>
     <div class="nav-links marketing-nav-links" style="display:flex;align-items:center;gap:32px">
-      <a href="#apps-preview" class="nav-link">Apps</a>
-      <a href="pricing.html" class="nav-link">Pricing</a>
+      <a href="https://apps.ratio.win" class="nav-link">Apps</a>
       <a href="documentation.html" class="nav-link">Documentation</a>
       <a href="support.html" class="nav-link">Support</a>
     </div>
@@ -39,8 +50,7 @@ body{background:#fff}
     <div class="btn-icon marketing-hamburger" onclick="toggleMarketingNav()" id="marketing-hamburger-icon"></div>
   </div>
   <div id="marketing-mobile-panel" class="marketing-mobile-panel">
-    <a href="#apps-preview" onclick="toggleMarketingNav()">Apps</a>
-    <a href="pricing.html">Pricing</a>
+    <a href="https://apps.ratio.win">Apps</a>
     <a href="documentation.html">Documentation</a>
     <a href="support.html">Support</a>
     <div class="mp-divider"></div>
@@ -55,40 +65,63 @@ body{background:#fff}
   <p style="margin:20px auto 0;max-width:560px;font:400 18px/28px var(--font-sans);color:var(--text-muted)">One dashboard for your apps, your dev store and every client engagement. List a paid app, get scoped access to a client's store, and see your earnings in one place.</p>
   <div style="margin-top:32px;display:flex;align-items:center;justify-content:center;gap:12px">
     <a href="onboarding.html" class="btn btn-primary" style="height:40px;padding:0 24px;font-size:15px">Start building</a>
-    <span class="btn btn-secondary" style="height:40px;padding:0 24px;font-size:15px">Read the documentation</span>
+    <a href="documentation.html" class="btn btn-secondary" style="height:40px;padding:0 24px;font-size:15px">Read the documentation</a>
   </div>
 </div>
 
-<div id="apps-preview" style="max-width:960px;margin:56px auto 0;padding:0 24px;box-sizing:border-box;scroll-margin-top:80px">
-  <div style="border:1px solid var(--line-100);border-radius:12px;padding:20px;box-shadow:0 0 0 1px var(--line-150)">
-    <div style="display:flex;align-items:center;gap:8px;padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid var(--line-100)">
+<div id="dashboard-preview" style="max-width:860px;margin:56px auto 0;padding:0 24px;box-sizing:border-box">
+  <div style="border:1px solid var(--line-100);border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px var(--line-150)">
+    <div style="display:flex;align-items:center;gap:8px;padding:13px 20px;border-bottom:1px solid var(--line-100)">
       <span style="width:10px;height:10px;border-radius:50%;background:var(--line-250)"></span>
       <span style="width:10px;height:10px;border-radius:50%;background:var(--line-250)"></span>
       <span style="width:10px;height:10px;border-radius:50%;background:var(--line-250)"></span>
-      <span style="margin-left:12px;font:400 13px/18px var(--font-sans);color:var(--text-placeholder)">partners.ratio.win/apps</span>
+      <span style="margin-left:12px;font:400 13px/18px var(--font-sans);color:var(--text-placeholder)">partners.ratio.win</span>
     </div>
-    <div style="display:flex;align-items:center;gap:14px;padding:12px 4px;border-bottom:1px solid var(--line-100)">
-      <span class="swatch" style="width:36px;height:36px;background:var(--blue-100)"></span>
-      <div style="flex:1;text-align:left"><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Wishlist Pro</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-placeholder)">1,204 installs</div></div>
-      <span class="pill pill-success">Published</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:14px;padding:12px 4px;border-bottom:1px solid var(--line-100)">
-      <span class="swatch" style="width:36px;height:36px;background:var(--warning-bg)"></span>
-      <div style="flex:1;text-align:left"><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Loyalty Points</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-placeholder)">812 installs</div></div>
-      <span class="pill pill-warning">In review</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:14px;padding:12px 4px">
-      <span class="swatch" style="width:36px;height:36px;background:var(--line-100)"></span>
-      <div style="flex:1;text-align:left"><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Size Finder</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-placeholder)">96 installs</div></div>
-      <span class="pill pill-neutral">Draft</span>
+
+    <div style="display:flex;text-align:left">
+      <div class="hero-sidebar" style="width:148px;flex-shrink:0;border-right:1px solid var(--line-100);padding:14px 10px;display:flex;flex-direction:column;gap:2px;box-sizing:border-box">
+        <div class="hero-sidebar-logo" style="padding:4px 6px 14px"><span class="rp-logo" style="font-size:15px">RAT<span class="rp-logo-slash">/</span>O</span></div>
+        <div class="hero-nav-item hero-nav-active"><span class="hero-nav-icon" data-icon="home"></span><span>Home</span></div>
+        <div class="hero-nav-item"><span class="hero-nav-icon" data-icon="apps"></span><span>Apps</span></div>
+        <div class="hero-nav-item"><span class="hero-nav-icon" data-icon="stores"></span><span>Stores</span></div>
+        <div class="hero-nav-item"><span class="hero-nav-icon" data-icon="team"></span><span>Team</span></div>
+        <div class="hero-nav-item"><span class="hero-nav-icon" data-icon="settings"></span><span>Settings</span></div>
+      </div>
+
+      <div style="flex:1;min-width:0;padding:20px;box-sizing:border-box">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:7px">
+            <span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">Earnings</span>
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--success-text);animation:hero-livepulse 1.8s ease-in-out infinite"></span>
+          </div>
+          <span style="font:400 12px/16px var(--font-sans);color:var(--text-placeholder)">Last 30 days</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin-top:4px">
+          <span id="hero-earn-number" style="font:600 32px/38px var(--font-sans);color:var(--ink-900);font-variant-numeric:tabular-nums">&#8377;0</span>
+          <span style="display:inline-flex;align-items:center;gap:3px;font:500 13px/18px var(--font-sans);color:var(--success-text)">&uarr; 18%</span>
+        </div>
+
+        <svg viewBox="0 0 600 140" style="width:100%;height:140px;margin-top:10px;display:block" preserveAspectRatio="none">
+          <polyline points="0,100 40,85 80,92 120,65 160,75 200,45 240,58 280,30 320,42 360,18 400,38 440,25 480,12 520,30 560,16 600,5" fill="none" stroke="#3F53FE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" pathLength="100" style="stroke-dasharray:100;stroke-dashoffset:100;animation:hero-drawline 2s ease-out 0.3s forwards"/>
+          <polygon points="0,100 40,85 80,92 120,65 160,75 200,45 240,58 280,30 320,42 360,18 400,38 440,25 480,12 520,30 560,16 600,5 600,140 0,140" fill="#3F53FE" opacity="0" style="animation:hero-fadepoly 1s ease-out 1.8s forwards"/>
+        </svg>
+        <div style="display:flex;justify-content:space-between;margin-top:2px">
+          <span style="font:400 11px/14px var(--font-sans);color:var(--ink-300)">30 days ago</span>
+          <span style="font:400 11px/14px var(--font-sans);color:var(--ink-300)">Today</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;padding-top:16px;border-top:1px solid var(--line-100)">
+          <div><div style="font:600 18px/24px var(--font-sans);color:var(--ink-900)">3</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">apps live</div></div>
+          <div><div style="font:600 18px/24px var(--font-sans);color:var(--ink-900)">1,204</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">installs this month</div></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="stats-grid" style="max-width:1152px;margin:72px auto 0;padding:32px 24px;box-sizing:border-box;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line-100);border-bottom:1px solid var(--line-100)">
+<div class="stats-grid" style="max-width:1152px;margin:72px auto 0;padding:32px 24px;box-sizing:border-box;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line-100);border-bottom:1px solid var(--line-100)">
   <div style="text-align:center"><div style="font:600 32px/38px var(--font-sans);color:var(--ink-900)">2,400+</div><div style="margin-top:4px;font:400 13px/18px var(--font-sans);color:var(--text-muted)">merchant stores on Ratio</div></div>
   <div style="text-align:center"><div style="font:600 32px/38px var(--font-sans);color:var(--ink-900)">340+</div><div style="margin-top:4px;font:400 13px/18px var(--font-sans);color:var(--text-muted)">apps published by partners</div></div>
-  <div style="text-align:center"><div style="font:600 32px/38px var(--font-sans);color:var(--ink-900)">48h</div><div style="margin-top:4px;font:400 13px/18px var(--font-sans);color:var(--text-muted)">average review turnaround</div></div>
   <div style="text-align:center"><div style="font:600 32px/38px var(--font-sans);color:var(--ink-900)">1</div><div style="margin-top:4px;font:400 13px/18px var(--font-sans);color:var(--text-muted)">dashboard for everything</div></div>
 </div>
 
@@ -152,13 +185,12 @@ body{background:#fff}
   <div style="max-width:1152px;margin:0 auto;padding:48px 24px;box-sizing:border-box">
     <div class="footer-cols" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:24px">
       <div>
-        <span class="rp-logo" style="font-size:18px">Ratio</span>
+        <span class="rp-logo" style="font-size:18px">RAT<span class="rp-logo-slash">/</span>O</span>
         <div style="margin-top:12px;font:400 13px/19px var(--font-sans);color:var(--text-placeholder);max-width:220px">The commerce platform for D2C brands &mdash; and the partners who build for them.</div>
       </div>
       <div style="display:flex;flex-direction:column;gap:10px">
         <span style="font:500 12px/16px var(--font-sans);text-transform:uppercase;letter-spacing:0.5px;color:var(--text-placeholder);margin-bottom:2px">Product</span>
-        <a href="#apps-preview" class="nav-link" style="font-size:13px">Apps</a>
-        <a href="pricing.html" class="nav-link" style="font-size:13px">Pricing</a>
+        <a href="https://apps.ratio.win" class="nav-link" style="font-size:13px">Apps</a>
         <a href="#feature-partner-access" class="nav-link" style="font-size:13px">Partner access</a>
       </div>
       <div style="display:flex;flex-direction:column;gap:10px">
@@ -185,6 +217,25 @@ document.querySelectorAll('.feature-icon').forEach(function (el, i) {
   el.querySelector('.rp-icon').style.color = 'var(--accent)';
 });
 document.getElementById('marketing-hamburger-icon').innerHTML = icon('menu', 18);
+document.querySelectorAll('.hero-nav-icon').forEach(function (el) {
+  el.innerHTML = icon(el.getAttribute('data-icon'), 14);
+});
+
+(function () {
+  var el = document.getElementById('hero-earn-number');
+  if (!el) return;
+  var target = 284650;
+  var start = null;
+  var dur = 1400;
+  function step(ts) {
+    if (!start) start = ts;
+    var p = Math.min(1, (ts - start) / dur);
+    var eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = '₹' + Math.round(target * eased).toLocaleString('en-IN');
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+})();
 </script>
 </body>
 </html>

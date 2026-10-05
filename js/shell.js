@@ -78,7 +78,7 @@ function renderShell(opts) {
 
   var sidenavHtml =
     '<div class="sidenav" id="sidenav-root">' +
-      '<a href="home.html" class="sidenav-logo" style="text-decoration:none"><span class="rp-logo">Ratio</span></a>' +
+      '<a href="home.html" class="sidenav-logo" style="text-decoration:none"><span class="rp-logo">RAT<span class="rp-logo-slash">/</span>O</span></a>' +
       '<div class="dropdown search-box">' +
         icon('search', 14) +
         '<input id="shell-search-input" placeholder="Search apps, stores and team" oninput="shellSearch(this.value)" onfocus="openDropdown(\'search-results\')">' +
@@ -110,7 +110,7 @@ function renderShell(opts) {
     topbarEl.outerHTML =
       '<div class="mobilebar">' +
         '<div class="btn-icon" onclick="openMobileNav()">' + icon('menu', 18) + '</div>' +
-        '<a href="landing.html" class="rp-logo" style="text-decoration:none;font-size:17px">Ratio</a>' +
+        '<a href="landing.html" class="rp-logo" style="text-decoration:none;font-size:17px">RAT<span class="rp-logo-slash">/</span>O</a>' +
         '<span style="flex:1"></span>' +
         '<div class="dropdown">' +
           '<div class="btn-icon" onclick="toggleDropdown(\'mobile-notif-menu\')" style="position:relative">' +
