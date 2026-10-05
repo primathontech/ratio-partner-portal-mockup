@@ -16,6 +16,7 @@
 .permcat.open .permcat-body{display:flex}
 .permcat.open .permcat-chevron{transform:rotate(180deg)}
 .permcat-chevron{transition:transform var(--transition-control)}
+.audit-filter-btn{width:160px;justify-content:space-between}
 </style>
 </head>
 <body>
@@ -26,8 +27,8 @@
 <div class="content content-wide">
   <div class="page-header-row">
     <span class="page-title">Team</span>
-    <span class="tab-action" data-for="members"><span class="btn btn-primary"><span id="invite-plus"></span>Invite people</span></span>
-    <span class="tab-action" data-for="roles" style="display:none"><span class="btn btn-primary" onclick="openRoleDetail('New role')"><span id="role-plus"></span>Add role</span></span>
+    <span class="tab-action" data-for="members"><span class="btn btn-primary" onclick="openInviteModal()"><span id="invite-plus"></span>Invite people</span></span>
+    <span class="tab-action" data-for="roles" style="display:none"><span class="btn btn-primary" onclick="openRoleModal(null)"><span id="role-plus"></span>Add role</span></span>
     <span class="tab-action" data-for="audit" style="display:none"><span class="btn btn-secondary"><span id="export-dl"></span>Export CSV</span></span>
   </div>
 
@@ -42,101 +43,20 @@
   <div data-panelgroup="team" data-panelkey="members">
     <div class="card members-table" style="overflow:hidden;margin-bottom:16px">
       <div class="table-head-row"><span>User</span><span>Status</span><span>Roles</span><span></span></div>
-
-      <div class="table-row" style="display:grid">
-        <span class="cell-name"><span class="org-avatar" style="background:var(--blue-100);color:var(--accent)">AR</span><span><span class="truncate" style="display:block">Asha Rao</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">asha@nutristar.in</span></span></span>
-        <span class="pill pill-success">Active</span>
-        <span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Organisation Owner</span>
-        <span class="kebab-icon" style="color:var(--ink-300);cursor:pointer"></span>
-      </div>
-      <div class="table-row" style="display:grid">
-        <span class="cell-name"><span class="org-avatar" style="background:var(--blue-100);color:var(--accent)">KS</span><span><span class="truncate" style="display:block">Karan Shah</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">karan@nutristar.in</span></span></span>
-        <span class="pill pill-success">Active</span>
-        <span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">App Developer</span>
-        <span class="kebab-icon" style="color:var(--ink-300);cursor:pointer"></span>
-      </div>
-      <div class="table-row" style="display:grid">
-        <span class="cell-name"><span class="org-avatar" style="background:var(--blue-100);color:var(--accent)">PN</span><span><span class="truncate" style="display:block">Priya Nair</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">priya@nutristar.in</span></span></span>
-        <span class="pill pill-success">Active</span>
-        <span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Store Admin, App Developer</span>
-        <span class="kebab-icon" style="color:var(--ink-300);cursor:pointer"></span>
-      </div>
-      <div class="table-row" style="display:grid">
-        <span class="cell-name"><span class="org-avatar" style="background:var(--blue-100);color:var(--accent)">RM</span><span><span class="truncate" style="display:block">Rahul Mehta</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">rahul@nutristar.in</span></span></span>
-        <span class="pill pill-danger">Suspended</span>
-        <span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Member</span>
-        <span class="kebab-icon" style="color:var(--ink-300);cursor:pointer"></span>
-      </div>
+      <div id="members-rows"></div>
     </div>
 
     <div style="font:500 13px/18px var(--font-sans);color:var(--text-muted);margin-bottom:8px">Pending invitations</div>
     <div class="card" style="overflow:hidden">
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px">
-        <div><span style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">deepa@nutristar.in</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-left:8px">invited as Store User Admin &middot; expires in 5 days</span></div>
-        <div style="display:flex;gap:8px"><span class="btn btn-secondary btn-sm">Resend</span><span class="btn btn-secondary btn-sm">Revoke</span></div>
-      </div>
+      <div id="invites-list"></div>
     </div>
   </div>
 
   <!-- Roles -->
   <div data-panelgroup="team" data-panelkey="roles" style="display:none">
-    <div id="roles-list">
-      <div class="card roles-table" style="overflow:hidden">
-        <div class="table-head-row"><span>Name</span><span>Type</span><span>Members</span></div>
-        <div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleDetail('Organisation Owner')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Organisation Owner</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">System</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">1</span></div>
-        <div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleDetail('Organisation Admin')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Organisation Admin</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">System</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">2</span></div>
-        <div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleDetail('Organisation User Admin')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Organisation User Admin</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">System</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">0</span></div>
-        <div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleDetail('Store Admin')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Store Admin</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">System</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">1</span></div>
-        <div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleDetail('Store User Admin')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Store User Admin</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">System</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">1</span></div>
-        <div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleDetail('App Developer')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">App Developer</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">System</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">2</span></div>
-        <div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleDetail('Member')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Member</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">System</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">1</span></div>
-        <div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleDetail('Billing viewer')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Billing viewer</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">Custom</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">1</span></div>
-      </div>
-    </div>
-
-    <div id="role-detail" style="display:none">
-      <div class="breadcrumb"><a href="#" onclick="closeRoleDetail();return false;">Roles</a><span>/</span><span class="current" id="role-detail-name"></span></div>
-      <div class="card card-pad" style="margin-bottom:16px">
-        <label class="field-label">Name</label>
-        <input class="input" id="role-name-input">
-        <label class="field-label" style="margin-top:14px">Description</label>
-        <input class="input" placeholder="Optional">
-        <label class="field-label" style="margin-top:14px">Category</label>
-        <select class="input" style="width:220px"><option>Store</option><option>Org</option></select>
-        <div class="field-help">Fixed at creation. A Store-category role is evaluated against the specific stores its assignment covers.</div>
-      </div>
-      <div class="card" style="overflow:hidden">
-        <div style="padding:16px 20px;border-bottom:1px solid var(--line-100)"><span style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Permissions</span></div>
-        <div class="permcat open">
-          <div class="permcat-head" onclick="this.parentElement.classList.toggle('open')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Apps</span><span style="display:flex;align-items:center;gap:8px"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-300)">2/2</span><span class="permcat-chevron" style="color:var(--ink-500)"></span></span></div>
-          <div class="permcat-body">
-            <div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px"><span class="perm-check" style="color:var(--success-text)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Full access</span></div>
-            <div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px"><span class="perm-check" style="color:var(--success-text)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">View only</span></div>
-          </div>
-        </div>
-        <div class="permcat open">
-          <div class="permcat-head" onclick="this.parentElement.classList.toggle('open')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Stores</span><span style="display:flex;align-items:center;gap:8px"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-300)">2/2</span><span class="permcat-chevron" style="color:var(--ink-500)"></span></span></div>
-          <div class="permcat-body">
-            <div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px"><span class="perm-check" style="color:var(--success-text)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Full access, scoped</span></div>
-            <div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px"><span class="perm-check" style="color:var(--success-text)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">View, scoped</span></div>
-          </div>
-        </div>
-        <div class="permcat">
-          <div class="permcat-head" onclick="this.parentElement.classList.toggle('open')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Team</span><span style="display:flex;align-items:center;gap:8px"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-300)">0/2</span><span class="permcat-chevron" style="color:var(--ink-500)"></span></span></div>
-          <div class="permcat-body">
-            <div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px"><span class="perm-check" style="color:var(--ink-300)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Invite members</span></div>
-            <div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px"><span class="perm-check" style="color:var(--ink-300)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Manage roles</span></div>
-          </div>
-        </div>
-        <div class="permcat">
-          <div class="permcat-head" onclick="this.parentElement.classList.toggle('open')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Settings</span><span style="display:flex;align-items:center;gap:8px"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-300)">0/2</span><span class="permcat-chevron" style="color:var(--ink-500)"></span></span></div>
-          <div class="permcat-body">
-            <div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px"><span class="perm-check" style="color:var(--ink-300)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Billing</span></div>
-            <div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px"><span class="perm-check" style="color:var(--ink-300)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Danger zone</span></div>
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;gap:8px;margin-top:16px"><span class="btn btn-primary">Save role</span><span class="btn btn-secondary" onclick="closeRoleDetail()">Cancel</span></div>
+    <div class="card roles-table" style="overflow:hidden">
+      <div class="table-head-row"><span>Name</span><span>Type</span><span>Members</span></div>
+      <div id="roles-rows"></div>
     </div>
   </div>
 
@@ -154,21 +74,84 @@
 
   <!-- Audit log -->
   <div data-panelgroup="team" data-panelkey="audit" style="display:none">
-    <div style="display:flex;gap:8px;margin-bottom:12px">
-      <select class="input" style="width:160px"><option>All actors</option><option>Asha Rao</option><option>Karan Shah</option></select>
-      <select class="input" style="width:160px"><option>All actions</option><option>Invitation</option><option>Role change</option><option>App</option></select>
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <div class="dropdown">
+        <span class="btn btn-secondary audit-filter-btn" onclick="toggleDropdown('actor-filter-panel')"><span id="actor-filter-label">All actors</span><span id="actor-filter-caret"></span></span>
+        <div id="actor-filter-panel" class="dropdown-panel" style="width:200px;padding:6px"></div>
+      </div>
+      <div class="dropdown">
+        <span class="btn btn-secondary audit-filter-btn" onclick="toggleDropdown('action-filter-panel')"><span id="action-filter-label">All actions</span><span id="action-filter-caret"></span></span>
+        <div id="action-filter-panel" class="dropdown-panel" style="width:200px;padding:6px"></div>
+      </div>
       <select class="input" style="width:160px"><option>Last 30 days</option><option>Last 7 days</option><option>Last 90 days</option></select>
     </div>
     <div class="card" style="overflow:hidden">
       <div class="table-head-row" style="grid-template-columns:1.4fr 2fr 1fr"><span>Actor</span><span>Action</span><span>When</span></div>
-      <div class="table-row" style="display:grid;grid-template-columns:1.4fr 2fr 1fr;height:48px"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Asha Rao</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">invited karan@nutristar.in as App Developer</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">2h ago</span></div>
-      <div class="table-row" style="display:grid;grid-template-columns:1.4fr 2fr 1fr;height:48px"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Asha Rao</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">created app Wishlist Pro</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">Yesterday</span></div>
-      <div class="table-row" style="display:grid;grid-template-columns:1.4fr 2fr 1fr;height:48px"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Karan Shah</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">submitted Loyalty Points for review</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">2 days ago</span></div>
-      <div class="table-row" style="display:grid;grid-template-columns:1.4fr 2fr 1fr;height:48px"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Priya Nair</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">requested access to wellversed.ratio.win</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">3 days ago</span></div>
+      <div id="audit-rows">
+        <div class="table-row" data-actor="Asha Rao" data-action-type="invitation" style="display:grid;grid-template-columns:1.4fr 2fr 1fr;height:48px"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Asha Rao</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">invited karan@nutristar.in as Admin</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">2h ago</span></div>
+        <div class="table-row" data-actor="Asha Rao" data-action-type="app" style="display:grid;grid-template-columns:1.4fr 2fr 1fr;height:48px"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Asha Rao</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">created app Wishlist Pro</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">Yesterday</span></div>
+        <div class="table-row" data-actor="Karan Shah" data-action-type="app" style="display:grid;grid-template-columns:1.4fr 2fr 1fr;height:48px"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Karan Shah</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">submitted Loyalty Points for review</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">2 days ago</span></div>
+        <div class="table-row" data-actor="Priya Nair" data-action-type="access-request" style="display:grid;grid-template-columns:1.4fr 2fr 1fr;height:48px"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Priya Nair</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">requested access to wellversed.ratio.win</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">3 days ago</span></div>
+        <div class="table-row" data-actor="Karan Shah" data-action-type="role-change" style="display:grid;grid-template-columns:1.4fr 2fr 1fr;height:48px"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Karan Shah</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">changed Rahul Mehta's role to Viewer</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">4 days ago</span></div>
+        <div class="table-row" data-actor="Asha Rao" data-action-type="role-change" style="display:grid;grid-template-columns:1.4fr 2fr 1fr;height:48px"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Asha Rao</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">suspended Rahul Mehta</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">5 days ago</span></div>
+      </div>
     </div>
   </div>
 
 </div>
+</div>
+
+<!-- Invite people modal -->
+<div id="invite-modal" class="modal-overlay">
+  <div class="modal" style="width:420px;padding:24px">
+    <div class="modal-title">Invite people</div>
+    <div class="modal-sub">Send an invite to join this organisation.</div>
+    <div style="margin-top:16px"><label class="field-label">Email address</label><input class="input" id="invite-email-input" placeholder="name@company.com"></div>
+    <div style="margin-top:14px"><label class="field-label">Role</label><select class="input" id="invite-role-select"></select></div>
+    <div class="field-help" id="invite-email-error" style="display:none;color:var(--danger-text)"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+      <span class="btn btn-secondary" onclick="closeModal('invite-modal')">Cancel</span>
+      <span class="btn btn-primary" onclick="submitInvite()">Send invite</span>
+    </div>
+  </div>
+</div>
+
+<!-- Change role modal -->
+<div id="role-assign-modal" class="modal-overlay">
+  <div class="modal" style="width:380px;padding:24px">
+    <div class="modal-title">Change role</div>
+    <div class="modal-sub" id="role-assign-sub"></div>
+    <div id="role-assign-checklist" style="margin-top:14px;display:flex;flex-direction:column;gap:2px"></div>
+    <div class="field-help" id="role-assign-error" style="display:none;color:var(--danger-text)">Select at least one role.</div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+      <span class="btn btn-secondary" onclick="closeModal('role-assign-modal')">Cancel</span>
+      <span class="btn btn-primary" onclick="saveRoleAssignment()">Save</span>
+    </div>
+  </div>
+</div>
+
+<!-- Role view / create modal -->
+<div id="role-modal" class="modal-overlay">
+  <div class="modal" style="width:640px;max-width:94vw;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;padding:0">
+    <div style="padding:20px 24px;border-bottom:1px solid var(--line-100);flex-shrink:0">
+      <label class="field-label">Name</label>
+      <input class="input" id="role-modal-name-input">
+      <label class="field-label" style="margin-top:14px">Description</label>
+      <input class="input" id="role-modal-desc-input" placeholder="Optional">
+      <label class="field-label" style="margin-top:14px">Category</label>
+      <select class="input" id="role-modal-category-select" style="width:220px"><option>Store</option><option>Org</option></select>
+      <div class="field-help" id="role-modal-help"></div>
+    </div>
+    <div style="padding:20px 24px;overflow-y:auto;flex:1">
+      <div class="card" style="overflow:hidden;margin-bottom:20px">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--line-100)"><span style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Permissions</span></div>
+        <div id="role-modal-permcats"></div>
+      </div>
+      <div style="font:500 13px/18px var(--font-sans);color:var(--text-muted);margin-bottom:8px">Members with this role</div>
+      <div class="card" style="overflow:hidden" id="role-modal-members"></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:14px 24px;border-top:1px solid var(--line-100);flex-shrink:0" id="role-modal-footer"></div>
+  </div>
 </div>
 
 <div id="toast" class="toast"></div>
@@ -178,27 +161,413 @@ renderShell({ active: 'team' });
 document.getElementById('invite-plus').innerHTML = icon('plus', 10);
 document.getElementById('role-plus').innerHTML = icon('plus', 10);
 document.getElementById('export-dl').innerHTML = icon('download', 10);
-document.querySelectorAll('.kebab-icon').forEach(function (el) { el.innerHTML = icon('kebab', 14); });
-document.querySelectorAll('.perm-check').forEach(function (el) { el.innerHTML = icon('check', 10); });
-document.querySelectorAll('.permcat-chevron').forEach(function (el) { el.innerHTML = icon('caret', 12); });
+document.getElementById('actor-filter-caret').innerHTML = icon('caret', 12);
+document.getElementById('action-filter-caret').innerHTML = icon('caret', 12);
+
+/* ---------------- Data (mock, client-side only) ---------------- */
+
+var PERM_CATEGORIES = [
+  { key: 'apps', label: 'Apps', perms: ['Full access', 'View only'] },
+  { key: 'stores', label: 'Stores', perms: ['Full access, scoped', 'View, scoped'] },
+  { key: 'team', label: 'Team', perms: ['Invite members', 'Manage roles'] },
+  { key: 'settings', label: 'Settings', perms: ['Billing', 'Danger zone'] }
+];
+
+var TEAM_ROLES = [
+  { id: 'owner', name: 'Organisation Owner', type: 'System', category: 'Org',
+    description: 'Full control over the organisation, including billing and danger-zone actions.',
+    perms: { apps: [true, true], stores: [true, true], team: [true, true], settings: [true, true] } },
+  { id: 'admin', name: 'Admin', type: 'System', category: 'Org',
+    description: 'Manage apps, stores, and team members on behalf of the organisation.',
+    perms: { apps: [true, true], stores: [true, true], team: [true, true], settings: [false, false] } },
+  { id: 'viewer', name: 'Viewer', type: 'System', category: 'Org',
+    description: 'Read-only access to apps and stores.',
+    perms: { apps: [false, true], stores: [false, true], team: [false, false], settings: [false, false] } },
+  { id: 'billing-viewer', name: 'Billing viewer', type: 'Custom', category: 'Org',
+    description: 'View billing and payout information only.',
+    perms: { apps: [false, false], stores: [false, false], team: [false, false], settings: [false, true] } }
+];
+
+var TEAM_MEMBERS = [
+  { id: 'ar', name: 'Asha Rao', email: 'asha@nutristar.in', initials: 'AR', status: 'Active', roles: ['Organisation Owner'] },
+  { id: 'ks', name: 'Karan Shah', email: 'karan@nutristar.in', initials: 'KS', status: 'Active', roles: ['Admin'] },
+  { id: 'pn', name: 'Priya Nair', email: 'priya@nutristar.in', initials: 'PN', status: 'Active', roles: ['Admin', 'Billing viewer'] },
+  { id: 'rm', name: 'Rahul Mehta', email: 'rahul@nutristar.in', initials: 'RM', status: 'Suspended', roles: ['Viewer'] }
+];
+
+var TEAM_INVITES = [
+  { email: 'deepa@nutristar.in', role: 'Viewer', expires: '5 days' }
+];
+
+/* ---------------- Members ---------------- */
+
+function isSoleOwner(member) {
+  if (member.roles.indexOf('Organisation Owner') === -1) return false;
+  var owners = TEAM_MEMBERS.filter(function (m) { return m.roles.indexOf('Organisation Owner') !== -1; });
+  return owners.length === 1;
+}
+
+function renderMembers() {
+  var wrap = document.getElementById('members-rows');
+  wrap.innerHTML = TEAM_MEMBERS.map(function (m) {
+    var pillClass = m.status === 'Active' ? 'pill-success' : 'pill-danger';
+    var menuId = 'member-menu-' + m.id;
+    var statusActionHtml;
+    if (m.status === 'Active') {
+      var locked = isSoleOwner(m);
+      statusActionHtml = locked
+        ? '<div class="menu-item" style="border-radius:6px;color:var(--ink-300);cursor:not-allowed" title="The sole Organisation Owner can’t be suspended.">Suspend user</div>'
+        : '<div class="menu-item" style="border-radius:6px" onclick="closeDropdown(\'' + menuId + '\');toggleMemberStatus(\'' + m.id + '\')">Suspend user</div>';
+    } else {
+      statusActionHtml = '<div class="menu-item" style="border-radius:6px" onclick="closeDropdown(\'' + menuId + '\');toggleMemberStatus(\'' + m.id + '\')">Reactivate user</div>';
+    }
+    return '<div class="table-row" style="display:grid">' +
+      '<span class="cell-name"><span class="org-avatar" style="background:var(--blue-100);color:var(--accent)">' + m.initials + '</span><span><span class="truncate" style="display:block">' + m.name + '</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">' + m.email + '</span></span></span>' +
+      '<span class="pill ' + pillClass + '">' + m.status + '</span>' +
+      '<span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">' + m.roles.join(', ') + '</span>' +
+      '<div class="dropdown">' +
+        '<span class="kebab-icon" style="color:var(--ink-300);cursor:pointer" onclick="toggleDropdown(\'' + menuId + '\')">' + icon('kebab', 14) + '</span>' +
+        '<div id="' + menuId + '" class="dropdown-panel" style="right:0;top:26px;width:180px;padding:6px">' +
+          '<div class="menu-item" style="border-radius:6px" onclick="closeDropdown(\'' + menuId + '\');openRoleAssignModal(\'' + m.id + '\')">Change role</div>' +
+          statusActionHtml +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function toggleMemberStatus(memberId) {
+  var member = TEAM_MEMBERS.filter(function (m) { return m.id === memberId; })[0];
+  if (!member) return;
+  if (member.status === 'Active' && isSoleOwner(member)) return;
+  member.status = member.status === 'Active' ? 'Suspended' : 'Active';
+  renderMembers();
+  showToast(member.name + (member.status === 'Suspended' ? ' has been suspended.' : ' has been reactivated.'));
+}
+
+/* ---------------- Pending invitations ---------------- */
+
+function renderInvites() {
+  var wrap = document.getElementById('invites-list');
+  if (!TEAM_INVITES.length) {
+    wrap.innerHTML = '<div style="padding:14px 20px;font:400 13px/18px var(--font-sans);color:var(--text-muted)">No pending invitations.</div>';
+    return;
+  }
+  wrap.innerHTML = TEAM_INVITES.map(function (inv, idx) {
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px' + (idx ? ';border-top:1px solid var(--line-100)' : '') + '">' +
+      '<div><span style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">' + inv.email + '</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-left:8px">invited as ' + inv.role + ' &middot; expires in ' + inv.expires + '</span></div>' +
+      '<div style="display:flex;gap:8px"><span class="btn btn-secondary btn-sm" onclick="resendInvite(' + idx + ')">Resend</span><span class="btn btn-secondary btn-sm" onclick="revokeInvite(' + idx + ')">Revoke</span></div>' +
+    '</div>';
+  }).join('');
+}
+
+function resendInvite(idx) {
+  var inv = TEAM_INVITES[idx];
+  if (!inv) return;
+  showToast('Invite resent to ' + inv.email + '.');
+}
+
+function revokeInvite(idx) {
+  var inv = TEAM_INVITES[idx];
+  if (!inv) return;
+  TEAM_INVITES.splice(idx, 1);
+  renderInvites();
+  showToast('Invitation to ' + inv.email + ' revoked.');
+}
+
+/* ---------------- Invite people modal ---------------- */
+
+function openInviteModal() {
+  var select = document.getElementById('invite-role-select');
+  select.innerHTML = TEAM_ROLES.map(function (r) { return '<option>' + r.name + '</option>'; }).join('');
+  document.getElementById('invite-email-input').value = '';
+  document.getElementById('invite-email-error').style.display = 'none';
+  openModal('invite-modal');
+}
+
+function submitInvite() {
+  var emailInput = document.getElementById('invite-email-input');
+  var email = emailInput.value.trim();
+  var errEl = document.getElementById('invite-email-error');
+  if (!email || email.indexOf('@') === -1 || email.indexOf('.') === -1) {
+    errEl.textContent = 'Enter a valid email address.';
+    errEl.style.display = '';
+    return;
+  }
+  errEl.style.display = 'none';
+  var role = document.getElementById('invite-role-select').value;
+  TEAM_INVITES.push({ email: email, role: role, expires: '7 days' });
+  renderInvites();
+  closeModal('invite-modal');
+  showToast('Invitation sent to ' + email + '.');
+}
+
+/* ---------------- Change role (member -> roles) modal ---------------- */
+
+var roleAssignMemberId = null;
+
+function openRoleAssignModal(memberId) {
+  var member = TEAM_MEMBERS.filter(function (m) { return m.id === memberId; })[0];
+  if (!member) return;
+  roleAssignMemberId = memberId;
+  document.getElementById('role-assign-sub').textContent = 'Choose the roles ' + member.name + ' should hold.';
+  document.getElementById('role-assign-error').style.display = 'none';
+  var list = document.getElementById('role-assign-checklist');
+  list.innerHTML = TEAM_ROLES.map(function (r) {
+    var checked = member.roles.indexOf(r.name) !== -1;
+    return '<div class="menu-item" style="gap:10px;border-radius:6px;padding:0 8px" onclick="toggleRoleAssignCheck(this)" data-role-name="' + r.name.replace(/"/g, '&quot;') + '">' +
+      '<span class="checkbox' + (checked ? ' checked' : '') + '">' + (checked ? icon('check', 9) : '') + '</span>' +
+      '<span>' + r.name + '</span>' +
+    '</div>';
+  }).join('');
+  openModal('role-assign-modal');
+}
+
+function toggleRoleAssignCheck(row) {
+  var box = row.querySelector('.checkbox');
+  box.classList.toggle('checked');
+  box.innerHTML = box.classList.contains('checked') ? icon('check', 9) : '';
+}
+
+function saveRoleAssignment() {
+  var member = TEAM_MEMBERS.filter(function (m) { return m.id === roleAssignMemberId; })[0];
+  if (!member) return;
+  var selected = [];
+  document.querySelectorAll('#role-assign-checklist > div').forEach(function (row) {
+    if (row.querySelector('.checkbox').classList.contains('checked')) selected.push(row.getAttribute('data-role-name'));
+  });
+  if (!selected.length) {
+    document.getElementById('role-assign-error').style.display = '';
+    return;
+  }
+  member.roles = selected;
+  renderMembers();
+  renderRolesTable();
+  closeModal('role-assign-modal');
+  showToast('Updated roles for ' + member.name + '.');
+}
+
+/* ---------------- Roles tab ---------------- */
+
+function renderRolesTable() {
+  var wrap = document.getElementById('roles-rows');
+  wrap.innerHTML = TEAM_ROLES.map(function (r) {
+    var memberCount = TEAM_MEMBERS.filter(function (m) { return m.roles.indexOf(r.name) !== -1; }).length;
+    return '<div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleModal(\'' + r.id + '\')">' +
+      '<span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">' + r.name + '</span>' +
+      '<span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">' + r.type + '</span>' +
+      '<span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">' + memberCount + '</span>' +
+    '</div>';
+  }).join('');
+}
+
+/* ---------------- Role view / create modal ---------------- */
+
+var roleModalId = null;
+var roleModalIsNew = false;
+var roleModalDraft = null;
+
+function openRoleModal(roleId) {
+  var role = roleId ? TEAM_ROLES.filter(function (r) { return r.id === roleId; })[0] : null;
+  var isNew = !role;
+  var isSystem = !!(role && role.type === 'System');
+  roleModalId = roleId;
+  roleModalIsNew = isNew;
+  roleModalDraft = {
+    name: role ? role.name : '',
+    description: role ? role.description : '',
+    category: role ? role.category : 'Store',
+    perms: role ? JSON.parse(JSON.stringify(role.perms)) : { apps: [false, false], stores: [false, false], team: [false, false], settings: [false, false] }
+  };
+
+  var nameInput = document.getElementById('role-modal-name-input');
+  nameInput.value = roleModalDraft.name;
+  nameInput.disabled = isSystem;
+  nameInput.style.opacity = isSystem ? '0.55' : '';
+  nameInput.style.pointerEvents = isSystem ? 'none' : '';
+
+  var descInput = document.getElementById('role-modal-desc-input');
+  descInput.value = roleModalDraft.description;
+  descInput.disabled = isSystem;
+  descInput.style.opacity = isSystem ? '0.55' : '';
+  descInput.style.pointerEvents = isSystem ? 'none' : '';
+
+  var catSelect = document.getElementById('role-modal-category-select');
+  catSelect.value = roleModalDraft.category;
+  catSelect.disabled = isSystem;
+  catSelect.style.opacity = isSystem ? '0.55' : '';
+  catSelect.style.pointerEvents = isSystem ? 'none' : '';
+
+  document.getElementById('role-modal-help').textContent = isSystem
+    ? 'System roles can’t be renamed or modified.'
+    : 'Fixed at creation. A Store-category role is evaluated against the specific stores its assignment covers.';
+
+  renderRoleModalPermcats(isSystem, true);
+  renderRoleModalMembers(role);
+  renderRoleModalFooter(isSystem);
+
+  openModal('role-modal');
+}
+
+function renderRoleModalPermcats(locked, resetOpenState) {
+  var wrap = document.getElementById('role-modal-permcats');
+  var openKeys = {};
+  if (!resetOpenState) {
+    wrap.querySelectorAll('.permcat').forEach(function (el) {
+      openKeys[el.getAttribute('data-catkey')] = el.classList.contains('open');
+    });
+  } else {
+    openKeys = { apps: true, stores: true, team: false, settings: false };
+  }
+
+  wrap.innerHTML = PERM_CATEGORIES.map(function (cat) {
+    var checkedCount = roleModalDraft.perms[cat.key].filter(Boolean).length;
+    var openCls = openKeys[cat.key] ? ' open' : '';
+    var rows = cat.perms.map(function (label, i) {
+      var checked = roleModalDraft.perms[cat.key][i];
+      var color = checked ? 'var(--success-text)' : 'var(--ink-300)';
+      var clickAttr = locked ? '' : (' onclick="toggleRolePerm(\'' + cat.key + '\',' + i + ')"');
+      var cursor = locked ? 'default' : 'pointer';
+      return '<div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px' + (locked ? ';opacity:0.55' : '') + '">' +
+        '<span class="perm-check" style="color:' + color + ';cursor:' + cursor + '"' + clickAttr + '>' + icon('check', 10) + '</span>' +
+        '<span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">' + label + '</span>' +
+      '</div>';
+    }).join('');
+    return '<div class="permcat' + openCls + '" data-catkey="' + cat.key + '">' +
+      '<div class="permcat-head" onclick="this.parentElement.classList.toggle(\'open\')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">' + cat.label + '</span><span style="display:flex;align-items:center;gap:8px"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-300)">' + checkedCount + '/2</span><span class="permcat-chevron" style="color:var(--ink-500)">' + icon('caret', 12) + '</span></span></div>' +
+      '<div class="permcat-body">' + rows + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function toggleRolePerm(catKey, idx) {
+  roleModalDraft.perms[catKey][idx] = !roleModalDraft.perms[catKey][idx];
+  renderRoleModalPermcats(false, false);
+}
+
+function renderRoleModalMembers(role) {
+  var wrap = document.getElementById('role-modal-members');
+  var members = role ? TEAM_MEMBERS.filter(function (m) { return m.roles.indexOf(role.name) !== -1; }) : [];
+  if (!members.length) {
+    wrap.innerHTML = '<div style="padding:14px 20px;font:400 13px/18px var(--font-sans);color:var(--text-muted)">No members assigned yet.</div>';
+    return;
+  }
+  wrap.innerHTML = members.map(function (m, idx) {
+    return '<div style="display:flex;align-items:center;gap:12px;padding:12px 20px' + (idx ? ';border-top:1px solid var(--line-100)' : '') + '">' +
+      '<span class="org-avatar" style="background:var(--blue-100);color:var(--accent)">' + m.initials + '</span>' +
+      '<div><span class="truncate" style="display:block;font:500 14px/20px var(--font-sans);color:var(--ink-900)">' + m.name + '</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">' + m.email + '</span></div>' +
+    '</div>';
+  }).join('');
+}
+
+function renderRoleModalFooter(isSystem) {
+  var footer = document.getElementById('role-modal-footer');
+  footer.innerHTML = isSystem
+    ? '<span class="btn btn-secondary" onclick="closeModal(\'role-modal\')">Close</span>'
+    : '<span class="btn btn-secondary" onclick="closeModal(\'role-modal\')">Cancel</span><span class="btn btn-primary" onclick="saveRoleModal()">Save role</span>';
+}
+
+function saveRoleModal() {
+  var name = document.getElementById('role-modal-name-input').value.trim();
+  if (!name) { showToast('Role name is required.'); return; }
+  var description = document.getElementById('role-modal-desc-input').value.trim();
+  var category = document.getElementById('role-modal-category-select').value;
+
+  if (roleModalIsNew) {
+    var id = 'custom-' + Date.now();
+    TEAM_ROLES.push({ id: id, name: name, type: 'Custom', category: category, description: description, perms: roleModalDraft.perms });
+  } else {
+    var role = TEAM_ROLES.filter(function (r) { return r.id === roleModalId; })[0];
+    if (!role) return;
+    var oldName = role.name;
+    role.name = name;
+    role.description = description;
+    role.category = category;
+    role.perms = roleModalDraft.perms;
+    if (oldName !== name) {
+      TEAM_MEMBERS.forEach(function (m) {
+        var i = m.roles.indexOf(oldName);
+        if (i !== -1) m.roles[i] = name;
+      });
+    }
+  }
+
+  renderRolesTable();
+  renderMembers();
+  closeModal('role-modal');
+  showToast('Role saved.');
+}
+
+/* ---------------- Audit log multi-select filters ---------------- */
+
+var AUDIT_ACTORS = ['Asha Rao', 'Karan Shah', 'Priya Nair'];
+var AUDIT_ACTIONS = [
+  { key: 'invitation', label: 'Invitation' },
+  { key: 'app', label: 'App' },
+  { key: 'access-request', label: 'Access request' },
+  { key: 'role-change', label: 'Role change' }
+];
+var auditFilters = { actor: [], action: [] };
+
+function renderAuditFilterPanels() {
+  var actorPanel = document.getElementById('actor-filter-panel');
+  actorPanel.innerHTML = AUDIT_ACTORS.map(function (a) {
+    var checked = auditFilters.actor.indexOf(a) !== -1;
+    return '<div class="menu-item" style="gap:10px;border-radius:6px;padding:0 8px" onclick="toggleAuditFilter(\'actor\',\'' + a.replace(/'/g, "\\'") + '\')">' +
+      '<span class="checkbox' + (checked ? ' checked' : '') + '">' + (checked ? icon('check', 9) : '') + '</span><span>' + a + '</span></div>';
+  }).join('');
+
+  var actionPanel = document.getElementById('action-filter-panel');
+  actionPanel.innerHTML = AUDIT_ACTIONS.map(function (a) {
+    var checked = auditFilters.action.indexOf(a.key) !== -1;
+    return '<div class="menu-item" style="gap:10px;border-radius:6px;padding:0 8px" onclick="toggleAuditFilter(\'action\',\'' + a.key + '\')">' +
+      '<span class="checkbox' + (checked ? ' checked' : '') + '">' + (checked ? icon('check', 9) : '') + '</span><span>' + a.label + '</span></div>';
+  }).join('');
+}
+
+function toggleAuditFilter(kind, value) {
+  var list = auditFilters[kind];
+  var i = list.indexOf(value);
+  if (i === -1) list.push(value); else list.splice(i, 1);
+  renderAuditFilterPanels();
+  updateAuditFilterLabels();
+  applyAuditFilters();
+}
+
+function updateAuditFilterLabels() {
+  var aCount = auditFilters.actor.length;
+  document.getElementById('actor-filter-label').textContent = aCount === 0 ? 'All actors' : (aCount + ' actor' + (aCount > 1 ? 's' : '') + ' selected');
+  var bCount = auditFilters.action.length;
+  document.getElementById('action-filter-label').textContent = bCount === 0 ? 'All actions' : (bCount + ' action' + (bCount > 1 ? 's' : '') + ' selected');
+}
+
+function applyAuditFilters() {
+  document.querySelectorAll('#audit-rows .table-row').forEach(function (row) {
+    var actor = row.getAttribute('data-actor');
+    var type = row.getAttribute('data-action-type');
+    var actorOk = auditFilters.actor.length === 0 || auditFilters.actor.indexOf(actor) !== -1;
+    var actionOk = auditFilters.action.length === 0 || auditFilters.action.indexOf(type) !== -1;
+    row.style.display = (actorOk && actionOk) ? '' : 'none';
+  });
+}
+
+/* ---------------- Tabs ---------------- */
 
 function teamTab(key, evt) {
   switchTab('team', key, evt);
   document.querySelectorAll('.tab-action').forEach(function (el) {
     el.style.display = (el.getAttribute('data-for') === key) ? '' : 'none';
   });
-  if (key !== 'roles') closeRoleDetail();
 }
-function openRoleDetail(name) {
-  document.getElementById('roles-list').style.display = 'none';
-  document.getElementById('role-detail').style.display = '';
-  document.getElementById('role-detail-name').textContent = name;
-  document.getElementById('role-name-input').value = name;
-}
-function closeRoleDetail() {
-  document.getElementById('roles-list').style.display = '';
-  document.getElementById('role-detail').style.display = 'none';
-}
+
+/* ---------------- Init ---------------- */
+
+renderMembers();
+renderInvites();
+renderRolesTable();
+renderAuditFilterPanels();
+updateAuditFilterLabels();
+applyAuditFilters();
 </script>
 </body>
 </html>
