@@ -9,6 +9,27 @@
 <script src="js/icons.js"></script>
 <style>
 .invoices-table .table-head-row, .invoices-table .table-row{grid-template-columns:1fr 2fr 1fr 1fr 32px}
+.demo-version-switch{height:24px;border-radius:6px;padding:0 20px 0 8px;font:400 11px/22px var(--font-sans);color:var(--ink-300);background:var(--surface-page);box-shadow:0 0 0 1px var(--line-150) inset;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23A0ACC0' stroke-width='1.3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 7px center;background-size:8px 5px;position:fixed;top:16px;right:16px;z-index:50}
+.payout-account-row{display:flex;align-items:center;justify-content:space-between;border-radius:8px;padding:14px 16px;margin-top:14px}
+.payout-row{display:flex;align-items:center;gap:16px;padding:14px 20px;border-bottom:1px solid var(--line-100)}
+.payout-row:last-child{border-bottom:none}
+.payout-row-period{flex:1;min-width:0;font:400 14px/20px var(--font-sans);color:var(--accent);cursor:pointer}
+.payout-row-status{flex-shrink:0;width:180px;font:400 13px/18px var(--font-sans);color:var(--text-muted)}
+.payout-row-amount{flex-shrink:0;min-width:100px;text-align:right;font:500 14px/20px var(--font-sans);color:var(--ink-900);font-variant-numeric:tabular-nums}
+@media (max-width:600px){
+  .payout-row{flex-direction:column;align-items:flex-start;gap:4px}
+  .payout-row-status{width:auto}
+  .payout-row-amount{text-align:left}
+}
+.item-table-row{grid-template-columns:1fr 1.3fr 1.8fr 1.1fr 1fr}
+.item-table-row span:last-child{text-align:right}
+@media print {
+  body *{visibility:hidden}
+  #payout-invoice-modal, #payout-invoice-modal *{visibility:visible}
+  #payout-invoice-modal{position:absolute;inset:0;background:#fff;align-items:flex-start}
+  #payout-invoice-modal .modal{box-shadow:none;max-height:none;width:100%;max-width:100%;border-radius:0}
+  #payout-invoice-modal .no-print{display:none !important}
+}
 </style>
 </head>
 <body>
@@ -52,25 +73,81 @@
       <div style="font:400 13px/19px var(--font-sans);color:var(--ink-550)">Building and listing apps on Ratio is free &mdash; there's no platform fee. This tab shows what your apps have earned from merchants and when it's paid out to you.</div>
     </div>
 
-    <div class="card card-pad" style="margin-bottom:16px">
-      <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Payout account</span>
-      <div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line-100);border-radius:8px;padding:14px 16px">
-        <div style="display:flex;align-items:center;gap:12px">
-          <span style="width:36px;height:24px;border-radius:4px;background:var(--ink-900);display:flex;align-items:center;justify-content:center;color:#fff" id="card-icon"></span>
-          <div><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">HDFC Bank &bull;&bull;&bull;&bull; 4421</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Payouts settle here monthly</div></div>
-        </div>
-        <span class="btn btn-secondary btn-sm">Update</span>
-      </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <span style="font:600 18px/24px var(--font-sans);color:var(--ink-900)">Payouts</span>
+      <span class="btn btn-secondary btn-sm" onclick="showToast('Exporting CSV — check your email in a few minutes.')">Export CSV</span>
     </div>
 
-    <div class="card invoices-table" style="overflow:hidden">
-      <div style="padding:16px 20px;border-bottom:1px solid var(--line-100)"><span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Payouts</span></div>
-      <div class="table-head-row" style="height:38px"><span>Date</span><span>Description</span><span>Earned</span><span>Status</span><span></span></div>
-      <div class="table-row" style="height:50px"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Sep 1, 2026</span><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Payout &mdash; September</span><span style="font:500 13px/18px var(--font-sans);color:var(--ink-900);font-variant-numeric:tabular-nums">&#8377;18,420</span><span class="pill pill-success">Paid</span><span class="dl-icon" style="color:var(--ink-500);cursor:pointer"></span></div>
-      <div class="table-row" style="height:50px"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Aug 1, 2026</span><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Payout &mdash; August</span><span style="font:500 13px/18px var(--font-sans);color:var(--ink-900);font-variant-numeric:tabular-nums">&#8377;15,210</span><span class="pill pill-success">Paid</span><span class="dl-icon" style="color:var(--ink-500);cursor:pointer"></span></div>
-      <div class="table-row" style="height:50px"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Jul 1, 2026</span><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Payout &mdash; July</span><span style="font:500 13px/18px var(--font-sans);color:var(--ink-900);font-variant-numeric:tabular-nums">&#8377;12,680</span><span class="pill pill-success">Paid</span><span class="dl-icon" style="color:var(--ink-500);cursor:pointer"></span></div>
+    <div id="payout-has">
+      <div class="card card-pad" style="margin-bottom:16px">
+        <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">This month so far</span>
+        <div style="display:flex;align-items:baseline;gap:8px;margin-top:10px">
+          <span id="cycle-earn-number" style="font:600 30px/36px var(--font-sans);color:var(--ink-900);font-variant-numeric:tabular-nums">&#8377;0</span>
+          <span style="display:inline-flex;align-items:center;gap:3px;font:500 13px/18px var(--font-sans);color:var(--success-text)"><span id="cycle-trend-icon"></span>12%</span>
+        </div>
+        <div style="font:400 13px/19px var(--font-sans);color:var(--ink-550);margin-top:6px">Still accumulating &mdash; track to beat last month's &#8377;18,176.</div>
+      </div>
+
+      <div class="card card-pad" style="margin-bottom:16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Pending</span>
+          <span onclick="openPayoutItemization('pending')" style="font:400 13px/18px var(--font-sans);color:var(--accent);cursor:pointer;white-space:nowrap">View pending transactions</span>
+        </div>
+        <div style="margin-top:10px;font:600 30px/36px var(--font-sans);color:var(--ink-900);font-variant-numeric:tabular-nums">&#8377;3,398.50</div>
+        <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px">Estimated amount, GST included</div>
+        <div style="margin-top:14px;font:400 13px/19px var(--font-sans);color:var(--ink-550)">Estimated payout date Oct 22, 2026 via bank account (HDFC Bank &bull;&bull;&bull;&bull; 4421)</div>
+      </div>
+
+      <div class="card card-pad" style="margin-bottom:16px">
+        <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Payout account</span>
+        <div id="payout-account-has" class="payout-account-row" style="border:1px solid var(--line-100)">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="width:36px;height:24px;border-radius:4px;background:var(--ink-900);display:flex;align-items:center;justify-content:center;color:#fff" id="card-icon"></span>
+            <div><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)" id="payout-account-label">HDFC Bank &bull;&bull;&bull;&bull; 4421</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Payouts settle here monthly</div></div>
+          </div>
+          <span class="btn btn-secondary btn-sm" onclick="openModal('payout-account-modal')">Update</span>
+        </div>
+        <div id="payout-account-none" class="payout-account-row" style="border:1px dashed var(--line-150);display:none">
+          <div style="font:400 13px/19px var(--font-sans);color:var(--text-muted)">No payout account on file yet.</div>
+          <span class="btn btn-primary btn-sm" onclick="openModal('payout-account-modal')">Add account</span>
+        </div>
+      </div>
+
+      <div class="card" style="overflow:hidden">
+        <div class="payout-row">
+          <span class="payout-row-period" onclick="openPayoutItemization('sep1-16')">Sep 1 &ndash; Sep 16, 2026 &ndash; Sales</span>
+          <span class="payout-row-status">Scheduled for Oct 22, 2026</span>
+          <span class="payout-row-amount">&#8377;9,009.50</span>
+        </div>
+        <div class="payout-row">
+          <span class="payout-row-period" onclick="openPayoutItemization('sep16-oct1')">Sep 16 &ndash; Oct 1, 2026 &ndash; Sales</span>
+          <span class="payout-row-status">Scheduled for Oct 7, 2026</span>
+          <span class="payout-row-amount">&#8377;9,166.20</span>
+        </div>
+        <div class="payout-row">
+          <span class="payout-row-period" onclick="openPayoutItemization('aug16-sep1')">Aug 16 &ndash; Sep 1, 2026 &ndash; Sales</span>
+          <span class="payout-row-status">Scheduled for Oct 7, 2026</span>
+          <span class="payout-row-amount">&#8377;14,268.30</span>
+        </div>
+        <div class="payout-row">
+          <span class="payout-row-period" onclick="openPayoutItemization('aug1-16')">Aug 1 &ndash; Aug 16, 2026 &ndash; Sales</span>
+          <span class="payout-row-status" style="color:var(--success-text)">Sent Sep 21, 2026</span>
+          <span class="payout-row-amount">&#8377;1,942.00</span>
+        </div>
+        <div style="display:flex;justify-content:center;gap:8px;padding:12px 0;border-top:1px solid var(--line-100)">
+          <span class="btn btn-secondary btn-sm" style="width:36px;justify-content:center;opacity:0.4;pointer-events:none" id="pg-prev-btn"><span id="pg-prev"></span></span>
+          <span class="btn btn-secondary btn-sm" style="width:36px;justify-content:center" onclick="showToast('That\'s everything for now.')"><span id="pg-next"></span></span>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:16px;font:400 13px/18px var(--font-sans);color:var(--text-muted)">Learn more about <a href="https://partners.ratio.win/docs">payouts</a></div>
     </div>
-    <div style="margin-top:8px;font:400 12px/16px var(--font-sans);color:var(--ink-300)">Each payout's drill-down shows the proration and GST working behind every charge your apps collected.</div>
+
+    <div id="payout-empty" class="card card-pad empty-state" style="display:none">
+      <div class="icon-wrap"><span id="payout-empty-icon" style="color:var(--ink-500)"></span></div>
+      <h3>No payouts yet</h3>
+      <p>Once a merchant pays for one of your apps, your first payout will appear here.</p>
+    </div>
   </div>
 
   <!-- Danger zone -->
@@ -91,13 +168,288 @@
 </div>
 </div>
 
+<!-- Payout itemization modal -->
+<div id="payout-itemization-modal" class="modal-overlay">
+  <div class="modal" style="width:720px;max-width:94vw;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;padding:0">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line-100);flex-shrink:0">
+      <div>
+        <div class="modal-title" id="item-modal-title" style="font-size:16px">Payout</div>
+        <div class="modal-sub" id="item-modal-sub"></div>
+      </div>
+      <span onclick="closeModal('payout-itemization-modal')" style="color:var(--ink-500);cursor:pointer;flex-shrink:0;margin-left:12px" id="item-close-icon"></span>
+    </div>
+
+    <div style="padding:18px 22px;overflow-y:auto;flex:1">
+      <div class="card card-pad" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:18px">
+        <svg viewBox="0 0 160 56" style="width:150px;height:56px;flex-shrink:0" preserveAspectRatio="none">
+          <polyline points="0,42 20,38 40,40 60,26 80,30 100,14 120,20 140,6 160,12" fill="none" stroke="#3F53FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <polygon points="0,42 20,38 40,40 60,26 80,30 100,14 120,20 140,6 160,12 160,56 0,56" fill="#3F53FE" opacity="0.08"/>
+        </svg>
+        <div style="flex:1;min-width:180px">
+          <div id="item-total-label" style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">Total amount paid</div>
+          <div id="item-total-amount" style="font:600 26px/32px var(--font-sans);color:var(--ink-900);margin-top:2px;font-variant-numeric:tabular-nums">&#8377;0.00</div>
+          <div id="item-payout-detail" style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:4px"></div>
+        </div>
+        <span class="btn btn-secondary btn-sm" style="flex-shrink:0" onclick="openPayoutInvoice()"><span id="item-invoice-icon"></span>Download invoice</span>
+      </div>
+
+      <div class="tabrow" style="margin-bottom:12px">
+        <span class="tab active">All</span>
+        <span class="tab">Apps</span>
+      </div>
+      <div class="input" style="display:flex;align-items:center;gap:8px;margin-bottom:12px;height:36px">
+        <span id="item-search-icon" style="color:var(--ink-500)"></span>
+        <input placeholder="Search by store, type, description, or amount" style="flex:1;border:none;outline:none;background:transparent;font:400 14px/20px var(--font-sans);color:var(--ink-800)">
+      </div>
+
+      <div class="card" style="overflow:hidden">
+        <div class="table-head-row item-table-row" style="height:36px"><span>Date</span><span>Description</span><span>Type</span><span>Store</span><span>Amount</span></div>
+        <div id="item-rows"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Payout invoice modal -->
+<div id="payout-invoice-modal" class="modal-overlay">
+  <div class="modal" style="width:620px;max-width:94vw;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;padding:0">
+    <div id="invoice-status-banner" style="padding:10px 24px;text-align:center;font:600 13px/18px var(--font-sans);flex-shrink:0">Paid</div>
+    <div style="padding:26px;overflow-y:auto;flex:1" id="invoice-printable">
+      <div style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap">
+        <div>
+          <div style="font:600 11px/16px var(--font-sans);letter-spacing:0.5px;color:var(--ink-300);text-transform:uppercase">Invoice</div>
+          <div id="inv-number" style="font:400 13px/18px var(--font-sans);color:var(--ink-550);margin-top:2px"></div>
+          <div style="margin-top:16px"><div style="font:600 11px/16px var(--font-sans);letter-spacing:0.5px;color:var(--ink-300);text-transform:uppercase">Amount</div><div id="inv-amount" style="font:600 22px/28px var(--font-sans);color:var(--ink-900);font-variant-numeric:tabular-nums"></div></div>
+          <div style="margin-top:16px"><div id="inv-date-label" style="font:600 11px/16px var(--font-sans);letter-spacing:0.5px;color:var(--ink-300);text-transform:uppercase">Paid on</div><div id="inv-date" style="font:400 14px/20px var(--font-sans);color:var(--ink-800)"></div></div>
+          <div style="margin-top:16px"><div style="font:600 11px/16px var(--font-sans);letter-spacing:0.5px;color:var(--ink-300);text-transform:uppercase">Payment method</div><div style="font:400 14px/20px var(--font-sans);color:var(--ink-800)">Bank transfer (HDFC Bank &bull;&bull;&bull;&bull;4421)</div></div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Ellora Technologies Private Limited</div>
+          <div style="font:400 13px/19px var(--font-sans);color:var(--ink-550);margin-top:2px">4th Floor, Prestige Tech Park<br>Kadubeesanahalli, Bengaluru<br>Karnataka 560103, India</div>
+          <div style="font:400 12px/17px var(--font-sans);color:var(--ink-300);margin-top:6px">GSTIN 29AABCE1234F1Z5</div>
+          <div style="margin-top:14px"><div style="font:600 11px/16px var(--font-sans);letter-spacing:0.5px;color:var(--ink-300);text-transform:uppercase">Invoiced for</div><div id="inv-period" style="font:400 14px/20px var(--font-sans);color:var(--ink-800)"></div></div>
+        </div>
+      </div>
+
+      <table style="width:100%;border-collapse:collapse;margin-top:26px">
+        <thead><tr style="border-bottom:2px solid var(--ink-900)">
+          <th style="text-align:left;padding:8px 0;font:600 13px/18px var(--font-sans);color:var(--ink-900)">Description</th>
+          <th style="text-align:right;padding:8px 0;font:600 13px/18px var(--font-sans);color:var(--ink-900)">Amount</th>
+        </tr></thead>
+        <tbody id="inv-lines" style="font:400 14px/20px var(--font-sans);color:var(--ink-800)"></tbody>
+      </table>
+
+      <div style="margin-top:26px;display:flex;gap:40px;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <div style="font:600 11px/16px var(--font-sans);letter-spacing:0.5px;color:var(--ink-300);text-transform:uppercase">Bill to</div>
+          <div style="font:600 14px/20px var(--font-sans);color:var(--ink-900);margin-top:4px">Nutristar Digital</div>
+          <div style="font:400 13px/19px var(--font-sans);color:var(--ink-550);margin-top:2px">14/2 Richmond Road<br>Bengaluru, Karnataka 560025<br>India</div>
+          <div style="font:400 12px/17px var(--font-sans);color:var(--ink-300);margin-top:4px">GSTIN 29AAJCN5678K1Z2</div>
+        </div>
+        <div style="flex:1;min-width:200px">
+          <div style="font:600 11px/16px var(--font-sans);letter-spacing:0.5px;color:var(--ink-300);text-transform:uppercase">Timeline</div>
+          <div id="inv-timeline" style="font:400 13px/20px var(--font-sans);color:var(--ink-550);margin-top:4px"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:30px;text-align:center;font:400 12px/16px var(--font-sans);color:var(--ink-300)">Questions about this invoice? <a href="mailto:partners@ratio.win">partners@ratio.win</a></div>
+    </div>
+    <div class="no-print" style="display:flex;justify-content:flex-end;gap:8px;padding:14px 24px;border-top:1px solid var(--line-100);flex-shrink:0">
+      <span class="btn btn-secondary" onclick="closeModal('payout-invoice-modal')">Close</span>
+      <span class="btn btn-primary" onclick="window.print()"><span id="inv-print-icon"></span>Print / Save as PDF</span>
+    </div>
+  </div>
+</div>
+
+<select class="demo-version-switch" id="payout-demo-switch" onchange="togglePayoutDemo(this.value === 'has')" title="Demo: which version of the Payouts tab to show">
+  <option value="has" selected>Has payouts</option>
+  <option value="none">No payouts yet</option>
+</select>
+<select class="demo-version-switch" id="payout-account-demo-switch" style="top:46px" onchange="togglePayoutAccountDemo(this.value === 'has')" title="Demo: payout account on file or not">
+  <option value="has" selected>Account on file</option>
+  <option value="none">No account yet</option>
+</select>
+
+<!-- Payout account modal -->
+<div id="payout-account-modal" class="modal-overlay">
+  <div class="modal" style="width:400px;padding:24px">
+    <div class="modal-title">Payout account</div>
+    <div class="modal-sub">We'll send your payouts to this bank account.</div>
+    <div style="margin-top:16px"><label class="field-label">Account number</label><input class="input" id="pa-acct-num" placeholder="e.g. 50100123456789"></div>
+    <div style="margin-top:12px"><label class="field-label">IFSC code</label><input class="input" id="pa-ifsc" placeholder="e.g. HDFC0001234"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+      <span class="btn btn-secondary" onclick="closeModal('payout-account-modal')">Cancel</span>
+      <span class="btn btn-primary" onclick="savePayoutAccount()">Save</span>
+    </div>
+  </div>
+</div>
+
 <div id="toast" class="toast"></div>
 <script src="js/shell.js"></script>
 <script>
 renderShell({ active: 'settings' });
 document.getElementById('card-icon').innerHTML = icon('card', 16);
 document.getElementById('payout-info-icon').innerHTML = icon('info', 14);
-document.querySelectorAll('.dl-icon').forEach(function (el) { el.innerHTML = icon('download', 12); });
+document.getElementById('payout-empty-icon').innerHTML = icon('card', 18);
+document.getElementById('pg-prev').innerHTML = icon('caret', 10);
+document.getElementById('pg-prev').style.transform = 'rotate(90deg)';
+document.getElementById('pg-next').innerHTML = icon('caret', 10);
+document.getElementById('pg-next').style.transform = 'rotate(-90deg)';
+
+function togglePayoutDemo(hasPayouts) {
+  document.getElementById('payout-has').style.display = hasPayouts ? '' : 'none';
+  document.getElementById('payout-empty').style.display = hasPayouts ? 'none' : '';
+}
+
+document.getElementById('cycle-trend-icon').innerHTML = icon('trend', 10);
+(function () {
+  var el = document.getElementById('cycle-earn-number');
+  if (!el) return;
+  var target = 11480;
+  var start = null;
+  var dur = 1400;
+  function step(ts) {
+    if (!start) start = ts;
+    var p = Math.min(1, (ts - start) / dur);
+    var eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = '₹' + Math.round(target * eased).toLocaleString('en-IN');
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+})();
+
+function togglePayoutAccountDemo(hasAccount) {
+  document.getElementById('payout-account-has').style.display = hasAccount ? 'flex' : 'none';
+  document.getElementById('payout-account-none').style.display = hasAccount ? 'none' : 'flex';
+}
+function savePayoutAccount() {
+  document.getElementById('payout-account-label').textContent = 'HDFC Bank •••• 4421';
+  togglePayoutAccountDemo(true);
+  document.getElementById('payout-account-demo-switch').value = 'has';
+  document.getElementById('pa-acct-num').value = '';
+  document.getElementById('pa-ifsc').value = '';
+  closeModal('payout-account-modal');
+  showToast('Payout account updated.');
+}
+
+/* ---------- Payout itemization + GST invoice ---------- */
+/* Period totals here match the row amounts in the Payouts list exactly, so
+   drilling into a row and its invoice always reconciles with the list. */
+var PAYOUT_PERIOD_META = {
+  pending:      { title: 'Pending transactions',           paid: false, payoutDate: 'Oct 22, 2026' },
+  'sep1-16':    { title: 'Sep 1 – Sep 16, 2026 – Sales',   paid: false, payoutDate: 'Oct 22, 2026' },
+  'sep16-oct1': { title: 'Sep 16 – Oct 1, 2026 – Sales',   paid: false, payoutDate: 'Oct 7, 2026' },
+  'aug16-sep1': { title: 'Aug 16 – Sep 1, 2026 – Sales',   paid: false, payoutDate: 'Oct 7, 2026' },
+  'aug1-16':    { title: 'Aug 1 – Aug 16, 2026 – Sales',   paid: true,  payoutDate: 'Sep 21, 2026' }
+};
+var PAYOUT_TRANSACTIONS = {
+  pending: [
+    { date: 'Sep 29, 2026', app: 'Wishlist Pro',   type: 'App sale — monthly subscription', store: 'Wellversed',  amount: 2499.00 },
+    { date: 'Sep 28, 2026', app: 'Wishlist Pro',   type: 'App sale — monthly subscription', store: 'Aqualogica',  amount: 999.00 },
+    { date: 'Sep 27, 2026', app: 'Loyalty Points', type: 'App sale — usage overage',        store: 'Kwik Fashion', amount: 400.50 },
+    { date: 'Sep 25, 2026', app: 'Wishlist Pro',   type: 'Refund — plan downgrade',          store: 'Nooba Foods',  amount: -500.00 }
+  ],
+  'sep1-16': [
+    { date: 'Sep 15, 2026', app: 'Wishlist Pro',   type: 'App sale — monthly subscription', store: 'Wellversed',  amount: 2499.00 },
+    { date: 'Sep 12, 2026', app: 'Wishlist Pro',   type: 'App sale — monthly subscription', store: 'Aqualogica',  amount: 999.00 },
+    { date: 'Sep 10, 2026', app: 'Loyalty Points', type: 'App sale — monthly subscription', store: 'Kwik Fashion', amount: 1499.00 },
+    { date: 'Sep 6, 2026',  app: 'Size Finder',    type: 'App sale — monthly subscription', store: 'Nooba Foods',  amount: 799.00 },
+    { date: 'Sep 4, 2026',  app: 'Loyalty Points', type: 'App sale — usage overage',        store: 'Aqualogica',  amount: 3499.00 },
+    { date: 'Sep 2, 2026',  app: 'Wishlist Pro',   type: 'Refund — plan downgrade',          store: 'Nooba Foods',  amount: -285.50 }
+  ],
+  'sep16-oct1': [
+    { date: 'Sep 30, 2026', app: 'Wishlist Pro',   type: 'App sale — monthly subscription', store: 'Wellversed',  amount: 2499.00 },
+    { date: 'Sep 27, 2026', app: 'Wishlist Pro',   type: 'App sale — monthly subscription', store: 'Aqualogica',  amount: 999.00 },
+    { date: 'Sep 24, 2026', app: 'Loyalty Points', type: 'App sale — monthly subscription', store: 'Kwik Fashion', amount: 1499.00 },
+    { date: 'Sep 20, 2026', app: 'Size Finder',    type: 'App sale — monthly subscription', store: 'Nooba Foods',  amount: 799.00 },
+    { date: 'Sep 18, 2026', app: 'Loyalty Points', type: 'App sale — usage overage',        store: 'Wellversed',  amount: 3370.20 }
+  ],
+  'aug16-sep1': [
+    { date: 'Aug 31, 2026', app: 'Wishlist Pro',   type: 'App sale — monthly subscription', store: 'Wellversed',  amount: 2499.00 },
+    { date: 'Aug 28, 2026', app: 'Wishlist Pro',   type: 'App sale — monthly subscription', store: 'Aqualogica',  amount: 999.00 },
+    { date: 'Aug 25, 2026', app: 'Loyalty Points', type: 'App sale — monthly subscription', store: 'Kwik Fashion', amount: 1499.00 },
+    { date: 'Aug 22, 2026', app: 'Size Finder',    type: 'App sale — monthly subscription', store: 'Nooba Foods',  amount: 799.00 },
+    { date: 'Aug 18, 2026', app: 'Loyalty Points', type: 'App sale — usage overage',        store: 'Wellversed',  amount: 2840.00 },
+    { date: 'Aug 17, 2026', app: 'Wishlist Pro',   type: 'App sale — monthly subscription', store: 'Nooba Foods',  amount: 2499.00 },
+    { date: 'Aug 16, 2026', app: 'Size Finder',    type: 'App sale — usage overage',        store: 'Aqualogica',  amount: 3133.30 }
+  ],
+  'aug1-16': [
+    { date: 'Aug 15, 2026', app: 'Wishlist Pro',   type: 'App sale — monthly subscription', store: 'Aqualogica',  amount: 999.00 },
+    { date: 'Aug 10, 2026', app: 'Size Finder',    type: 'App sale — monthly subscription', store: 'Kwik Fashion', amount: 799.00 },
+    { date: 'Aug 3, 2026',  app: 'Loyalty Points', type: 'App sale — usage overage',        store: 'Wellversed',  amount: 144.00 }
+  ]
+};
+var _currentItemPeriodId = null;
+
+function formatINR(n) {
+  var neg = n < 0;
+  var s = Math.abs(n).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return (neg ? '−' : '') + '₹' + s;
+}
+
+function openPayoutItemization(periodId) {
+  try {
+    var meta = PAYOUT_PERIOD_META[periodId] || { title: 'Payout', paid: true, payoutDate: '—' };
+    var txns = PAYOUT_TRANSACTIONS[periodId] || [];
+    _currentItemPeriodId = periodId;
+    var total = txns.reduce(function (sum, t) { return sum + t.amount; }, 0);
+
+    document.getElementById('item-modal-title').textContent = meta.title;
+    document.getElementById('item-modal-sub').textContent = meta.paid ? ('Sent ' + meta.payoutDate) : ('Scheduled for ' + meta.payoutDate);
+    document.getElementById('item-total-label').textContent = meta.paid ? 'Total amount paid' : 'Total pending';
+    document.getElementById('item-total-amount').textContent = formatINR(total);
+    document.getElementById('item-payout-detail').textContent = (meta.paid ? 'Paid ' + meta.payoutDate : 'Estimated payout date ' + meta.payoutDate) + ' via bank account (HDFC Bank •••• 4421)';
+
+    document.getElementById('item-rows').innerHTML = txns.length ? txns.map(function (t) {
+      var neg = t.amount < 0;
+      return '<div class="table-row item-table-row" style="height:48px">' +
+        '<span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">' + t.date + '</span>' +
+        '<span style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">' + t.app + '</span>' +
+        '<span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">' + t.type + '</span>' +
+        '<span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">' + t.store + '</span>' +
+        '<span style="font:500 13px/18px var(--font-sans);font-variant-numeric:tabular-nums;color:' + (neg ? 'var(--danger-text)' : 'var(--ink-900)') + '">' + formatINR(t.amount) + '</span>' +
+      '</div>';
+    }).join('') : '<div style="padding:24px;text-align:center;font:400 13px/19px var(--font-sans);color:var(--text-muted)">No transactions for this period.</div>';
+
+    openModal('payout-itemization-modal');
+  } catch (e) {
+    console.error('openPayoutItemization failed', e);
+  }
+}
+
+function openPayoutInvoice() {
+  var periodId = _currentItemPeriodId || 'sep1-16';
+  var meta = PAYOUT_PERIOD_META[periodId] || { title: 'Payout', paid: true, payoutDate: '—' };
+  var txns = PAYOUT_TRANSACTIONS[periodId] || [];
+  var gross = txns.reduce(function (sum, t) { return sum + t.amount; }, 0);
+  var gst = gross * 18 / 118;
+
+  var banner = document.getElementById('invoice-status-banner');
+  banner.textContent = meta.paid ? 'Paid' : 'Scheduled';
+  banner.style.background = meta.paid ? 'var(--success-bg)' : 'var(--warning-bg)';
+  banner.style.color = meta.paid ? 'var(--success-text)' : 'var(--warning-text)';
+
+  document.getElementById('inv-number').textContent = 'RTO-INV-' + periodId.replace(/[^a-z0-9]/gi, '').toUpperCase().slice(0, 10) + '-01';
+  document.getElementById('inv-amount').textContent = formatINR(gross);
+  document.getElementById('inv-date-label').textContent = meta.paid ? 'Paid on' : 'Payout scheduled for';
+  document.getElementById('inv-date').textContent = meta.payoutDate;
+  document.getElementById('inv-period').textContent = meta.title.replace(/ – Sales$/, '');
+  document.getElementById('inv-lines').innerHTML =
+    '<tr style="border-bottom:1px solid var(--line-100)"><td style="padding:10px 0">App sales collected (GST-inclusive)</td><td style="padding:10px 0;text-align:right;font-variant-numeric:tabular-nums">' + formatINR(gross) + '</td></tr>' +
+    '<tr style="border-bottom:1px solid var(--line-100)"><td style="padding:10px 0 10px 16px;color:var(--ink-500);font-size:13px">of which GST (18%)</td><td style="padding:10px 0;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-500);font-size:13px">' + formatINR(gst) + '</td></tr>' +
+    '<tr><td style="padding:12px 0;font-weight:600;color:var(--ink-900)">Net payout</td><td style="padding:12px 0;text-align:right;font-weight:600;color:var(--ink-900);font-variant-numeric:tabular-nums">' + formatINR(gross) + '</td></tr>';
+  document.getElementById('inv-timeline').innerHTML =
+    'Invoice issued: ' + meta.payoutDate + '<br>' +
+    (meta.paid ? 'Payout sent: ' + meta.payoutDate : 'Payout scheduled: ' + meta.payoutDate) + '<br>' +
+    'Invoice generated: Oct 5, 2026';
+
+  openModal('payout-invoice-modal');
+}
+
+document.getElementById('item-close-icon').innerHTML = icon('close', 12);
+document.getElementById('item-invoice-icon').innerHTML = icon('download', 12);
+document.getElementById('item-search-icon').innerHTML = icon('search', 12);
+document.getElementById('inv-print-icon').innerHTML = icon('download', 14);
 </script>
 </body>
 </html>
