@@ -18,8 +18,11 @@ body{background:var(--surface-page)}
 .choice-card:hover{box-shadow:0 0 0 1.5px var(--accent)}
 .choice-icon{width:36px;height:36px;border-radius:8px;background:var(--accent-tint);color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
 @media (max-width:520px){.choice-grid{flex-direction:column;max-width:460px}}
-.spinner{width:28px;height:28px;border-radius:50%;border:3px solid var(--line-150);border-top-color:var(--accent);animation:ob-spin 0.8s linear infinite}
-@keyframes ob-spin{to{transform:rotate(360deg)}}
+@keyframes ob-pulse{0%,100%{opacity:1}50%{opacity:0.45}}
+@keyframes ob-grow{0%,100%{transform:scaleY(0.15)}50%{transform:scaleY(1)}}
+@keyframes ob-fill{0%{transform:translateX(-105%)}55%{transform:translateX(0)}100%{transform:translateX(105%)}}
+.loading-logo{animation:ob-pulse 2s ease-in-out infinite}
+.loading-bar{width:10px;border-radius:2px 2px 0 0;background:var(--accent);transform-origin:bottom;animation:ob-grow 1.6s ease-in-out infinite}
 .demo-version-switch{height:24px;border-radius:6px;padding:0 20px 0 8px;font:400 11px/22px var(--font-sans);color:var(--ink-300);background:var(--surface-page);box-shadow:0 0 0 1px var(--line-150) inset;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23A0ACC0' stroke-width='1.3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 7px center;background-size:8px 5px;position:fixed;top:16px;right:16px;z-index:50}
 .invite-card{border-radius:10px;box-shadow:0 0 0 1px var(--line-100);padding:14px;text-align:left}
 .org-avatar-lg{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font:600 14px/18px var(--font-sans);color:#fff;flex-shrink:0}
@@ -140,10 +143,45 @@ body{background:var(--surface-page)}
   </div>
 </div>
 
-<!-- Step 3: provisioning / loading -->
-<div id="panel-loading" style="display:none;text-align:center;margin-top:60px">
-  <div class="spinner" style="margin:0 auto"></div>
-  <div id="loading-text" style="margin-top:18px;font:500 15px/22px var(--font-sans);color:var(--ink-800)">Setting up your workspace&hellip;</div>
+<!-- Step 3: provisioning / loading — the "special" loader sourced from the admin
+     portal design system (logo pulse + animated bar chart + ticking stats +
+     rotating phase text + sweeping progress bar), reused here for org creation
+     and invite acceptance. -->
+<div id="panel-loading" role="status" aria-label="Setting up your organisation" style="display:none;flex-direction:column;align-items:center;margin-top:40px">
+  <span class="rp-logo loading-logo" style="font-size:30px">RAT<span class="rp-logo-slash"></span>O</span>
+
+  <div aria-hidden="true" style="margin-top:28px;display:flex;align-items:flex-end;gap:6px;height:64px">
+    <div class="loading-bar" style="height:28px;animation-delay:0s"></div>
+    <div class="loading-bar" style="height:38px;animation-delay:0.12s"></div>
+    <div class="loading-bar" style="height:48px;animation-delay:0.24s"></div>
+    <div class="loading-bar" style="height:64px;animation-delay:0.36s"></div>
+    <div class="loading-bar" style="height:48px;animation-delay:0.48s"></div>
+    <div class="loading-bar" style="height:38px;animation-delay:0.6s"></div>
+    <div class="loading-bar" style="height:28px;animation-delay:0.72s"></div>
+  </div>
+
+  <div style="margin-top:26px;display:flex;align-items:center;gap:28px">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:1px">
+      <span style="font:400 12px/16px var(--font-sans);color:var(--ink-450)">Roles</span>
+      <span id="stat-roles" style="font:600 16px/20px var(--font-sans);color:var(--ink-900);font-variant-numeric:tabular-nums">0</span>
+    </div>
+    <div style="width:1px;height:26px;background:var(--line-200)"></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:1px">
+      <span style="font:400 12px/16px var(--font-sans);color:var(--ink-450)">Permissions</span>
+      <span id="stat-perms" style="font:600 16px/20px var(--font-sans);color:var(--ink-900);font-variant-numeric:tabular-nums">0</span>
+    </div>
+    <div style="width:1px;height:26px;background:var(--line-200)"></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:1px">
+      <span style="font:400 12px/16px var(--font-sans);color:var(--ink-450)">Workspace</span>
+      <span id="stat-workspace" style="font:600 16px/20px var(--font-sans);color:var(--ink-900);font-variant-numeric:tabular-nums">0%</span>
+    </div>
+  </div>
+
+  <div id="loading-text" style="margin-top:22px;min-height:20px;font:400 14px/20px var(--font-sans);color:var(--ink-500)">Setting up your workspace&hellip;</div>
+
+  <div style="margin-top:14px;height:3px;width:240px;border-radius:2px;background:var(--line-100);overflow:hidden">
+    <div style="height:3px;border-radius:2px;background:var(--accent);animation:ob-fill 1.5s ease-in-out infinite"></div>
+  </div>
 </div>
 
 </div>
@@ -156,7 +194,9 @@ body{background:var(--surface-page)}
 <script>
 function showPanel(which) {
   ['choice', 'create', 'join', 'loading'].forEach(function (p) {
-    document.getElementById('panel-' + p).style.display = (p === which) ? '' : 'none';
+    var el = document.getElementById('panel-' + p);
+    if (p !== which) { el.style.display = 'none'; return; }
+    el.style.display = (p === 'loading') ? 'flex' : '';
   });
 }
 function toggleInviteDemo(hasInvite) {
@@ -172,16 +212,61 @@ function checkOrgName() {
 }
 function submitCreate() {
   var name = document.getElementById('org-name').value.trim() || 'your organisation';
-  goLoading(name, 'Setting up ' + name + '…');
+  goLoading(name, [
+    'Setting up ' + name + '…',
+    'Seeding your roles…',
+    'Setting default permissions…',
+    'Preparing your dashboard…'
+  ]);
 }
 function submitJoin(orgName) {
-  goLoading(orgName, 'Joining ' + orgName + '…');
+  goLoading(orgName, [
+    'Joining ' + orgName + '…',
+    'Linking your account…',
+    'Loading your permissions…',
+    'Preparing your dashboard…'
+  ]);
 }
-function goLoading(orgName, text) {
+
+var _loadingTimers = [];
+function goLoading(orgName, phases) {
   try { sessionStorage.setItem('ob_org_name', orgName); } catch (e) {}
-  document.getElementById('loading-text').textContent = text;
   showPanel('loading');
-  setTimeout(function () { window.location.href = 'home.html'; }, 5000);
+  _loadingTimers.forEach(clearInterval);
+  _loadingTimers = [];
+
+  var textEl = document.getElementById('loading-text');
+  textEl.textContent = phases[0];
+  var phaseIdx = 0;
+  _loadingTimers.push(setInterval(function () {
+    phaseIdx = (phaseIdx + 1) % phases.length;
+    textEl.textContent = phases[phaseIdx];
+  }, 1100));
+
+  // Ticking stats: climb smoothly over ~4.3s so they visibly "finish" just
+  // before the redirect, rather than looping forever like the source
+  // component (that one runs indefinitely on a live dashboard; ours is a
+  // single 5s provisioning wait, so a one-shot climb reads better).
+  var start = null;
+  var dur = 4300;
+  var rolesEl = document.getElementById('stat-roles');
+  var permsEl = document.getElementById('stat-perms');
+  var workspaceEl = document.getElementById('stat-workspace');
+  function tick(ts) {
+    if (!start) start = ts;
+    var p = Math.min(1, (ts - start) / dur);
+    var eased = 1 - Math.pow(1 - p, 3);
+    rolesEl.textContent = Math.round(eased * 8);
+    permsEl.textContent = Math.round(eased * 15);
+    workspaceEl.textContent = Math.round(eased * 100) + '%';
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  setTimeout(function () {
+    _loadingTimers.forEach(clearInterval);
+    window.location.href = 'home.html';
+  }, 5000);
 }
 document.getElementById('upload-icon-slot').innerHTML = icon('upload', 14);
 document.getElementById('choice-create-icon').innerHTML = icon('plus', 18);
