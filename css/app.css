@@ -37,7 +37,6 @@ input,select,textarea{font-family:var(--font-sans)}
 .rp-logo-slash{
   display:inline-block;
   color:var(--accent);
-  transform:skewX(-10deg);
   margin:0 1px;
 }
 
