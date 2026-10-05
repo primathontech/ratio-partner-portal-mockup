@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partners &mdash; Ratio Admin</title>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/app.css">
+<script src="../js/icons.js"></script>
+<style>
+.grants-table .table-head-row, .grants-table .table-row{grid-template-columns:2fr 2fr 1fr}
+.scope-chip{height:22px;border-radius:4px;background:var(--line-100);padding:0 8px;display:inline-flex;align-items:center;font:400 12px/16px var(--font-sans);font-family:var(--font-mono);color:var(--ink-550)}
+</style>
+</head>
+<body>
+<div style="min-height:100vh;background:#fff;box-sizing:border-box;padding:32px 40px 64px">
+<div style="max-width:960px;margin:0 auto">
+
+  <div style="margin-bottom:4px"><span class="page-title">Partners</span></div>
+  <div style="font:400 13px/19px var(--font-sans);color:var(--text-muted);margin-bottom:20px">Partners with access to this store.</div>
+
+  <div class="card card-pad" style="margin-bottom:20px;display:flex;align-items:center;justify-content:space-between">
+    <div>
+      <div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">Your partner code</div>
+      <div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:2px">Give this to a partner so they can request access</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font:600 20px/24px var(--font-sans);letter-spacing:4px;color:var(--ink-900);font-variant-numeric:tabular-nums">4271</span>
+      <span id="code-copy-icon" style="color:var(--ink-500);cursor:pointer"></span>
+    </div>
+  </div>
+
+  <div style="font:600 14px/20px var(--font-sans);color:var(--ink-900);margin-bottom:10px">Pending requests</div>
+  <div class="card" style="margin-bottom:24px;overflow:hidden">
+
+    <div style="padding:16px 20px;border-bottom:1px solid var(--line-100)">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="org-avatar" style="background:var(--ink-900)">ND</span>
+          <div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Nutristar Digital</span><span class="tag">Already a partner</span></div>
+            <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px">Requested additional access &middot; 2h ago</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-shrink:0">
+          <span class="btn btn-secondary btn-sm">Narrow</span>
+          <span class="btn btn-danger btn-sm">Deny</span>
+          <span class="btn btn-primary btn-sm">Approve</span>
+        </div>
+      </div>
+      <div style="margin-top:12px;padding:10px 12px;border-radius:7px;background:var(--surface-page)">
+        <div style="font:500 11px/14px var(--font-sans);text-transform:uppercase;letter-spacing:0.4px;color:var(--ink-300);margin-bottom:6px">Full resulting access if approved</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <span class="scope-chip">read_orders</span><span class="scope-chip">write_orders</span><span class="scope-chip">read_products</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:16px 20px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="org-avatar" style="background:var(--ink-900)">KG</span>
+          <div>
+            <div style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Kwik Growth Studio</div>
+            <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px">Requested 30 days &middot; Yesterday</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-shrink:0">
+          <span class="btn btn-secondary btn-sm">Narrow</span>
+          <span class="btn btn-danger btn-sm">Deny</span>
+          <span class="btn btn-primary btn-sm">Approve</span>
+        </div>
+      </div>
+      <div style="margin-top:12px;padding:10px 12px;border-radius:7px;background:var(--surface-page)">
+        <div style="font:500 11px/14px var(--font-sans);text-transform:uppercase;letter-spacing:0.4px;color:var(--ink-300);margin-bottom:6px">Requested scopes</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <span class="scope-chip">read_products</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="font:600 14px/20px var(--font-sans);color:var(--ink-900);margin-bottom:10px">Active grants</div>
+  <div class="card grants-table" style="overflow:hidden">
+    <div class="table-head-row" style="height:36px"><span>Partner</span><span>Scopes</span><span>Ends</span></div>
+    <div class="table-row" style="height:52px"><span style="font:500 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-900)">Nutristar Digital</span><span style="font:400 12px/16px var(--font-sans);font-family:var(--font-mono);color:var(--ink-550)">read_orders, write_orders, read_products</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">22 days</span></div>
+  </div>
+
+</div>
+</div>
+
+<script>
+document.getElementById('code-copy-icon').innerHTML = icon('copy', 13);
+</script>
+</body>
+</html>

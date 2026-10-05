@@ -1,0 +1,55 @@
+- generic [ref=f10e3]:
+  - generic [ref=f10e4]: Partners
+  - generic [ref=f10e5]: Partners with access to this store.
+  - generic [ref=f10e6]:
+    - generic [ref=f10e7]:
+      - generic [ref=f10e8]: Your partner code
+      - generic [ref=f10e9]: Give this to a partner so they can request access
+    - generic [ref=f10e10]:
+      - generic [ref=f10e11]: "4271"
+      - generic [ref=f10e12] [cursor=pointer]
+  - generic [ref=f10e17]: Pending requests
+  - generic [ref=f10e18]:
+    - generic [ref=f10e19]:
+      - generic [ref=f10e20]:
+        - generic [ref=f10e21]:
+          - generic [ref=f10e22]: ND
+          - generic [ref=f10e23]:
+            - generic [ref=f10e24]:
+              - generic [ref=f10e25]: Nutristar Digital
+              - generic [ref=f10e26]: Already a partner
+            - generic [ref=f10e27]: Requested additional access · 2h ago
+        - generic [ref=f10e28]:
+          - generic [ref=f10e29] [cursor=pointer]: Narrow
+          - generic [ref=f10e30] [cursor=pointer]: Deny
+          - generic [ref=f10e31] [cursor=pointer]: Approve
+      - generic [ref=f10e32]:
+        - generic [ref=f10e33]: Full resulting access if approved
+        - generic [ref=f10e34]:
+          - generic [ref=f10e35]: read_orders
+          - generic [ref=f10e36]: write_orders
+          - generic [ref=f10e37]: read_products
+    - generic [ref=f10e38]:
+      - generic [ref=f10e39]:
+        - generic [ref=f10e40]:
+          - generic [ref=f10e41]: KG
+          - generic [ref=f10e42]:
+            - generic [ref=f10e43]: Kwik Growth Studio
+            - generic [ref=f10e44]: Requested 30 days · Yesterday
+        - generic [ref=f10e45]:
+          - generic [ref=f10e46] [cursor=pointer]: Narrow
+          - generic [ref=f10e47] [cursor=pointer]: Deny
+          - generic [ref=f10e48] [cursor=pointer]: Approve
+      - generic [ref=f10e49]:
+        - generic [ref=f10e50]: Requested scopes
+        - generic [ref=f10e51]: read_products
+  - generic [ref=f10e53]: Active grants
+  - generic [ref=f10e54]:
+    - generic [ref=f10e55]:
+      - generic [ref=f10e56]: Partner
+      - generic [ref=f10e57]: Scopes
+      - generic [ref=f10e58]: Ends
+    - generic [ref=f10e59]:
+      - generic [ref=f10e60]: Nutristar Digital
+      - generic [ref=f10e61]: read_orders, write_orders, read_products
+      - generic [ref=f10e62]: 22 days

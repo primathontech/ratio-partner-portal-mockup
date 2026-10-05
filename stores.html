@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stores &mdash; Ratio Partner Portal</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="js/icons.js"></script>
+<style>
+.collab-table .table-head-row, .collab-row{grid-template-columns:1.8fr 1.7fr 1.3fr 0.9fr 32px}
+.collab-row{position:relative}
+.row-menu{position:absolute;top:44px;right:16px;z-index:50;background:#fff;border-radius:8px;box-shadow:0 0 0 1px #E3E9F0;padding:6px 0;min-width:210px;display:none}
+.row-menu.open{display:block}
+.row-menu-item{height:34px;padding:0 12px;display:flex;align-items:center;font:400 13px/18px var(--font-sans);color:var(--ink-800);cursor:pointer;white-space:nowrap}
+.row-menu-item:hover{background:var(--line-100)}
+</style>
+</head>
+<body>
+<div class="page">
+<div id="shell-topbar"></div>
+<div id="shell-sidenav"></div>
+
+<div class="content content-wide">
+  <div class="page-header-row">
+    <span class="page-title">Stores</span>
+    <span class="btn btn-primary" onclick="openModal('request-modal')"><span id="req-plus"></span>Request store access</span>
+  </div>
+
+  <div class="tabrow">
+    <span class="tab" data-tabgroup="stores" data-tabkey="dev" onclick="switchTab('stores','dev',event)">Dev</span>
+    <span class="tab" data-tabgroup="stores" data-tabkey="client" onclick="switchTab('stores','client',event)">Client transfer</span>
+    <span class="tab active" data-tabgroup="stores" data-tabkey="collab" onclick="switchTab('stores','collab',event)">Collaborations</span>
+  </div>
+
+  <!-- Dev -->
+  <div data-panelgroup="stores" data-panelkey="dev" style="display:none">
+    <div class="card card-pad" style="display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:14px">
+        <span class="swatch" style="width:38px;height:38px;background:var(--blue-100)"></span>
+        <div><div style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Nutristar Digital (dev)</div><div style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-top:2px">nutristar-dev.ratio.win &middot; Created Aug 3, 2026</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="pill pill-success">Active</span><span class="btn btn-secondary btn-sm">Log in</span></div>
+    </div>
+    <div style="margin-top:10px;font:400 12px/16px var(--font-sans);color:var(--ink-300)">One dev store per organisation. Contact your Owner or Admin if you need a different setup.</div>
+  </div>
+
+  <!-- Client transfer -->
+  <div data-panelgroup="stores" data-panelkey="client" style="display:none">
+    <div class="card card-pad empty-state">
+      <div class="icon-wrap"><span id="client-empty-icon" style="color:var(--ink-500)"></span></div>
+      <h3>Client transfer is coming soon</h3>
+      <p>Managing and transferring stores on behalf of clients will land here in a future release.</p>
+    </div>
+  </div>
+
+  <!-- Collaborations -->
+  <div data-panelgroup="stores" data-panelkey="collab">
+    <div class="card collab-table" style="overflow:visible">
+      <div class="table-head-row"><span>Store</span><span>Status</span><span>Scopes</span><span>Expires</span><span></span></div>
+      <div id="collab-rows"></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- Request store access modal (first-time) -->
+<div id="request-modal" class="modal-overlay">
+  <div class="modal" style="width:440px;padding:24px">
+    <div class="modal-title">Request store access</div>
+    <div class="modal-sub">Ask the merchant for their store URL and the 4-digit collaborator code from their admin.</div>
+
+    <div id="rate-limit-notice" style="display:none;margin-top:16px;border-radius:8px;background:var(--line-100);padding:12px 14px;gap:10px;align-items:flex-start">
+      <span id="rate-limit-icon" style="color:var(--ink-500);flex-shrink:0;margin-top:2px"></span>
+      <span style="font:400 13px/19px var(--font-sans);color:var(--ink-550)">Please wait for some time before raising another request.</span>
+    </div>
+
+    <div style="margin-top:16px"><label class="field-label">Store URL</label><input class="input" id="req-url" placeholder="wellversed.ratio.win"></div>
+    <div style="margin-top:12px;display:flex;gap:10px">
+      <div style="flex:1"><label class="field-label">Collaborator code</label><input class="input" id="req-code" placeholder="4271"></div>
+      <div style="flex:1"><label class="field-label">Duration</label><select class="input"><option>30 days</option><option>60 days</option><option>90 days</option><option>Open-ended</option></select></div>
+    </div>
+    <div style="margin-top:12px">
+      <label class="field-label">Scopes</label>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;gap:8px"><span class="checkbox checked" id="rq-s1"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">read_orders</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><span class="checkbox" id="rq-s2"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">write_orders</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><span class="checkbox checked" id="rq-s3"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">read_products</span></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+      <span class="btn btn-secondary" onclick="closeModal('request-modal')">Cancel</span>
+      <span class="btn btn-primary" onclick="submitRequest()">Send request</span>
+    </div>
+  </div>
+</div>
+
+<!-- Request additional permissions modal (Flow E) -->
+<div id="expand-modal" class="modal-overlay">
+  <div class="modal" style="width:440px;padding:24px">
+    <div class="modal-title">Request additional permissions</div>
+    <div class="modal-sub">on <b id="expand-store-name" style="color:var(--ink-900)"></b>. Your current access keeps working while this is reviewed.</div>
+
+    <div style="margin-top:16px">
+      <label class="field-label">Scopes</label>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;gap:8px"><span class="checkbox disabled-checked"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-300)">read_orders</span><span style="font:400 11px/14px var(--font-sans);color:var(--ink-300);margin-left:4px">Already granted</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><span class="checkbox checked" id="ex-s1" onclick="toggleCheck(this)"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">write_orders</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><span class="checkbox disabled-checked"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-300)">read_products</span><span style="font:400 11px/14px var(--font-sans);color:var(--ink-300);margin-left:4px">Already granted</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><span class="checkbox" id="ex-s2" onclick="toggleCheck(this)"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">write_products</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:14px">
+      <label class="field-label">Why do you need this? <span style="color:var(--ink-300);font-weight:400">(optional &mdash; helps the merchant decide)</span></label>
+      <textarea class="input" style="height:64px" placeholder="e.g. we need to issue refunds directly from the app"></textarea>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+      <span class="btn btn-secondary" onclick="closeModal('expand-modal')">Cancel</span>
+      <span class="btn btn-primary" onclick="submitExpand()">Send request</span>
+    </div>
+  </div>
+</div>
+
+<!-- Cancel confirm -->
+<div id="cancel-modal" class="modal-overlay">
+  <div class="modal" style="width:380px;padding:24px">
+    <div class="modal-title" style="font-size:16px">Cancel this request?</div>
+    <div class="modal-sub" id="cancel-body"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+      <span class="btn btn-secondary" onclick="closeModal('cancel-modal')">Keep request</span>
+      <span class="btn btn-danger-solid" onclick="confirmCancel()">Cancel request</span>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="js/shell.js"></script>
+<script>
+renderShell({ active: 'stores' });
+document.getElementById('req-plus').innerHTML = icon('plus', 10);
+document.getElementById('client-empty-icon').innerHTML = icon('stores', 18);
+document.getElementById('rate-limit-icon').innerHTML = icon('info', 14);
+switchTab('stores', 'collab');
+
+/* ---- Collaborations rows, with the addendum-spec states ---- */
+var STATUS_STYLE = {
+  active:   { label: 'Active', expires: 'in 22 days', pillClass: 'pill-success', canExpand: true,  canCancel: false, canRevoke: true },
+  compound: { label: 'Active &middot; Additional access requested', expires: 'in 22 days', pillClass: 'pill-accent', canExpand: false, canCancel: true,  canRevoke: true },
+  sent:     { label: 'Request sent', expires: '&mdash;', pillClass: 'pill-warning', canExpand: false, canCancel: true,  canRevoke: false },
+  expiring: { label: 'Expires soon', expires: 'in 5 days', pillClass: 'pill-warning', canExpand: true,  canCancel: false, canRevoke: true },
+  expired:  { label: 'Expired', expires: '12 days ago', pillClass: 'pill-neutral', canExpand: false, canCancel: false, canRevoke: false }
+};
+var ROWS = [
+  { key: 'wellversed', name: 'Wellversed', scopes: 'read_orders, write_orders +1', status: 'compound' },
+  { key: 'aqualogica', name: 'Aqualogica', scopes: 'read_products', status: 'sent' },
+  { key: 'kwik', name: 'Kwik Fashion', scopes: 'read_orders', status: 'expiring' },
+  { key: 'nooba', name: 'Nooba Foods', scopes: 'read_products', status: 'expired' }
+];
+var openMenuKey = null;
+
+function renderRows() {
+  var html = ROWS.map(function (r) {
+    var st = STATUS_STYLE[r.status];
+    var menuItems = '';
+    if (st.canExpand) menuItems += '<div class="row-menu-item" onclick="openExpand(\'' + r.key + '\')">Request additional permissions</div>';
+    if (st.canCancel) menuItems += '<div class="row-menu-item" style="color:var(--danger-text)" onclick="openCancel(\'' + r.key + '\')">Cancel request</div>';
+    if (st.canRevoke) menuItems += '<div class="row-menu-item" style="color:var(--danger-text)">Revoke access</div>';
+    return '<div class="collab-row table-row" style="height:56px">' +
+      '<span class="cell-name"><span class="truncate">' + r.name + '</span></span>' +
+      '<span class="pill ' + st.pillClass + '">' + st.label + '</span>' +
+      '<span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">' + r.scopes + '</span>' +
+      '<span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">' + st.expires + '</span>' +
+      '<span class="row-kebab" data-key="' + r.key + '" style="color:var(--ink-300);cursor:pointer"></span>' +
+      '<div id="menu-' + r.key + '" class="row-menu">' + menuItems + '</div>' +
+      '</div>';
+  }).join('');
+  document.getElementById('collab-rows').innerHTML = html;
+  document.querySelectorAll('.row-kebab').forEach(function (el) {
+    el.innerHTML = icon('kebab', 14);
+    el.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var key = el.getAttribute('data-key');
+      var willOpen = openMenuKey !== key;
+      document.querySelectorAll('.row-menu.open').forEach(function (m) { m.classList.remove('open'); });
+      if (willOpen) { document.getElementById('menu-' + key).classList.add('open'); openMenuKey = key; }
+      else { openMenuKey = null; }
+    });
+  });
+}
+document.addEventListener('click', function () {
+  document.querySelectorAll('.row-menu.open').forEach(function (m) { m.classList.remove('open'); });
+  openMenuKey = null;
+});
+renderRows();
+
+var requestAttempts = 0;
+function submitRequest() {
+  requestAttempts++;
+  if (requestAttempts >= 6) {
+    document.getElementById('rate-limit-notice').style.display = 'flex';
+    return;
+  }
+  document.getElementById('rate-limit-notice').style.display = 'none';
+  closeModal('request-modal');
+  showToast('Request sent. The merchant will review it from their admin.');
+}
+
+var expandKey = null;
+function openExpand(key) {
+  document.querySelectorAll('.row-menu.open').forEach(function (m) { m.classList.remove('open'); });
+  expandKey = key;
+  var row = ROWS.find(function (r) { return r.key === key; });
+  document.getElementById('expand-store-name').textContent = row.name;
+  openModal('expand-modal');
+}
+function submitExpand() {
+  var row = ROWS.find(function (r) { return r.key === expandKey; });
+  row.status = 'compound';
+  renderRows();
+  closeModal('expand-modal');
+  showToast('Request sent. ' + row.name + '’s owner will review the additional access you’ve asked for. Your current access is unaffected while this is pending.');
+}
+
+var cancelKey = null;
+function openCancel(key) {
+  document.querySelectorAll('.row-menu.open').forEach(function (m) { m.classList.remove('open'); });
+  cancelKey = key;
+  var row = ROWS.find(function (r) { return r.key === key; });
+  document.getElementById('cancel-body').textContent = row.status === 'compound'
+    ? 'This cancels only the pending additional-permissions request. Your existing access is untouched.'
+    : 'This withdraws your request. You can request access again anytime.';
+  openModal('cancel-modal');
+}
+function confirmCancel() {
+  var row = ROWS.find(function (r) { return r.key === cancelKey; });
+  if (row.status === 'compound') { row.status = 'active'; renderRows(); }
+  else { ROWS = ROWS.filter(function (r) { return r.key !== cancelKey; }); renderRows(); }
+  closeModal('cancel-modal');
+  showToast('Request cancelled.');
+}
+</script>
+</body>
+</html>

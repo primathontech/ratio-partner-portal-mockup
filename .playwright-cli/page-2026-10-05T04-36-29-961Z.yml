@@ -1,0 +1,68 @@
+- generic [active] [ref=f25e1]:
+  - generic [ref=f25e2]:
+    - generic [ref=f25e3]:
+      - generic [ref=f25e4] [cursor=pointer]
+      - link "Ratio" [ref=f25e10] [cursor=pointer]:
+        - /url: landing.html
+      - generic [ref=f25e11]: ND
+      - generic [ref=f25e17]:
+        - generic [ref=f25e18]: "3"
+        - generic [ref=f25e24]: AR
+    - generic [ref=f25e27]:
+      - generic [ref=f25e28]:
+        - generic [ref=f25e29]: Apps
+        - link [ref=f25e30] [cursor=pointer]:
+          - /url: app-create.html
+      - generic [ref=f25e35]:
+        - textbox "Search apps" [ref=f25e41]
+        - generic [ref=f25e42] [cursor=pointer]: All
+        - generic [ref=f25e43] [cursor=pointer]: Draft
+        - generic [ref=f25e44] [cursor=pointer]: In review
+        - generic [ref=f25e45] [cursor=pointer]: Published
+        - generic [ref=f25e46] [cursor=pointer]: Rejected
+      - generic [ref=f25e47]:
+        - generic [ref=f25e48]:
+          - generic [ref=f25e49]: Name
+          - generic [ref=f25e50]: Status
+          - generic [ref=f25e51]: Installs
+          - generic [ref=f25e52]: Last updated
+        - link "Wishlist Pro Published 1,204 2 days ago" [ref=f25e53] [cursor=pointer]:
+          - /url: app-detail.html
+          - generic [ref=f25e54]: Wishlist Pro
+          - generic [ref=f25e57]: Published
+          - generic [ref=f25e58]: 1,204
+          - generic [ref=f25e59]: 2 days ago
+        - link "Loyalty Points In review 812 5 hours ago" [ref=f25e66] [cursor=pointer]:
+          - /url: app-detail.html
+          - generic [ref=f25e67]: Loyalty Points
+          - generic [ref=f25e70]: In review
+          - generic [ref=f25e71]: "812"
+          - generic [ref=f25e72]: 5 hours ago
+        - link "Size Finder Draft 0 Yesterday" [ref=f25e79] [cursor=pointer]:
+          - /url: app-detail.html
+          - generic [ref=f25e80]: Size Finder
+          - generic [ref=f25e83]: Draft
+          - generic [ref=f25e84]: "0"
+          - generic [ref=f25e85]: Yesterday
+        - link "Cart Recovery SMS Rejected 0 1 week ago" [ref=f25e92] [cursor=pointer]:
+          - /url: app-detail.html
+          - generic [ref=f25e93]: Cart Recovery SMS
+          - generic [ref=f25e96]: Rejected
+          - generic [ref=f25e97]: "0"
+          - generic [ref=f25e98]: 1 week ago
+  - generic [ref=f25e105]:
+    - generic [ref=f25e106]:
+      - generic [ref=f25e107]: Ratio
+      - generic [ref=f25e108] [cursor=pointer]
+    - textbox "Search apps, stores and team" [ref=f25e117]
+    - generic [ref=f25e118]:
+      - link "Home" [ref=f25e119] [cursor=pointer]:
+        - /url: home.html
+      - link "Apps" [ref=f25e124] [cursor=pointer]:
+        - /url: apps.html
+      - link "Stores" [ref=f25e132] [cursor=pointer]:
+        - /url: stores.html
+      - link "Team" [ref=f25e138] [cursor=pointer]:
+        - /url: team.html
+      - link "Settings" [ref=f25e146] [cursor=pointer]:
+        - /url: settings.html

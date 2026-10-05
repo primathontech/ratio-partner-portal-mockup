@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ratio for Partners</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="js/icons.js"></script>
+<style>
+body{background:#fff}
+.nav-link{font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--text-strong);cursor:pointer}
+.nav-link:hover{color:var(--ink-900);text-decoration:none}
+.feature{background:#fff;padding:28px}
+.feature-icon{width:36px;height:36px;border-radius:8px;background:var(--accent-tint);display:flex;align-items:center;justify-content:center}
+@media (max-width:860px){
+  .nav-links{display:none !important}
+  .features-grid{grid-template-columns:1fr !important}
+  .stats-grid{grid-template-columns:1fr 1fr !important;row-gap:24px !important}
+  .steps-grid{grid-template-columns:1fr !important}
+  .footer-cols{grid-template-columns:1fr 1fr !important;row-gap:28px !important}
+}
+</style>
+</head>
+<body>
+
+<div style="border-bottom:1px solid var(--line-100);position:sticky;top:0;background:#fff;z-index:20">
+  <div style="max-width:1152px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;box-sizing:border-box">
+    <span class="rp-logo">Ratio</span>
+    <div class="nav-links" style="display:flex;align-items:center;gap:32px">
+      <a href="#apps-preview" class="nav-link">Apps</a>
+      <a href="pricing.html" class="nav-link">Pricing</a>
+      <a href="documentation.html" class="nav-link">Documentation</a>
+      <a href="support.html" class="nav-link">Support</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <a href="login.html" class="nav-link">Log in</a>
+      <a href="onboarding.html" class="btn btn-primary" style="height:36px">Sign up</a>
+    </div>
+  </div>
+</div>
+
+<div style="max-width:800px;margin:0 auto;padding:88px 24px 0;text-align:center;box-sizing:border-box">
+  <span style="display:inline-flex;align-items:center;gap:6px;height:24px;border-radius:4px;box-shadow:0 0 0 1px var(--line-150) inset;padding:0 10px;font:500 12px/16px var(--font-sans);letter-spacing:1px;text-transform:uppercase;color:var(--text-muted)">Ratio for Partners</span>
+  <h1 style="margin:20px 0 0;font:600 48px/56px var(--font-sans);letter-spacing:-0.5px;color:var(--ink-900)">Build the apps merchants install every day</h1>
+  <p style="margin:20px auto 0;max-width:560px;font:400 18px/28px var(--font-sans);color:var(--text-muted)">One dashboard for your apps, your dev store and every client engagement. List a paid app, get scoped access to a client's store, and see your earnings in one place.</p>
+  <div style="margin-top:32px;display:flex;align-items:center;justify-content:center;gap:12px">
+    <a href="onboarding.html" class="btn btn-primary" style="height:40px;padding:0 24px;font-size:15px">Start building</a>
+    <span class="btn btn-secondary" style="height:40px;padding:0 24px;font-size:15px">Read the documentation</span>
+  </div>
+</div>
+
+<div id="apps-preview" style="max-width:960px;margin:56px auto 0;padding:0 24px;box-sizing:border-box;scroll-margin-top:80px">
+  <div style="border:1px solid var(--line-100);border-radius:12px;padding:20px;box-shadow:0 0 0 1px var(--line-150)">
+    <div style="display:flex;align-items:center;gap:8px;padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid var(--line-100)">
+      <span style="width:10px;height:10px;border-radius:50%;background:var(--line-250)"></span>
+      <span style="width:10px;height:10px;border-radius:50%;background:var(--line-250)"></span>
+      <span style="width:10px;height:10px;border-radius:50%;background:var(--line-250)"></span>
+      <span style="margin-left:12px;font:400 13px/18px var(--font-sans);color:var(--text-placeholder)">partners.ratio.win/apps</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;padding:12px 4px;border-bottom:1px solid var(--line-100)">
+      <span class="swatch" style="width:36px;height:36px;background:var(--blue-100)"></span>
+      <div style="flex:1;text-align:left"><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Wishlist Pro</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-placeholder)">1,204 installs</div></div>
+      <span class="pill pill-success">Published</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;padding:12px 4px;border-bottom:1px solid var(--line-100)">
+      <span class="swatch" style="width:36px;height:36px;background:var(--warning-bg)"></span>
+      <div style="flex:1;text-align:left"><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Loyalty Points</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-placeholder)">812 installs</div></div>
+      <span class="pill pill-warning">In review</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;padding:12px 4px">
+      <span class="swatch" style="width:36px;height:36px;background:var(--line-100)"></span>
+      <div style="flex:1;text-align:left"><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Size Finder</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-placeholder)">96 installs</div></div>
+      <span class="pill pill-neutral">Draft</span>
+    </div>
+  </div>
+</div>
+
+<div class="stats-grid" style="max-width:1152px;margin:72px auto 0;padding:32px 24px;box-sizing:border-box;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line-100);border-bottom:1px solid var(--line-100)">
+  <div style="text-align:center"><div style="font:600 32px/38px var(--font-sans);color:var(--ink-900)">2,400+</div><div style="margin-top:4px;font:400 13px/18px var(--font-sans);color:var(--text-muted)">merchant stores on Ratio</div></div>
+  <div style="text-align:center"><div style="font:600 32px/38px var(--font-sans);color:var(--ink-900)">340+</div><div style="margin-top:4px;font:400 13px/18px var(--font-sans);color:var(--text-muted)">apps published by partners</div></div>
+  <div style="text-align:center"><div style="font:600 32px/38px var(--font-sans);color:var(--ink-900)">48h</div><div style="margin-top:4px;font:400 13px/18px var(--font-sans);color:var(--text-muted)">average review turnaround</div></div>
+  <div style="text-align:center"><div style="font:600 32px/38px var(--font-sans);color:var(--ink-900)">1</div><div style="margin-top:4px;font:400 13px/18px var(--font-sans);color:var(--text-muted)">dashboard for everything</div></div>
+</div>
+
+<div style="max-width:1152px;margin:80px auto 0;padding:0 24px;box-sizing:border-box">
+  <h2 style="margin:0 0 8px;text-align:center;font:600 28px/34px var(--font-sans);color:var(--ink-900)">Why partners build on Ratio</h2>
+  <p style="margin:0 auto 40px;max-width:520px;text-align:center;font:400 15px/22px var(--font-sans);color:var(--text-muted)">The same platform for apps, client stores and the people who work across both.</p>
+  <div class="features-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line-100);border:1px solid var(--line-100);border-radius:12px;overflow:hidden">
+    <div class="feature">
+      <div class="feature-icon"></div>
+      <div style="margin-top:14px;font:600 16px/22px var(--font-sans);color:var(--ink-900)">One dashboard for everything</div>
+      <div style="margin-top:6px;font:400 14px/21px var(--font-sans);color:var(--text-muted)">Apps, dev store, client stores and your team live in a single portal &mdash; no separate developer dashboard to context-switch into.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon"></div>
+      <div style="margin-top:14px;font:600 16px/22px var(--font-sans);color:var(--ink-900)">Get paid for what you build</div>
+      <div style="margin-top:6px;font:400 14px/21px var(--font-sans);color:var(--text-muted)">Declare priced plans on your app, and Ratio handles merchant billing, invoicing and your payout &mdash; no separate billing integration to build.</div>
+    </div>
+    <div class="feature" id="feature-partner-access" style="scroll-margin-top:80px">
+      <div class="feature-icon"></div>
+      <div style="margin-top:14px;font:600 16px/22px var(--font-sans);color:var(--ink-900)">Scoped access, not shared passwords</div>
+      <div style="margin-top:6px;font:400 14px/21px var(--font-sans);color:var(--text-muted)">Request time-boxed, scoped access to a client's store with a code the merchant controls. Every action is attributed to the person who did it.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon"></div>
+      <div style="margin-top:14px;font:600 16px/22px var(--font-sans);color:var(--ink-900)">Ship with confidence</div>
+      <div style="margin-top:6px;font:400 14px/21px var(--font-sans);color:var(--text-muted)">Every submission goes through review, with feedback in the portal &mdash; not by email. Roll back to any prior version at any time.</div>
+    </div>
+  </div>
+</div>
+
+<div style="max-width:1152px;margin:88px auto 0;padding:0 24px;box-sizing:border-box">
+  <h2 style="margin:0 0 40px;text-align:center;font:600 28px/34px var(--font-sans);color:var(--ink-900)">From idea to installed, in three steps</h2>
+  <div class="steps-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px">
+    <div style="text-align:center">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--ink-900);color:#fff;display:flex;align-items:center;justify-content:center;font:600 14px/16px var(--font-sans);margin:0 auto">1</div>
+      <div style="margin-top:14px;font:600 15px/20px var(--font-sans);color:var(--ink-900)">Build</div>
+      <div style="margin-top:6px;font:400 14px/21px var(--font-sans);color:var(--text-muted)">Create an app, choose the permissions it needs, and test it against your own dev store.</div>
+    </div>
+    <div style="text-align:center">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--ink-900);color:#fff;display:flex;align-items:center;justify-content:center;font:600 14px/16px var(--font-sans);margin:0 auto">2</div>
+      <div style="margin-top:14px;font:600 15px/20px var(--font-sans);color:var(--ink-900)">Submit for review</div>
+      <div style="margin-top:6px;font:400 14px/21px var(--font-sans);color:var(--text-muted)">Send it for review from the portal. If something needs fixing, you'll see exactly what &mdash; in the same place you submitted it.</div>
+    </div>
+    <div style="text-align:center">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--ink-900);color:#fff;display:flex;align-items:center;justify-content:center;font:600 14px/16px var(--font-sans);margin:0 auto">3</div>
+      <div style="margin-top:14px;font:600 15px/20px var(--font-sans);color:var(--ink-900)">Get installed and paid</div>
+      <div style="margin-top:6px;font:400 14px/21px var(--font-sans);color:var(--text-muted)">Merchants install your app from the catalogue. Watch installs and earnings from your dashboard's home.</div>
+    </div>
+  </div>
+</div>
+
+<div style="max-width:1152px;margin:88px auto 0;padding:0 24px;box-sizing:border-box">
+  <div style="background:var(--ink-900);border-radius:16px;padding:56px 24px;text-align:center">
+    <div style="font:600 28px/34px var(--font-sans);color:#fff">Ready to build on Ratio?</div>
+    <div style="margin-top:10px;font:400 15px/22px var(--font-sans);color:rgba(255,255,255,0.65)">Free to sign up. Free to list your first app.</div>
+    <div style="margin-top:24px"><a href="onboarding.html" class="btn btn-primary" style="height:40px;padding:0 24px;font-size:15px">Create your account</a></div>
+  </div>
+</div>
+
+<div style="margin-top:80px;border-top:1px solid var(--line-100)">
+  <div style="max-width:1152px;margin:0 auto;padding:48px 24px;box-sizing:border-box">
+    <div class="footer-cols" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:24px">
+      <div>
+        <span class="rp-logo" style="font-size:18px">Ratio</span>
+        <div style="margin-top:12px;font:400 13px/19px var(--font-sans);color:var(--text-placeholder);max-width:220px">The commerce platform for D2C brands &mdash; and the partners who build for them.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font:500 12px/16px var(--font-sans);text-transform:uppercase;letter-spacing:0.5px;color:var(--text-placeholder);margin-bottom:2px">Product</span>
+        <a href="#apps-preview" class="nav-link" style="font-size:13px">Apps</a>
+        <a href="pricing.html" class="nav-link" style="font-size:13px">Pricing</a>
+        <a href="#feature-partner-access" class="nav-link" style="font-size:13px">Partner access</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font:500 12px/16px var(--font-sans);text-transform:uppercase;letter-spacing:0.5px;color:var(--text-placeholder);margin-bottom:2px">Resources</span>
+        <a href="documentation.html" class="nav-link" style="font-size:13px">Documentation</a>
+        <a href="documentation.html#api-reference" class="nav-link" style="font-size:13px">API reference</a>
+        <a href="changelog.html" class="nav-link" style="font-size:13px">Changelog</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font:500 12px/16px var(--font-sans);text-transform:uppercase;letter-spacing:0.5px;color:var(--text-placeholder);margin-bottom:2px">Company</span>
+        <a href="support.html" class="nav-link" style="font-size:13px">Support</a>
+        <a href="terms.html" class="nav-link" style="font-size:13px">Terms</a>
+        <a href="privacy.html" class="nav-link" style="font-size:13px">Privacy</a>
+      </div>
+    </div>
+    <div style="margin-top:40px;padding-top:20px;border-top:1px solid var(--line-100);font:400 12px/16px var(--font-sans);color:var(--text-placeholder)">&copy; 2026 Ratio. All rights reserved.</div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.feature-icon').forEach(function (el, i) {
+  var names = ['apps', 'trend', 'lock', 'check'];
+  el.innerHTML = icon(names[i], 16);
+  el.querySelector('.rp-icon').style.color = 'var(--accent)';
+});
+</script>
+</body>
+</html>

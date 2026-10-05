@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your organisation &mdash; Ratio</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="js/icons.js"></script>
+<style>
+body{background:var(--surface-page)}
+.ob-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:48px 16px}
+.ob-card{width:100%;max-width:460px;background:#fff;border:1px solid var(--line-100);border-radius:12px;padding:32px;box-sizing:border-box}
+.path-pick{flex:1;border-radius:8px;padding:14px 16px;cursor:pointer;background:#fff}
+.path-pick.active{box-shadow:0 0 0 1.5px var(--accent)}
+.path-pick:not(.active){box-shadow:0 0 0 1px var(--line-100)}
+</style>
+</head>
+<body>
+<div class="ob-wrap">
+
+<a href="landing.html" class="rp-logo" style="margin-bottom:40px;text-decoration:none">Ratio</a>
+
+<!-- Create-vs-join picker — shown only when a pending invite exists. Toggle below for the mockup. -->
+<div id="picker" style="width:100%;max-width:460px;display:none;gap:8px;margin-bottom:20px">
+  <div id="pick-create" class="path-pick active" onclick="pickPath('create')">
+    <div style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Create organisation</div>
+    <div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:2px">Start a new agency or workspace</div>
+  </div>
+  <div id="pick-join" class="path-pick" onclick="pickPath('join')">
+    <div style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Join organisation</div>
+    <div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:2px">You have a pending invitation</div>
+  </div>
+</div>
+<div style="margin-bottom:16px"><a href="#" onclick="togglePicker();return false;" style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">(mockup toggle: simulate having a pending invite)</a></div>
+
+<div id="panel-create" class="ob-card">
+  <div style="font:600 20px/26px var(--font-sans);color:var(--ink-900)">Create your organisation</div>
+  <div style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-500);margin-top:6px">This is the workspace your team, apps and stores will live in. You can invite people once it's created.</div>
+
+  <div style="margin-top:24px">
+    <label class="field-label">Organisation name</label>
+    <input class="input" id="org-name" placeholder="e.g. Nutristar Digital" oninput="checkOrgName()">
+  </div>
+
+  <div style="margin-top:16px">
+    <label class="field-label">Country</label>
+    <select class="input">
+      <option>India</option>
+      <option>United States</option>
+      <option>United Kingdom</option>
+      <option>United Arab Emirates</option>
+      <option>Singapore</option>
+      <option>Other</option>
+    </select>
+    <div class="field-help">Used for invoices and default currency. You can change this later in Settings.</div>
+  </div>
+
+  <div style="margin-top:16px">
+    <label class="field-label">Logo <span style="color:var(--ink-300);font-weight:400">(optional)</span></label>
+    <div style="height:64px;border-radius:8px;border:1px dashed var(--line-150);display:flex;align-items:center;gap:12px;padding:0 14px;cursor:pointer;box-sizing:border-box">
+      <span id="upload-icon-slot" style="width:36px;height:36px;border-radius:6px;background:var(--line-100);color:var(--ink-500);flex-shrink:0;display:flex;align-items:center;justify-content:center"></span>
+      <div><div style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Upload a square logo</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">PNG or JPG, at least 256&times;256px</div></div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px">
+    <label class="field-label">Short description <span style="color:var(--ink-300);font-weight:400">(optional)</span></label>
+    <textarea class="input" style="height:64px" placeholder="What does your agency or studio do?"></textarea>
+  </div>
+
+  <button class="btn btn-primary" id="create-btn" style="margin-top:24px;width:100%" disabled onclick="window.location.href='home.html'">Create organisation</button>
+  <div class="field-help" style="text-align:center;margin-top:14px">You can add billing details later, from Settings &rarr; Billing.</div>
+  <div style="text-align:center;margin-top:14px;font:400 13px/18px var(--font-sans);color:var(--ink-500)">Already have an account? <a href="login.html">Log in</a></div>
+</div>
+
+<div id="panel-join" class="ob-card" style="display:none;text-align:center">
+  <span style="width:44px;height:44px;border-radius:10px;background:var(--ink-900);display:flex;align-items:center;justify-content:center;font:600 16px/20px var(--font-sans);color:#fff;margin:0 auto">WA</span>
+  <div style="font:600 18px/24px var(--font-sans);color:var(--ink-900);margin-top:16px">Join Wellversed Agency</div>
+  <div style="font:400 14px/21px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-500);margin-top:6px">Priya Nair invited you as <b style="color:var(--ink-900);font-weight:600">App Developer</b>. This invitation expires in 6 days.</div>
+  <button class="btn btn-primary" style="margin-top:24px;width:100%" onclick="window.location.href='home.html'">Accept invitation</button>
+  <div style="margin-top:10px;font:400 13px/18px var(--font-sans);color:var(--text-muted);cursor:pointer">Decline</div>
+</div>
+
+</div>
+
+<script>
+function togglePicker() {
+  var el = document.getElementById('picker');
+  el.style.display = (el.style.display === 'none' || !el.style.display) ? 'flex' : 'none';
+}
+function pickPath(which) {
+  document.getElementById('pick-create').classList.toggle('active', which === 'create');
+  document.getElementById('pick-join').classList.toggle('active', which === 'join');
+  document.getElementById('panel-create').style.display = which === 'create' ? '' : 'none';
+  document.getElementById('panel-join').style.display = which === 'join' ? '' : 'none';
+}
+function checkOrgName() {
+  var v = document.getElementById('org-name').value.trim();
+  document.getElementById('create-btn').disabled = v.length < 2;
+}
+document.getElementById('upload-icon-slot').innerHTML = icon('upload', 14);
+</script>
+</body>
+</html>

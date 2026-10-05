@@ -1,0 +1,31 @@
+- generic [ref=f21e2]:
+  - link "Ratio" [ref=f21e3] [cursor=pointer]:
+    - /url: landing.html
+  - 'link "(mockup toggle: simulate having a pending invite)" [ref=f21e5] [cursor=pointer]':
+    - /url: "#"
+  - generic [ref=f21e6]:
+    - generic [ref=f21e7]: Create your organisation
+    - generic [ref=f21e8]: This is the workspace your team, apps and stores will live in. You can invite people once it's created.
+    - generic [ref=f21e9]:
+      - generic [ref=f21e10]: Organisation name
+      - textbox "e.g. Nutristar Digital" [ref=f21e11]
+    - generic [ref=f21e12]:
+      - generic [ref=f21e13]: Country
+      - combobox [ref=f21e14]:
+        - option "India" [selected]
+        - option "United States"
+        - option "United Kingdom"
+        - option "United Arab Emirates"
+        - option "Singapore"
+        - option "Other"
+      - generic [ref=f21e15]: Used for invoices and default currency. You can change this later in Settings.
+    - generic [ref=f21e16]:
+      - generic [ref=f21e17]: Logo (optional)
+      - generic [ref=f21e24] [cursor=pointer]:
+        - generic [ref=f21e25]: Upload a square logo
+        - generic [ref=f21e26]: PNG or JPG, at least 256×256px
+    - generic [ref=f21e27]:
+      - generic [ref=f21e28]: Short description (optional)
+      - textbox "What does your agency or studio do?" [ref=f21e29]
+    - button "Create organisation" [disabled]
+    - generic [ref=f21e30]: You can add billing details later, from Settings → Billing.

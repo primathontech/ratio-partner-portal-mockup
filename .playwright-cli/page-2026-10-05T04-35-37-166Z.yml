@@ -1,0 +1,93 @@
+- generic [active] [ref=f23e1]:
+  - generic [ref=f23e2]:
+    - generic [ref=f23e3]:
+      - generic [ref=f23e4] [cursor=pointer]
+      - link "Ratio" [ref=f23e10] [cursor=pointer]:
+        - /url: landing.html
+      - generic [ref=f23e11]: ND
+      - generic [ref=f23e17]:
+        - generic [ref=f23e18]: "3"
+        - generic [ref=f23e24]: AR
+    - generic [ref=f23e27]:
+      - generic [ref=f23e29]:
+        - generic [ref=f23e30]: Good afternoon, Asha
+        - generic [ref=f23e31]: Nutristar Digital
+      - generic [ref=f23e32]:
+        - generic [ref=f23e33]:
+          - generic [ref=f23e34]: Get started with Ratio
+          - generic [ref=f23e35]: 1 of 3 done
+        - generic [ref=f23e38]:
+          - generic [ref=f23e39]:
+            - generic [ref=f23e40] [cursor=pointer]
+            - generic [ref=f23e41]:
+              - generic [ref=f23e42]: Invite your team
+              - generic [ref=f23e43]: Add teammates with the right roles
+          - generic [ref=f23e44]:
+            - generic [ref=f23e45] [cursor=pointer]
+            - generic [ref=f23e49]:
+              - generic [ref=f23e50]: Create a dev store
+              - generic [ref=f23e51]: Test your apps before publishing
+          - generic [ref=f23e52]:
+            - generic [ref=f23e53] [cursor=pointer]
+            - generic [ref=f23e54]:
+              - generic [ref=f23e55]: Create your first app
+              - generic [ref=f23e56]: Start from Apps → Create app
+      - generic [ref=f23e57]:
+        - generic [ref=f23e58]:
+          - generic [ref=f23e59]:
+            - generic [ref=f23e60]: Earnings
+            - generic [ref=f23e61]:
+              - generic [ref=f23e62]: ₹2,84,650
+              - generic [ref=f23e63]: 18%
+          - generic [ref=f23e67] [cursor=pointer]: Last 30 days
+        - generic [ref=f23e76]:
+          - generic [ref=f23e77]: 30 days ago
+          - generic [ref=f23e78]: Today
+      - generic [ref=f23e79]:
+        - link "Create app" [ref=f23e80] [cursor=pointer]:
+          - /url: app-create.html
+        - link "Create dev store" [ref=f23e86] [cursor=pointer]:
+          - /url: stores.html
+        - link "Request store access" [ref=f23e93] [cursor=pointer]:
+          - /url: stores.html
+      - generic [ref=f23e99]:
+        - generic [ref=f23e100]:
+          - generic [ref=f23e101]:
+            - generic [ref=f23e102]: Recent stores
+            - link "View all" [ref=f23e103] [cursor=pointer]:
+              - /url: stores.html
+          - link "Nutristar Digital nutristar-dev.ratio.win 2h ago" [ref=f23e104] [cursor=pointer]:
+            - /url: stores.html
+            - generic [ref=f23e106]:
+              - generic [ref=f23e107]: Nutristar Digital
+              - generic [ref=f23e108]: nutristar-dev.ratio.win
+            - generic [ref=f23e109]: 2h ago
+          - link "Wellversed wellversed.ratio.win Yesterday" [ref=f23e110] [cursor=pointer]:
+            - /url: stores.html
+            - generic [ref=f23e112]:
+              - generic [ref=f23e113]: Wellversed
+              - generic [ref=f23e114]: wellversed.ratio.win
+            - generic [ref=f23e115]: Yesterday
+          - link "Aqualogica aqualogica.ratio.win 3 days ago" [ref=f23e116] [cursor=pointer]:
+            - /url: stores.html
+            - generic [ref=f23e118]:
+              - generic [ref=f23e119]: Aqualogica
+              - generic [ref=f23e120]: aqualogica.ratio.win
+            - generic [ref=f23e121]: 3 days ago
+        - generic [ref=f23e122]:
+          - generic [ref=f23e123]: Activity
+          - generic [ref=f23e132]:
+            - generic [ref=f23e133]: Wishlist Pro was submitted for review
+            - generic [ref=f23e134]: 1h ago
+          - generic [ref=f23e141]:
+            - generic [ref=f23e142]: Collaborator access approved on wellversed.ratio.win
+            - generic [ref=f23e143]: 5h ago
+          - generic [ref=f23e152]:
+            - generic [ref=f23e153]: Karan Shah accepted your invitation
+            - generic [ref=f23e154]: Yesterday
+          - generic [ref=f23e163]:
+            - generic [ref=f23e164]: Loyalty Points was published
+            - generic [ref=f23e165]: 2 days ago
+  - generic [ref=f23e167]:
+    - generic [ref=f23e168]: Ratio
+    - generic [ref=f23e169] [cursor=pointer]

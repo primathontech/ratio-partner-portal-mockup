@@ -1,0 +1,20 @@
+- generic [ref=f5e2]:
+  - link "Ratio" [ref=f5e3] [cursor=pointer]:
+    - /url: landing.html
+  - generic [ref=f5e4]:
+    - generic [ref=f5e5]: Log in to Ratio
+    - generic [ref=f5e6]: Welcome back. Enter your details to continue.
+    - generic [ref=f5e7] [cursor=pointer]: Continue with Google
+    - generic [ref=f5e14]: or
+    - generic [ref=f5e15]: Email
+    - textbox "you@company.com" [ref=f5e16]: asha@nutristar.in
+    - generic [ref=f5e17]:
+      - generic [ref=f5e18]: Password
+      - link "Forgot password?" [ref=f5e19] [cursor=pointer]:
+        - /url: "#"
+    - textbox "••••••••" [ref=f5e20]: password123
+    - button "Continue" [ref=f5e21] [cursor=pointer]
+    - generic [ref=f5e22]:
+      - text: New to Ratio?
+      - link "Create an account" [ref=f5e23] [cursor=pointer]:
+        - /url: onboarding.html

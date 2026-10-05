@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings &mdash; Ratio Partner Portal</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="js/icons.js"></script>
+<style>
+.invoices-table .table-head-row, .invoices-table .table-row{grid-template-columns:1fr 1.6fr 1fr 1fr 1fr 32px}
+</style>
+</head>
+<body>
+<div class="page">
+<div id="shell-topbar"></div>
+<div id="shell-sidenav"></div>
+
+<div class="content content-wide">
+  <div style="margin-bottom:16px"><span class="page-title">Settings</span></div>
+
+  <div class="tabrow">
+    <span class="tab active" data-tabgroup="settings" data-tabkey="general" onclick="switchTab('settings','general',event)">General</span>
+    <span class="tab" data-tabgroup="settings" data-tabkey="billing" onclick="switchTab('settings','billing',event)">Billing</span>
+    <span class="tab" data-tabgroup="settings" data-tabkey="danger" onclick="switchTab('settings','danger',event)">Danger zone</span>
+  </div>
+
+  <!-- General -->
+  <div data-panelgroup="settings" data-panelkey="general">
+    <div class="card card-pad" style="margin-bottom:16px">
+      <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Identity</span>
+      <div style="margin-top:16px;display:flex;align-items:center;gap:14px">
+        <span class="swatch" style="width:56px;height:56px;background:var(--blue-100)"></span>
+        <span class="btn btn-secondary">Change logo</span>
+      </div>
+      <div style="margin-top:16px"><label class="field-label">Organisation name</label><input class="input" value="Nutristar Digital"></div>
+      <div style="margin-top:14px"><label class="field-label">Country</label><select class="input" style="width:240px"><option>India</option><option>United States</option><option>United Kingdom</option></select></div>
+      <div style="margin-top:14px"><label class="field-label">Description</label><textarea class="input" style="height:72px">We build commerce apps and manage storefronts for D2C brands across India.</textarea></div>
+    </div>
+    <div class="card card-pad">
+      <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Contact</span>
+      <div style="margin-top:16px"><label class="field-label">Support email</label><input class="input" value="support@nutristar.in"></div>
+      <div style="margin-top:14px"><label class="field-label">Website</label><input class="input" value="https://nutristar.in"></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:16px"><span class="btn btn-primary">Save changes</span></div>
+  </div>
+
+  <!-- Billing -->
+  <div data-panelgroup="settings" data-panelkey="billing" style="display:none">
+    <div class="card card-pad" style="margin-bottom:16px">
+      <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Payment method</span>
+      <div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line-100);border-radius:8px;padding:14px 16px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="width:36px;height:24px;border-radius:4px;background:var(--ink-900);display:flex;align-items:center;justify-content:center;color:#fff" id="card-icon"></span>
+          <div><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Visa &bull;&bull;&bull;&bull; 4242</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Expires 08/29</div></div>
+        </div>
+        <span class="btn btn-secondary btn-sm">Update</span>
+      </div>
+    </div>
+
+    <div class="card invoices-table" style="overflow:hidden">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--line-100)"><span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Invoices</span></div>
+      <div class="table-head-row" style="height:38px"><span>Date</span><span>Description</span><span>Subtotal</span><span>GST (indicative)</span><span>Total</span><span></span></div>
+      <div class="table-row" style="height:50px"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Sep 1, 2026</span><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Platform fee &mdash; September</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550);font-variant-numeric:tabular-nums">&#8377;4,999</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-300);font-variant-numeric:tabular-nums">&#8377;900</span><span style="font:500 13px/18px var(--font-sans);color:var(--ink-900);font-variant-numeric:tabular-nums">&#8377;5,899</span><span class="dl-icon" style="color:var(--ink-500);cursor:pointer"></span></div>
+      <div class="table-row" style="height:50px"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Aug 1, 2026</span><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Platform fee &mdash; August</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550);font-variant-numeric:tabular-nums">&#8377;4,999</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-300);font-variant-numeric:tabular-nums">&#8377;900</span><span style="font:500 13px/18px var(--font-sans);color:var(--ink-900);font-variant-numeric:tabular-nums">&#8377;5,899</span><span class="dl-icon" style="color:var(--ink-500);cursor:pointer"></span></div>
+      <div class="table-row" style="height:50px"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Jul 1, 2026</span><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Platform fee &mdash; July</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550);font-variant-numeric:tabular-nums">&#8377;4,999</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-300);font-variant-numeric:tabular-nums">&#8377;900</span><span style="font:500 13px/18px var(--font-sans);color:var(--ink-900);font-variant-numeric:tabular-nums">&#8377;5,899</span><span class="dl-icon" style="color:var(--ink-500);cursor:pointer"></span></div>
+    </div>
+    <div style="margin-top:8px;font:400 12px/16px var(--font-sans);color:var(--ink-300)">GST is shown as an indicative total. Ellora issues the statutory invoice for each charge.</div>
+  </div>
+
+  <!-- Danger zone -->
+  <div data-panelgroup="settings" data-panelkey="danger" style="display:none">
+    <div class="card card-pad" style="margin-bottom:16px">
+      <div style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Transfer ownership</div>
+      <div style="font:400 14px/21px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-500);margin-top:6px">Hand this organisation to another member. You'll be moved to Organisation Admin once they accept.</div>
+      <span class="btn btn-secondary" style="margin-top:14px">Transfer ownership</span>
+    </div>
+    <div class="card card-pad" style="box-shadow:0 0 0 1px var(--danger-border) inset">
+      <div style="font:600 15px/20px var(--font-sans);color:var(--danger-text)">Delete organisation</div>
+      <div style="font:400 14px/21px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-500);margin-top:6px">Permanently remove this organisation, its apps and its stores. This cannot be undone.</div>
+      <span class="btn btn-danger" style="margin-top:14px">Delete organisation</span>
+      <div style="font:400 12px/16px var(--font-sans);color:var(--ink-300);margin-top:8px">Not yet available &mdash; planned for a future release.</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script src="js/shell.js"></script>
+<script>
+renderShell({ active: 'settings' });
+document.getElementById('card-icon').innerHTML = icon('card', 16);
+document.querySelectorAll('.dl-icon').forEach(function (el) { el.innerHTML = icon('download', 12); });
+</script>
+</body>
+</html>

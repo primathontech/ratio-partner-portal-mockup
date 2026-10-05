@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wishlist Pro &mdash; Ratio Partner Portal</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="js/icons.js"></script>
+<style>
+.detail-layout{display:flex;gap:32px;align-items:flex-start}
+@media (max-width:900px){.detail-layout{flex-direction:column}.subnav{width:100%;flex-direction:row;flex-wrap:wrap}}
+.rev-step{flex:1;text-align:center;position:relative}
+.rev-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:600 12px/16px var(--font-sans);margin:0 auto}
+</style>
+</head>
+<body>
+<div class="page">
+<div id="shell-topbar"></div>
+<div id="shell-sidenav"></div>
+
+<div class="content content-wide">
+  <div class="breadcrumb"><a href="apps.html">Apps</a><span>/</span><span class="current">Wishlist Pro</span></div>
+
+  <div class="page-header-row">
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="swatch" style="width:40px;height:40px;border-radius:9px;background:var(--blue-100)"></span>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px"><span style="font:600 20px/26px var(--font-sans);color:var(--ink-900)">Wishlist Pro</span><span class="pill pill-success">Published</span></div>
+        <div style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-top:2px">1,204 installs &middot; Updated 2 days ago</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span class="btn btn-secondary">View in store</span>
+      <span style="color:var(--ink-500);cursor:pointer;margin-left:4px" id="kebab-slot"></span>
+    </div>
+  </div>
+
+  <div class="detail-layout">
+    <div class="subnav">
+      <a class="tab active" data-tabgroup="appdetail" data-tabkey="overview" onclick="switchTab('appdetail','overview',event)">Overview</a>
+      <a class="tab" data-tabgroup="appdetail" data-tabkey="distribution" onclick="switchTab('appdetail','distribution',event)">Distribution</a>
+      <a class="tab" data-tabgroup="appdetail" data-tabkey="apikeys" onclick="switchTab('appdetail','apikeys',event)">API keys</a>
+      <a class="tab" data-tabgroup="appdetail" data-tabkey="webhooks" onclick="switchTab('appdetail','webhooks',event)">Webhooks</a>
+      <a class="tab" data-tabgroup="appdetail" data-tabkey="extensions" onclick="switchTab('appdetail','extensions',event)">Extensions</a>
+    </div>
+
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:16px">
+
+      <!-- Overview -->
+      <div data-panelgroup="appdetail" data-panelkey="overview">
+        <div class="card card-pad">
+          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Current version</span>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div style="display:flex;align-items:center;gap:8px"><span style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">1.3.0</span><span class="pill pill-success">Active</span></div>
+            <span class="btn btn-secondary btn-sm">New version</span>
+          </div>
+          <div style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-top:6px">Released Sep 24, 2026 by Asha Rao</div>
+        </div>
+
+        <div class="card card-pad" style="margin-top:16px">
+          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Version history</span>
+          <div style="margin-top:10px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line-100)"><div style="display:flex;align-items:center;gap:8px"><span style="font:400 14px/20px var(--font-sans);color:var(--ink-800)">1.3.0</span><span class="pill pill-success">Active</span></div><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Sep 24, 2026</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line-100)"><div style="display:flex;align-items:center;gap:8px"><span style="font:400 14px/20px var(--font-sans);color:var(--ink-800)">1.2.0</span><span class="pill pill-neutral">Replaced</span></div><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Aug 02, 2026</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0"><div style="display:flex;align-items:center;gap:8px"><span style="font:400 14px/20px var(--font-sans);color:var(--ink-800)">1.1.0</span><span class="pill pill-neutral">Replaced</span></div><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Jun 14, 2026</span></div>
+          </div>
+        </div>
+
+        <div class="card card-pad" style="margin-top:16px">
+          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Review process</span>
+          <div style="display:flex;margin-top:16px">
+            <div class="rev-step"><div class="rev-dot" style="background:var(--accent);color:#fff">1</div><div style="font:500 13px/18px var(--font-sans);color:var(--ink-900);margin-top:8px">Submit</div></div>
+            <div class="rev-step"><div class="rev-dot" style="background:var(--accent);color:#fff">2</div><div style="font:500 13px/18px var(--font-sans);color:var(--ink-900);margin-top:8px">Review</div></div>
+            <div class="rev-step"><div class="rev-dot" style="background:var(--line-100);color:var(--ink-500)">3</div><div style="font:500 13px/18px var(--font-sans);color:var(--ink-900);margin-top:8px">Feedback</div></div>
+            <div class="rev-step"><div class="rev-dot" style="background:var(--line-100);color:var(--ink-500)">4</div><div style="font:500 13px/18px var(--font-sans);color:var(--ink-900);margin-top:8px">Publish</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distribution -->
+      <div data-panelgroup="appdetail" data-panelkey="distribution" style="display:none">
+        <div class="card card-pad">
+          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Distribution</span>
+          <div style="margin-top:14px;display:flex;gap:8px">
+            <div onclick="pickDist('public')" id="dist-public" style="flex:1;border-radius:8px;padding:12px 14px;cursor:pointer;box-shadow:0 0 0 1.5px var(--accent)"><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Public</div><div style="font:400 12px/17px var(--font-sans);color:var(--text-muted)">Any merchant can find and install this app</div></div>
+            <div onclick="pickDist('private')" id="dist-private" style="flex:1;border-radius:8px;padding:12px 14px;cursor:pointer;box-shadow:0 0 0 1px var(--line-100)"><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Private</div><div style="font:400 12px/17px var(--font-sans);color:var(--text-muted)">Only merchants you allow can install it</div></div>
+          </div>
+          <div id="private-merchants" style="margin-top:14px;display:none">
+            <label class="field-label">Allowed merchants</label>
+            <div style="height:36px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset;display:flex;align-items:center;padding:0 12px;gap:8px">
+              <input placeholder="Search merchant by store domain" style="flex:1;border:none;outline:none;background:transparent;font:400 14px/20px var(--font-sans);color:var(--ink-800)">
+              <span class="btn btn-secondary" style="height:26px;padding:0 10px;font-size:13px">Add</span>
+            </div>
+            <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px">
+              <span style="height:26px;border-radius:6px;background:var(--line-100);padding:0 10px;display:inline-flex;align-items:center;gap:6px;font:400 13px/18px var(--font-sans);color:var(--ink-800)">wellversed.ratio.win<span class="remove-x" style="color:var(--ink-500);cursor:pointer"></span></span>
+            </div>
+          </div>
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--line-100);display:flex;align-items:center;justify-content:space-between">
+            <div><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Auto-publish new versions</div><div style="font:400 12px/17px var(--font-sans);color:var(--text-muted)">Skip manual review for minor updates once approved once</div></div>
+            <span class="toggle" onclick="toggleSwitch(this)"><span class="knob"></span></span>
+          </div>
+        </div>
+
+        <div class="card card-pad" style="margin-top:16px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Pricing</span>
+            <span class="btn btn-secondary btn-sm">Create plan</span>
+          </div>
+          <div style="margin-top:14px;font:500 13px/18px var(--font-sans);color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px">Public plans</div>
+          <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div style="border:1px solid var(--line-100);border-radius:8px;padding:14px"><div style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Starter</div><div style="font:600 18px/24px var(--font-sans);color:var(--ink-900);margin-top:4px">&#8377;999<span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">/month</span></div><div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:6px">Up to 500 wishlist saves</div></div>
+            <div style="border:1px solid var(--line-100);border-radius:8px;padding:14px"><div style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Growth</div><div style="font:600 18px/24px var(--font-sans);color:var(--ink-900);margin-top:4px">&#8377;2,499<span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">/month</span></div><div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:6px">Unlimited saves, priority support</div></div>
+          </div>
+          <div style="margin-top:8px;font:400 12px/16px var(--font-sans);color:var(--ink-300)">18 merchants still on legacy pricing at &#8377;799/month.</div>
+        </div>
+      </div>
+
+      <!-- API keys -->
+      <div data-panelgroup="appdetail" data-panelkey="apikeys" style="display:none">
+        <div class="card card-pad">
+          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Credentials</span>
+          <div style="margin-top:14px">
+            <label class="field-label">Client ID</label>
+            <div style="height:36px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset;display:flex;align-items:center;padding:0 12px;gap:10px;font-family:var(--font-mono);font-size:13px;color:var(--ink-800)">88ec0cdbfdf25eea1dcd339433b662<span class="copy-icon" style="color:var(--ink-500);cursor:pointer;margin-left:auto"></span></div>
+          </div>
+          <div style="margin-top:14px">
+            <label class="field-label">Client secret</label>
+            <div style="height:36px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset;display:flex;align-items:center;padding:0 12px;gap:10px;font-family:var(--font-mono);font-size:13px;color:var(--ink-800)">
+              <span id="secret-text">&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</span>
+              <span id="eye-icon" onclick="toggleSecret()" style="color:var(--ink-500);cursor:pointer;margin-left:auto"></span>
+              <span class="copy-icon" style="color:var(--ink-500);cursor:pointer"></span>
+            </div>
+          </div>
+          <div style="margin-top:16px"><span class="btn btn-danger">Regenerate secret</span></div>
+        </div>
+        <div class="card card-pad" style="margin-top:16px">
+          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Authentication</span>
+          <div style="font:400 14px/21px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-500);margin-top:6px">OAuth authorization, token exchange and refresh are documented in the developer guide.</div>
+          <a href="documentation.html#authentication" style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;font:400 13px/18px var(--font-sans)">View authentication guide<span id="ext-link-icon"></span></a>
+        </div>
+      </div>
+
+      <!-- Webhooks -->
+      <div data-panelgroup="appdetail" data-panelkey="webhooks" style="display:none">
+        <div class="card card-pad">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Endpoints</span>
+            <span class="btn btn-secondary btn-sm"><span id="endpoint-plus"></span>Create endpoint</span>
+          </div>
+          <div style="margin-top:14px;border:1px solid var(--line-100);border-radius:8px;padding:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">https://wishlistpro.app/webhooks</span>
+              <span class="pill pill-success">Active</span>
+            </div>
+            <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px">
+              <span style="height:22px;border-radius:4px;background:var(--line-100);padding:0 8px;font:400 12px/22px var(--font-sans);color:var(--ink-550)">orders/create</span>
+              <span style="height:22px;border-radius:4px;background:var(--line-100);padding:0 8px;font:400 12px/22px var(--font-sans);color:var(--ink-550)">app/uninstalled</span>
+              <span style="height:22px;border-radius:4px;background:var(--line-100);padding:0 8px;font:400 12px/22px var(--font-sans);color:var(--ink-550)">customers/data_request</span>
+            </div>
+          </div>
+        </div>
+        <div class="card card-pad" style="margin-top:16px">
+          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Recent deliveries</span>
+          <div style="margin-top:10px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line-100)"><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">orders/create</span><span class="pill pill-success">Delivered</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">2m ago</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line-100)"><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">orders/create</span><span class="pill pill-success">Delivered</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">18m ago</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0"><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">app/uninstalled</span><span class="pill pill-danger">Failed</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">1h ago</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Extensions -->
+      <div data-panelgroup="appdetail" data-panelkey="extensions" style="display:none">
+        <div class="card card-pad">
+          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Requested permissions</span>
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:8px"><span class="perm-check" style="color:var(--success-text)"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">read_products</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-left:auto">See the catalogue</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span class="perm-check" style="color:var(--success-text)"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">read_orders</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-left:auto">See orders</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span class="perm-check" style="color:var(--success-text)"></span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">write_orders</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-left:auto">Edit and cancel orders</span></div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px">
+          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Configured on this app</span>
+          <div style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-top:2px">Extensions this app already ships. Each one is added through the type cards below.</div>
+        </div>
+        <div class="card" style="margin-top:10px;padding:0">
+          <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line-100)">
+            <span class="swatch" style="width:32px;height:32px;border-radius:7px;background:var(--blue-100);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--accent)"><span id="ext-row-icon-1"></span></span>
+            <div style="flex:1;min-width:0">
+              <div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">Wishlist button &mdash; Theme app block</div>
+              <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:1px">Product page &middot; added by 412 merchants</div>
+            </div>
+            <span class="pill pill-success">Active</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:14px 16px">
+            <span class="swatch" style="width:32px;height:32px;border-radius:7px;background:var(--blue-100);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--accent)"><span id="ext-row-icon-2"></span></span>
+            <div style="flex:1;min-width:0">
+              <div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">Add to wishlist &mdash; Admin action</div>
+              <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:1px">Order page, More actions menu</div>
+            </div>
+            <span class="pill pill-success">Active</span>
+          </div>
+        </div>
+
+        <div style="margin-top:24px">
+          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Extension types</span>
+          <div style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-top:2px">Four ways this app can show up outside its own page.</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
+
+          <div class="card card-pad">
+            <div style="display:flex;align-items:center;gap:8px"><span style="color:var(--accent)" id="ext-icon-block"></span><span style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Theme app block</span></div>
+            <p style="font:400 13px/19px var(--font-sans);color:var(--ink-550);margin-top:6px">UI the merchant drags into a specific spot on a storefront page, from the theme editor's Add block &rarr; Apps menu.</p>
+            <div style="margin-top:10px;font:400 12px/18px var(--font-sans);color:var(--ink-300)"><b style="color:var(--ink-550);font-weight:500">Where it appears:</b> inside one section of one template &mdash; product, cart, etc.</div>
+            <div style="margin-top:6px;border-radius:7px;background:var(--line-100);padding:9px 11px;font:400 12px/17px var(--font-sans);color:var(--ink-550)"><b style="color:var(--ink-800)">Example:</b> a star-rating strip placed just under the product title.</div>
+            <span class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="openModal('ext-block-modal')">Add theme app block</span>
+          </div>
+
+          <div class="card card-pad">
+            <div style="display:flex;align-items:center;gap:8px"><span style="color:var(--accent)" id="ext-icon-embed"></span><span style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Theme app embed</span></div>
+            <p style="font:400 13px/19px var(--font-sans);color:var(--ink-550);margin-top:6px">UI or script that runs globally across the storefront, once the merchant flips it on under Theme settings &rarr; App embeds. Off by default after install.</p>
+            <div style="margin-top:10px;font:400 12px/18px var(--font-sans);color:var(--ink-300)"><b style="color:var(--ink-550);font-weight:500">Where it appears:</b> every page &mdash; injected into head, body, or the compliance region.</div>
+            <div style="margin-top:6px;border-radius:7px;background:var(--line-100);padding:9px 11px;font:400 12px/17px var(--font-sans);color:var(--ink-550)"><b style="color:var(--ink-800)">Example:</b> a chat bubble or an announcement bar.</div>
+            <span class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="openModal('ext-embed-modal')">Add theme app embed</span>
+          </div>
+
+          <div class="card card-pad">
+            <div style="display:flex;align-items:center;gap:8px"><span style="color:var(--accent)" id="ext-icon-proxy"></span><span style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">App proxy</span></div>
+            <p style="font:400 13px/19px var(--font-sans);color:var(--ink-550);margin-top:6px">Your own server, reachable at a URL under the merchant's own domain. Ratio signs and forwards the request &mdash; no CORS, no third-party cookie problem.</p>
+            <div style="margin-top:10px;font:400 12px/18px var(--font-sans);color:var(--ink-300)"><b style="color:var(--ink-550);font-weight:500">Where it appears:</b> one proxy root per app, at a subpath you choose.</div>
+            <div style="margin-top:6px;border-radius:7px;background:var(--line-100);padding:9px 11px;font:400 12px/17px var(--font-sans);color:var(--ink-550)"><b style="color:var(--ink-800)">Example:</b> <span style="font-family:var(--font-mono)">wellversed.ratio.win/apps/wishlist/rewards</span></div>
+            <span class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="openModal('ext-proxy-modal')">Add app proxy</span>
+          </div>
+
+          <div class="card card-pad">
+            <div style="display:flex;align-items:center;gap:8px"><span style="color:var(--accent)" id="ext-icon-admin"></span><span style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Admin UI extension</span></div>
+            <p style="font:400 13px/19px var(--font-sans);color:var(--ink-550);margin-top:6px">An action, an inline block, or a print view rendered natively inside Ratio's merchant admin, in a sandboxed component model &mdash; no raw DOM access.</p>
+            <div style="margin-top:10px;font:400 12px/18px var(--font-sans);color:var(--ink-300)"><b style="color:var(--ink-550);font-weight:500">Where it appears:</b> order/product pages, the More actions menu, or the Print menu.</div>
+            <div style="margin-top:6px;border-radius:7px;background:var(--line-100);padding:9px 11px;font:400 12px/17px var(--font-sans);color:var(--ink-550)"><b style="color:var(--ink-800)">Example:</b> "Add to wishlist" in an order's More actions menu.</div>
+            <span class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="openModal('ext-admin-modal')">Add admin UI extension</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Theme app block modal -->
+<div id="ext-block-modal" class="modal-overlay">
+  <div class="modal" style="width:460px;padding:24px">
+    <div class="modal-title">Add theme app block</div>
+    <div class="modal-sub">Merchants add this from their theme editor &mdash; you only define what it is and where it's allowed to go.</div>
+    <div style="margin-top:16px"><label class="field-label">Block name</label><input class="input" value="Wishlist button"></div>
+    <div style="margin-top:12px">
+      <label class="field-label">Allowed section target</label>
+      <select class="input"><option>Product page</option><option>Collection page</option><option>Cart page</option><option>Any section</option></select>
+    </div>
+    <div style="margin-top:12px"><label class="field-label">Settings schema (merchant-editable)</label>
+      <div class="doc-code-like" style="background:var(--ink-900);color:#D8E0F0;border-radius:8px;padding:12px 14px;font:400 12px/18px var(--font-mono);overflow-x:auto;white-space:pre">{
+  "name": "Wishlist button",
+  "target": "section",
+  "settings": [
+    { "type": "text", "id": "label", "default": "Save for later" },
+    { "type": "color", "id": "icon_color" }
+  ]
+}</div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+      <span class="btn btn-secondary" onclick="closeModal('ext-block-modal')">Cancel</span>
+      <span class="btn btn-primary" onclick="closeModal('ext-block-modal');showToast('Theme app block added')">Save block</span>
+    </div>
+  </div>
+</div>
+
+<!-- Theme app embed modal -->
+<div id="ext-embed-modal" class="modal-overlay">
+  <div class="modal" style="width:460px;padding:24px">
+    <div class="modal-title">Add theme app embed</div>
+    <div class="modal-sub">Runs globally once the merchant turns it on. Stays off until they do &mdash; it never silently injects.</div>
+    <div style="margin-top:16px"><label class="field-label">Embed name</label><input class="input" value="Cart abandonment banner"></div>
+    <div style="margin-top:12px">
+      <label class="field-label">Injection target</label>
+      <select class="input"><option>body (recommended)</option><option>head</option><option>compliance_head (cookie/consent only)</option></select>
+    </div>
+    <div style="margin-top:12px;border-radius:8px;background:var(--line-100);padding:12px 14px;display:flex;gap:10px;align-items:flex-start">
+      <span style="color:var(--ink-500);flex-shrink:0;margin-top:2px" id="embed-info-icon"></span>
+      <span style="font:400 13px/19px var(--font-sans);color:var(--ink-550)">After install, merchants enable this from <b>Theme settings &rarr; App embeds</b>. It is off by default.</span>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+      <span class="btn btn-secondary" onclick="closeModal('ext-embed-modal')">Cancel</span>
+      <span class="btn btn-primary" onclick="closeModal('ext-embed-modal');showToast('Theme app embed added')">Save embed</span>
+    </div>
+  </div>
+</div>
+
+<!-- App proxy modal -->
+<div id="ext-proxy-modal" class="modal-overlay">
+  <div class="modal" style="width:460px;padding:24px">
+    <div class="modal-title">Add app proxy</div>
+    <div class="modal-sub">One proxy root per app. Requests are signed and stripped of cookies before they reach your server.</div>
+    <div style="margin-top:16px;display:flex;gap:10px">
+      <div style="flex:1"><label class="field-label">Subpath</label><input class="input" value="wishlist"></div>
+      <div style="flex:1"><label class="field-label">Your server URL</label><input class="input" value="https://wishlistpro.app/proxy"></div>
+    </div>
+    <div style="margin-top:12px">
+      <label class="field-label">Merchant-facing URL preview</label>
+      <div style="height:36px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset;display:flex;align-items:center;padding:0 12px;font-family:var(--font-mono);font-size:13px;color:var(--ink-800)">wellversed.ratio.win/apps/wishlist/*</div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+      <span class="btn btn-secondary" onclick="closeModal('ext-proxy-modal')">Cancel</span>
+      <span class="btn btn-primary" onclick="closeModal('ext-proxy-modal');showToast('App proxy added')">Save proxy</span>
+    </div>
+  </div>
+</div>
+
+<!-- Admin UI extension modal -->
+<div id="ext-admin-modal" class="modal-overlay">
+  <div class="modal" style="width:460px;padding:24px">
+    <div class="modal-title">Add admin UI extension</div>
+    <div class="modal-sub">Renders inside Ratio admin through a sandboxed component set &mdash; your code never touches the page DOM directly.</div>
+    <div style="margin-top:16px">
+      <label class="field-label">Extension kind</label>
+      <select class="input" id="admin-ext-kind" onchange="onAdminExtKind()">
+        <option value="action">Action &mdash; opens a modal from More actions</option>
+        <option value="block">Block &mdash; inline card the merchant pins</option>
+        <option value="print">Print action &mdash; adds a Print menu item</option>
+      </select>
+    </div>
+    <div style="margin-top:12px"><label class="field-label">Name</label><input class="input" value="Add to wishlist"></div>
+    <div style="margin-top:12px">
+      <label class="field-label">Surface</label>
+      <select class="input"><option>Order page</option><option>Product page</option><option>Customer page</option></select>
+    </div>
+    <div style="margin-top:12px;border-radius:8px;background:var(--line-100);padding:12px 14px;font:400 13px/19px var(--font-sans);color:var(--ink-550)" id="admin-ext-hint">An <b>action</b> appears in the order's More actions menu and opens a modal when clicked.</div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+      <span class="btn btn-secondary" onclick="closeModal('ext-admin-modal')">Cancel</span>
+      <span class="btn btn-primary" onclick="closeModal('ext-admin-modal');showToast('Admin UI extension added')">Save extension</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<script src="js/shell.js"></script>
+<script>
+renderShell({ active: 'apps' });
+document.getElementById('kebab-slot').innerHTML = icon('kebab', 16);
+document.getElementById('ext-link-icon').innerHTML = icon('externalLink', 10);
+document.getElementById('endpoint-plus').innerHTML = icon('plus', 10);
+document.querySelectorAll('.copy-icon').forEach(function (el) { el.innerHTML = icon('copy', 12); });
+document.querySelectorAll('.remove-x').forEach(function (el) { el.innerHTML = icon('close', 8); });
+document.querySelectorAll('.perm-check').forEach(function (el) { el.innerHTML = icon('check', 10); });
+document.getElementById('ext-row-icon-1').innerHTML = icon('apps', 16);
+document.getElementById('ext-row-icon-2').innerHTML = icon('settings', 16);
+document.getElementById('ext-icon-block').innerHTML = icon('apps', 15);
+document.getElementById('ext-icon-embed').innerHTML = icon('trend', 15);
+document.getElementById('ext-icon-proxy').innerHTML = icon('externalLink', 13);
+document.getElementById('ext-icon-admin').innerHTML = icon('settings', 15);
+document.getElementById('embed-info-icon').innerHTML = icon('info', 13);
+
+function onAdminExtKind() {
+  var kind = document.getElementById('admin-ext-kind').value;
+  var hint = document.getElementById('admin-ext-hint');
+  if (kind === 'action') hint.innerHTML = 'An <b>action</b> appears in the order\'s More actions menu and opens a modal when clicked.';
+  else if (kind === 'block') hint.innerHTML = 'A <b>block</b> is an inline card on the page &mdash; the merchant must add and pin it themselves.';
+  else hint.innerHTML = 'A <b>print action</b> adds an item to the Print menu and renders a print-preview iframe.';
+}
+
+function pickDist(which) {
+  document.getElementById('dist-public').style.boxShadow = which === 'public' ? '0 0 0 1.5px var(--accent)' : '0 0 0 1px var(--line-100)';
+  document.getElementById('dist-private').style.boxShadow = which === 'private' ? '0 0 0 1.5px var(--accent)' : '0 0 0 1px var(--line-100)';
+  document.getElementById('private-merchants').style.display = which === 'private' ? '' : 'none';
+}
+
+var secretHidden = true;
+function toggleSecret() {
+  secretHidden = !secretHidden;
+  document.getElementById('secret-text').textContent = secretHidden
+    ? '••••••••••••••••••••••••'
+    : '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';
+}
+document.getElementById('eye-icon').innerHTML = icon('eye', 13);
+</script>
+</body>
+</html>

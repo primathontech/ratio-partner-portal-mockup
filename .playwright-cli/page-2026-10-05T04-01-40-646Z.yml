@@ -1,0 +1,85 @@
+- generic [ref=f4e2]:
+  - generic [ref=f4e3]:
+    - link "Ratio" [ref=f4e4] [cursor=pointer]:
+      - /url: landing.html
+    - generic [ref=f4e7] [cursor=pointer]:
+      - generic [ref=f4e8]: ND
+      - generic [ref=f4e9]:
+        - generic [ref=f4e10]: Nutristar Digital
+        - generic [ref=f4e11]: Organisation Owner
+    - generic [ref=f4e15]:
+      - textbox "Search apps, stores and team" [ref=f4e19]
+      - generic [ref=f4e20]: ⌘
+      - generic [ref=f4e21]: K
+    - generic [ref=f4e22]:
+      - generic [ref=f4e23]: "3"
+      - generic [ref=f4e29]: AR
+  - generic [ref=f4e32]:
+    - link "Home" [ref=f4e33] [cursor=pointer]:
+      - /url: home.html
+    - link "Apps" [ref=f4e38] [cursor=pointer]:
+      - /url: apps.html
+    - link "Stores" [ref=f4e46] [cursor=pointer]:
+      - /url: stores.html
+    - link "Team" [ref=f4e52] [cursor=pointer]:
+      - /url: team.html
+    - link "Settings" [ref=f4e60] [cursor=pointer]:
+      - /url: settings.html
+  - generic [ref=f4e65]:
+    - generic [ref=f4e66]:
+      - link "Apps" [ref=f4e67] [cursor=pointer]:
+        - /url: apps.html
+      - generic [ref=f4e68]: /
+      - generic [ref=f4e69]: Create app
+    - generic [ref=f4e70]:
+      - generic [ref=f4e71]: Create an app
+      - generic [ref=f4e72]:
+        - link "Discard" [ref=f4e73] [cursor=pointer]:
+          - /url: apps.html
+        - link "Create app" [ref=f4e74] [cursor=pointer]:
+          - /url: app-detail.html
+    - generic [ref=f4e75]:
+      - generic [ref=f4e76]:
+        - text: Basic information
+        - generic [ref=f4e77]:
+          - generic [ref=f4e78]: App name
+          - textbox "e.g. Wishlist Pro" [ref=f4e79]
+        - generic [ref=f4e80]:
+          - generic [ref=f4e81]: Description
+          - textbox "What does this app do for a merchant?" [ref=f4e82]
+        - generic [ref=f4e83]:
+          - generic [ref=f4e84]: Category
+          - combobox [ref=f4e85]:
+            - option "Marketing" [selected]
+            - option "Customer support"
+            - option "Loyalty and rewards"
+            - option "Shipping and fulfillment"
+            - option "Store design"
+            - option "Finance"
+      - generic [ref=f4e86]:
+        - text: URLs
+        - generic [ref=f4e87]: Configure the app URL, redirect URLs, and embedded behaviour.
+        - generic [ref=f4e88]:
+          - generic [ref=f4e89]: App URL
+          - textbox "https://example.com" [ref=f4e90]
+        - generic [ref=f4e91]:
+          - generic [ref=f4e92] [cursor=pointer]
+          - generic [ref=f4e96]: Embed app in Ratio admin
+        - generic [ref=f4e97]:
+          - generic [ref=f4e98]: Allowed redirection URL(s)
+          - textbox "https://example.com/auth/callback" [ref=f4e99]
+          - generic [ref=f4e100]: Enter redirect URLs as a comma-separated list.
+      - generic [ref=f4e101]:
+        - text: API access
+        - generic [ref=f4e102]: Choose the permissions this app needs from merchant stores.
+        - generic [ref=f4e103]:
+          - generic [ref=f4e104]: Scopes
+          - generic [ref=f4e106] [cursor=pointer]:
+            - generic [ref=f4e107]: read_products
+            - generic [ref=f4e108]: read_orders
+            - generic [ref=f4e109]: write_orders
+      - generic [ref=f4e114]:
+        - text: App icon
+        - generic [ref=f4e117]:
+          - generic [ref=f4e118] [cursor=pointer]: Upload icon
+          - generic [ref=f4e119]: 1200×1200px, PNG or JPG, 1MB max.

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team &mdash; Ratio Partner Portal</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="js/icons.js"></script>
+<style>
+.members-table .table-head-row, .members-table .table-row{grid-template-columns:2.2fr 1fr 2fr 32px}
+.roles-table .table-head-row, .roles-table .table-row{grid-template-columns:2fr 1fr 1fr}
+.permcat-head{display:flex;align-items:center;justify-content:space-between;height:44px;padding:0 20px;cursor:pointer;border-bottom:1px solid var(--line-100)}
+.permcat-head:hover{background:var(--line-100)}
+.permcat-body{display:none;flex-direction:column}
+.permcat.open .permcat-body{display:flex}
+.permcat.open .permcat-chevron{transform:rotate(180deg)}
+.permcat-chevron{transition:transform var(--transition-control)}
+</style>
+</head>
+<body>
+<div class="page">
+<div id="shell-topbar"></div>
+<div id="shell-sidenav"></div>
+
+<div class="content content-wide">
+  <div class="page-header-row">
+    <span class="page-title">Team</span>
+    <span class="tab-action" data-for="members"><span class="btn btn-primary"><span id="invite-plus"></span>Invite people</span></span>
+    <span class="tab-action" data-for="roles" style="display:none"><span class="btn btn-primary" onclick="openRoleDetail('New role')"><span id="role-plus"></span>Add role</span></span>
+    <span class="tab-action" data-for="audit" style="display:none"><span class="btn btn-secondary"><span id="export-dl"></span>Export CSV</span></span>
+  </div>
+
+  <div class="tabrow">
+    <span class="tab active" data-tabgroup="team" data-tabkey="members" onclick="teamTab('members',event)">Members</span>
+    <span class="tab" data-tabgroup="team" data-tabkey="roles" onclick="teamTab('roles',event)">Roles</span>
+    <span class="tab" data-tabgroup="team" data-tabkey="security" onclick="teamTab('security',event)">Security</span>
+    <span class="tab" data-tabgroup="team" data-tabkey="audit" onclick="teamTab('audit',event)">Audit log</span>
+  </div>
+
+  <!-- Members -->
+  <div data-panelgroup="team" data-panelkey="members">
+    <div class="card members-table" style="overflow:hidden;margin-bottom:16px">
+      <div class="table-head-row"><span>User</span><span>Status</span><span>Roles</span><span></span></div>
+
+      <div class="table-row" style="display:grid">
+        <span class="cell-name"><span class="org-avatar" style="background:var(--blue-100);color:var(--accent)">AR</span><span><span class="truncate" style="display:block">Asha Rao</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">asha@nutristar.in</span></span></span>
+        <span class="pill pill-success">Active</span>
+        <span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Organisation Owner</span>
+        <span class="kebab-icon" style="color:var(--ink-300);cursor:pointer"></span>
+      </div>
+      <div class="table-row" style="display:grid">
+        <span class="cell-name"><span class="org-avatar" style="background:var(--blue-100);color:var(--accent)">KS</span><span><span class="truncate" style="display:block">Karan Shah</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">karan@nutristar.in</span></span></span>
+        <span class="pill pill-success">Active</span>
+        <span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">App Developer</span>
+        <span class="kebab-icon" style="color:var(--ink-300);cursor:pointer"></span>
+      </div>
+      <div class="table-row" style="display:grid">
+        <span class="cell-name"><span class="org-avatar" style="background:var(--blue-100);color:var(--accent)">PN</span><span><span class="truncate" style="display:block">Priya Nair</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">priya@nutristar.in</span></span></span>
+        <span class="pill pill-success">Active</span>
+        <span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Store Admin, App Developer</span>
+        <span class="kebab-icon" style="color:var(--ink-300);cursor:pointer"></span>
+      </div>
+      <div class="table-row" style="display:grid">
+        <span class="cell-name"><span class="org-avatar" style="background:var(--blue-100);color:var(--accent)">RM</span><span><span class="truncate" style="display:block">Rahul Mehta</span><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">rahul@nutristar.in</span></span></span>
+        <span class="pill pill-danger">Suspended</span>
+        <span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Member</span>
+        <span class="kebab-icon" style="color:var(--ink-300);cursor:pointer"></span>
+      </div>
+    </div>
+
+    <div style="font:500 13px/18px var(--font-sans);color:var(--text-muted);margin-bottom:8px">Pending invitations</div>
+    <div class="card" style="overflow:hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px">
+        <div><span style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">deepa@nutristar.in</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-left:8px">invited as Store User Admin &middot; expires in 5 days</span></div>
+        <div style="display:flex;gap:8px"><span class="btn btn-secondary btn-sm">Resend</span><span class="btn btn-secondary btn-sm">Revoke</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Roles -->
+  <div data-panelgroup="team" data-panelkey="roles" style="display:none">
+    <div id="roles-list">
+      <div class="card roles-table" style="overflow:hidden">
+        <div class="table-head-row"><span>Name</span><span>Type</span><span>Members</span></div>
+        <div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleDetail('Organisation Owner')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Organisation Owner</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">System</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">1</span></div>
+        <div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleDetail('Organisation Admin')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Organisation Admin</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">System</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">2</span></div>
+        <div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleDetail('Organisation User Admin')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Organisation User Admin</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">System</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">0</span></div>
+        <div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleDetail('Store Admin')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Store Admin</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">System</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">1</span></div>
+        <div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleDetail('Store User Admin')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Store User Admin</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">System</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">1</span></div>
+        <div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleDetail('App Developer')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">App Developer</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">System</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">2</span></div>
+        <div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleDetail('Member')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Member</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">System</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">1</span></div>
+        <div class="table-row" style="display:grid;cursor:pointer" onclick="openRoleDetail('Billing viewer')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Billing viewer</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">Custom</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted);font-variant-numeric:tabular-nums">1</span></div>
+      </div>
+    </div>
+
+    <div id="role-detail" style="display:none">
+      <div class="breadcrumb"><a href="#" onclick="closeRoleDetail();return false;">Roles</a><span>/</span><span class="current" id="role-detail-name"></span></div>
+      <div class="card card-pad" style="margin-bottom:16px">
+        <label class="field-label">Name</label>
+        <input class="input" id="role-name-input">
+        <label class="field-label" style="margin-top:14px">Description</label>
+        <input class="input" placeholder="Optional">
+        <label class="field-label" style="margin-top:14px">Category</label>
+        <select class="input" style="width:220px"><option>Store</option><option>Org</option></select>
+        <div class="field-help">Fixed at creation. A Store-category role is evaluated against the specific stores its assignment covers.</div>
+      </div>
+      <div class="card" style="overflow:hidden">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--line-100)"><span style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Permissions</span></div>
+        <div class="permcat open">
+          <div class="permcat-head" onclick="this.parentElement.classList.toggle('open')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Apps</span><span style="display:flex;align-items:center;gap:8px"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-300)">2/2</span><span class="permcat-chevron" style="color:var(--ink-500)"></span></span></div>
+          <div class="permcat-body">
+            <div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px"><span class="perm-check" style="color:var(--success-text)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Full access</span></div>
+            <div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px"><span class="perm-check" style="color:var(--success-text)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">View only</span></div>
+          </div>
+        </div>
+        <div class="permcat open">
+          <div class="permcat-head" onclick="this.parentElement.classList.toggle('open')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Stores</span><span style="display:flex;align-items:center;gap:8px"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-300)">2/2</span><span class="permcat-chevron" style="color:var(--ink-500)"></span></span></div>
+          <div class="permcat-body">
+            <div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px"><span class="perm-check" style="color:var(--success-text)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Full access, scoped</span></div>
+            <div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px"><span class="perm-check" style="color:var(--success-text)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">View, scoped</span></div>
+          </div>
+        </div>
+        <div class="permcat">
+          <div class="permcat-head" onclick="this.parentElement.classList.toggle('open')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Team</span><span style="display:flex;align-items:center;gap:8px"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-300)">0/2</span><span class="permcat-chevron" style="color:var(--ink-500)"></span></span></div>
+          <div class="permcat-body">
+            <div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px"><span class="perm-check" style="color:var(--ink-300)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Invite members</span></div>
+            <div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px"><span class="perm-check" style="color:var(--ink-300)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Manage roles</span></div>
+          </div>
+        </div>
+        <div class="permcat">
+          <div class="permcat-head" onclick="this.parentElement.classList.toggle('open')"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Settings</span><span style="display:flex;align-items:center;gap:8px"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-300)">0/2</span><span class="permcat-chevron" style="color:var(--ink-500)"></span></span></div>
+          <div class="permcat-body">
+            <div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px"><span class="perm-check" style="color:var(--ink-300)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Billing</span></div>
+            <div style="display:flex;align-items:center;gap:10px;height:36px;padding:0 20px 0 32px"><span class="perm-check" style="color:var(--ink-300)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Danger zone</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:16px"><span class="btn btn-primary">Save role</span><span class="btn btn-secondary" onclick="closeRoleDetail()">Cancel</span></div>
+    </div>
+  </div>
+
+  <!-- Security -->
+  <div data-panelgroup="team" data-panelkey="security" style="display:none">
+    <div class="card card-pad" style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between">
+      <div><div style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Require two-factor authentication</div><div style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-top:2px">Everyone in this organisation must enable 2FA to sign in</div></div>
+      <span class="toggle" onclick="toggleSwitch(this)"><span class="knob"></span></span>
+    </div>
+    <div class="card card-pad" style="display:flex;align-items:center;justify-content:space-between">
+      <div><div style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Session timeout</div><div style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-top:2px">Sign people out after a period of inactivity</div></div>
+      <select class="input" style="width:160px"><option>Never</option><option>7 days</option><option>24 hours</option></select>
+    </div>
+  </div>
+
+  <!-- Audit log -->
+  <div data-panelgroup="team" data-panelkey="audit" style="display:none">
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <select class="input" style="width:160px"><option>All actors</option><option>Asha Rao</option><option>Karan Shah</option></select>
+      <select class="input" style="width:160px"><option>All actions</option><option>Invitation</option><option>Role change</option><option>App</option></select>
+      <select class="input" style="width:160px"><option>Last 30 days</option><option>Last 7 days</option><option>Last 90 days</option></select>
+    </div>
+    <div class="card" style="overflow:hidden">
+      <div class="table-head-row" style="grid-template-columns:1.4fr 2fr 1fr"><span>Actor</span><span>Action</span><span>When</span></div>
+      <div class="table-row" style="display:grid;grid-template-columns:1.4fr 2fr 1fr;height:48px"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Asha Rao</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">invited karan@nutristar.in as App Developer</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">2h ago</span></div>
+      <div class="table-row" style="display:grid;grid-template-columns:1.4fr 2fr 1fr;height:48px"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Asha Rao</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">created app Wishlist Pro</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">Yesterday</span></div>
+      <div class="table-row" style="display:grid;grid-template-columns:1.4fr 2fr 1fr;height:48px"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Karan Shah</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">submitted Loyalty Points for review</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">2 days ago</span></div>
+      <div class="table-row" style="display:grid;grid-template-columns:1.4fr 2fr 1fr;height:48px"><span style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-800)">Priya Nair</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">requested access to wellversed.ratio.win</span><span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">3 days ago</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script src="js/shell.js"></script>
+<script>
+renderShell({ active: 'team' });
+document.getElementById('invite-plus').innerHTML = icon('plus', 10);
+document.getElementById('role-plus').innerHTML = icon('plus', 10);
+document.getElementById('export-dl').innerHTML = icon('download', 10);
+document.querySelectorAll('.kebab-icon').forEach(function (el) { el.innerHTML = icon('kebab', 14); });
+document.querySelectorAll('.perm-check').forEach(function (el) { el.innerHTML = icon('check', 10); });
+document.querySelectorAll('.permcat-chevron').forEach(function (el) { el.innerHTML = icon('caret', 8); });
+
+function teamTab(key, evt) {
+  switchTab('team', key, evt);
+  document.querySelectorAll('.tab-action').forEach(function (el) {
+    el.style.display = (el.getAttribute('data-for') === key) ? '' : 'none';
+  });
+  if (key !== 'roles') closeRoleDetail();
+}
+function openRoleDetail(name) {
+  document.getElementById('roles-list').style.display = 'none';
+  document.getElementById('role-detail').style.display = '';
+  document.getElementById('role-detail-name').textContent = name;
+  document.getElementById('role-name-input').value = name;
+}
+function closeRoleDetail() {
+  document.getElementById('roles-list').style.display = '';
+  document.getElementById('role-detail').style.display = 'none';
+}
+</script>
+</body>
+</html>

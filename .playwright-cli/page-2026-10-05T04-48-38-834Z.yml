@@ -1,0 +1,96 @@
+- generic [active] [ref=f7e1]:
+  - generic [ref=f7e3]:
+    - link "Ratio" [ref=f7e4] [cursor=pointer]:
+      - /url: landing.html
+    - generic [ref=f7e5]:
+      - link "Apps" [ref=f7e6] [cursor=pointer]:
+        - /url: landing.html#apps-preview
+      - link "Pricing" [ref=f7e7] [cursor=pointer]:
+        - /url: pricing.html
+      - link "Documentation" [ref=f7e8] [cursor=pointer]:
+        - /url: documentation.html
+      - link "Support" [ref=f7e9] [cursor=pointer]:
+        - /url: support.html
+    - generic [ref=f7e10]:
+      - link "Log in" [ref=f7e11] [cursor=pointer]:
+        - /url: login.html
+      - link "Sign up" [ref=f7e12] [cursor=pointer]:
+        - /url: onboarding.html
+  - generic [ref=f7e13]:
+    - text: Documentation
+    - paragraph [ref=f7e14]: Everything you need to build, authenticate and extend an app on Ratio.
+  - generic [ref=f7e15]:
+    - generic [ref=f7e16]:
+      - link "Getting started" [ref=f7e17] [cursor=pointer]:
+        - /url: "#getting-started"
+      - link "Authentication" [ref=f7e18] [cursor=pointer]:
+        - /url: "#authentication"
+      - link "Webhooks" [ref=f7e19] [cursor=pointer]:
+        - /url: "#webhooks"
+      - link "Extensions" [ref=f7e20] [cursor=pointer]:
+        - /url: "#extensions"
+      - link "API reference" [ref=f7e21] [cursor=pointer]:
+        - /url: "#api-reference"
+    - generic [ref=f7e22]:
+      - generic [ref=f7e23]:
+        - heading "Getting started" [level=2] [ref=f7e24]
+        - paragraph [ref=f7e25]: "Every app on Ratio starts the same way: create an organisation, create an app, and test it against your own dev store before you ever touch a merchant's data."
+        - paragraph [ref=f7e26]:
+          - text: "1."
+          - link "Create your organisation" [ref=f7e27] [cursor=pointer]:
+            - /url: onboarding.html
+          - text: — this is the workspace your apps, stores and team live in. 2. From
+          - link "Apps" [ref=f7e28] [cursor=pointer]:
+            - /url: apps.html
+          - text: ", click Create app and choose the scopes it needs. 3. Every organisation gets one dev store under"
+          - link "Stores → Dev" [ref=f7e29] [cursor=pointer]:
+            - /url: stores.html
+          - text: to build against. 4. When you're ready, submit for review from the app's Overview tab.
+      - generic [ref=f7e30]:
+        - heading "Authentication" [level=2] [ref=f7e31]
+        - paragraph [ref=f7e32]:
+          - text: Ratio apps use standard OAuth 2.0. Your app redirects the merchant to Ratio, the merchant approves the scopes you requested on the
+          - link "install consent screen" [ref=f7e33] [cursor=pointer]:
+            - /url: admin/app-install.html
+          - text: ", and Ratio redirects back with an authorization code."
+        - generic [ref=f7e34]: "POST https://{store}.ratio.win/oauth/token Content-Type: application/json { \"client_id\": \"88ec0cdbfdf25eea1dcd339433b662\", \"client_secret\": \"{your_client_secret}\", \"code\": \"{authorization_code}\", \"grant_type\": \"authorization_code\" }"
+        - paragraph [ref=f7e35]: "The response carries an access token scoped exactly to what the merchant approved — never more. Tokens are refreshed the same way as Shopify's: there is no silent re-authorization."
+        - paragraph [ref=f7e36]:
+          - text: Find your Client ID and Client secret, and regenerate them if compromised, from any app's
+          - link "API keys tab" [ref=f7e37] [cursor=pointer]:
+            - /url: app-detail.html
+          - text: .
+      - generic [ref=f7e38]:
+        - heading "Webhooks" [level=2] [ref=f7e39]
+        - paragraph [ref=f7e40]:
+          - text: Subscribe to platform events —
+          - code [ref=f7e41]: orders/create
+          - text: ","
+          - code [ref=f7e42]: app/uninstalled
+          - text: ","
+          - code [ref=f7e43]: customers/data_request
+          - text: and others — and Ratio POSTs a signed JSON payload to your endpoint as they happen. Configure endpoints from an app's
+          - link "Webhooks tab" [ref=f7e44] [cursor=pointer]:
+            - /url: app-detail.html
+          - text: .
+        - generic [ref=f7e45]: "{ \"topic\": \"orders/create\", \"shop_domain\": \"wellversed.ratio.win\", \"payload\": { \"id\": \"ord_8f21ac\", \"total\": \"2499.00\", \"currency\": \"INR\" } }"
+      - generic [ref=f7e46]:
+        - heading "Extensions" [level=2] [ref=f7e47]
+        - paragraph [ref=f7e48]:
+          - text: Extensions are how an app shows up somewhere other than its own page — on a storefront, inline in Ratio admin, or at a URL under the merchant's own domain. There are four types today; configure them from an app's
+          - link "Extensions tab" [ref=f7e49] [cursor=pointer]:
+            - /url: app-detail.html
+          - text: .
+        - list [ref=f7e50]:
+          - listitem [ref=f7e51]: Theme app block — UI the merchant drags into a specific spot on a storefront page in the theme editor.
+          - listitem [ref=f7e52]: Theme app embed — UI or script that runs globally, once the merchant flips an on/off switch in Theme settings.
+          - listitem [ref=f7e53]: App proxy — your own server, reachable at a URL under the merchant's own domain, with no CORS and no third-party cookie problem.
+          - listitem [ref=f7e54]: Admin UI extension — an action, an inline card, or a print view rendered natively inside Ratio's merchant admin.
+      - generic [ref=f7e55]:
+        - heading "API reference" [level=2] [ref=f7e56]
+        - paragraph [ref=f7e57]: The full REST and GraphQL reference lives in a separate, versioned API explorer. This page is the conceptual guide; the explorer has every endpoint, every field, and a live request console.
+        - generic [ref=f7e58]:
+          - generic [ref=f7e59]:
+            - generic [ref=f7e60]: API Explorer
+            - generic [ref=f7e61]: Browse every endpoint with live examples
+          - generic [ref=f7e62] [cursor=pointer]: Open explorer

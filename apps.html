@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apps &mdash; Ratio Partner Portal</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="js/icons.js"></script>
+<style>
+.filter-chip{height:28px;border-radius:6px;padding:0 12px;display:inline-flex;align-items:center;font:400 13px/18px var(--font-sans);letter-spacing:-0.1px;cursor:pointer;transition:background var(--transition-control)}
+.filter-chip.active{background:var(--blue-100);color:var(--accent)}
+.filter-chip:not(.active){background:transparent;color:var(--ink-550)}
+.filter-chip:not(.active):hover{background:var(--line-100)}
+.apps-table .table-head-row, .apps-table .table-row{grid-template-columns:2.4fr 1fr 1fr 1fr 32px}
+</style>
+</head>
+<body>
+<div class="page">
+<div id="shell-topbar"></div>
+<div id="shell-sidenav"></div>
+
+<div class="content">
+  <div class="page-header-row">
+    <span class="page-title">Apps</span>
+    <a href="app-create.html" class="btn btn-primary"><span id="create-plus"></span>Create app</a>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+    <div style="height:32px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset,0 0 0 1px var(--line-100);padding:0 10px;display:flex;align-items:center;gap:8px;width:260px">
+      <span id="apps-search-icon" style="color:var(--ink-500)"></span>
+      <input placeholder="Search apps" style="flex:1;border:none;outline:none;background:transparent;font:400 13px/18px var(--font-sans);color:var(--ink-800)">
+    </div>
+    <span class="filter-chip active">All</span>
+    <span class="filter-chip">Draft</span>
+    <span class="filter-chip">In review</span>
+    <span class="filter-chip">Published</span>
+    <span class="filter-chip">Rejected</span>
+  </div>
+
+  <div class="card apps-table" style="overflow:hidden">
+    <div class="table-head-row">
+      <span>Name</span><span>Status</span><span>Installs</span><span>Last updated</span><span></span>
+    </div>
+
+    <a href="app-detail.html" class="table-row">
+      <span class="cell-name"><span class="swatch" style="width:32px;height:32px;background:var(--blue-100)"></span><span class="truncate">Wishlist Pro</span></span>
+      <span class="pill pill-success">Published</span>
+      <span style="font:400 14px/20px var(--font-sans);color:var(--ink-550);font-variant-numeric:tabular-nums">1,204</span>
+      <span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">2 days ago</span>
+      <span class="kebab-icon" style="color:var(--ink-300)"></span>
+    </a>
+    <a href="app-detail.html" class="table-row">
+      <span class="cell-name"><span class="swatch" style="width:32px;height:32px;background:var(--warning-bg)"></span><span class="truncate">Loyalty Points</span></span>
+      <span class="pill pill-warning">In review</span>
+      <span style="font:400 14px/20px var(--font-sans);color:var(--ink-550);font-variant-numeric:tabular-nums">812</span>
+      <span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">5 hours ago</span>
+      <span class="kebab-icon" style="color:var(--ink-300)"></span>
+    </a>
+    <a href="app-detail.html" class="table-row">
+      <span class="cell-name"><span class="swatch" style="width:32px;height:32px;background:var(--line-100)"></span><span class="truncate">Size Finder</span></span>
+      <span class="pill pill-neutral">Draft</span>
+      <span style="font:400 14px/20px var(--font-sans);color:var(--ink-550);font-variant-numeric:tabular-nums">0</span>
+      <span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">Yesterday</span>
+      <span class="kebab-icon" style="color:var(--ink-300)"></span>
+    </a>
+    <a href="app-detail.html" class="table-row">
+      <span class="cell-name"><span class="swatch" style="width:32px;height:32px;background:var(--danger-bg)"></span><span class="truncate">Cart Recovery SMS</span></span>
+      <span class="pill pill-danger">Rejected</span>
+      <span style="font:400 14px/20px var(--font-sans);color:var(--ink-550);font-variant-numeric:tabular-nums">0</span>
+      <span style="font:400 13px/18px var(--font-sans);color:var(--text-muted)">1 week ago</span>
+      <span class="kebab-icon" style="color:var(--ink-300)"></span>
+    </a>
+  </div>
+
+</div>
+</div>
+
+<script src="js/shell.js"></script>
+<script>
+renderShell({ active: 'apps' });
+document.getElementById('create-plus').innerHTML = icon('plus', 10);
+document.getElementById('apps-search-icon').innerHTML = icon('search', 12);
+document.querySelectorAll('.kebab-icon').forEach(function (el) { el.innerHTML = icon('kebab', 14); el.style.cursor = 'pointer'; });
+document.querySelectorAll('.filter-chip').forEach(function (chip) {
+  chip.addEventListener('click', function () {
+    document.querySelectorAll('.filter-chip').forEach(function (c) { c.classList.remove('active'); });
+    chip.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

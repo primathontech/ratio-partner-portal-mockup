@@ -1,0 +1,69 @@
+- generic [ref=f16e2]:
+  - generic [ref=f16e3]:
+    - link "Ratio" [ref=f16e4] [cursor=pointer]:
+      - /url: landing.html
+    - generic [ref=f16e7] [cursor=pointer]:
+      - generic [ref=f16e8]: ND
+      - generic [ref=f16e9]:
+        - generic [ref=f16e10]: Nutristar Digital
+        - generic [ref=f16e11]: Organisation Owner
+    - generic [ref=f16e15]:
+      - textbox "Search apps, stores and team" [ref=f16e19]
+      - generic [ref=f16e20]: ⌘
+      - generic [ref=f16e21]: K
+    - generic [ref=f16e22]:
+      - generic [ref=f16e23]: "3"
+      - generic [ref=f16e29]: AR
+  - generic [ref=f16e32]:
+    - link "Home" [ref=f16e33] [cursor=pointer]:
+      - /url: home.html
+    - link "Apps" [ref=f16e38] [cursor=pointer]:
+      - /url: apps.html
+    - link "Stores" [ref=f16e46] [cursor=pointer]:
+      - /url: stores.html
+    - link "Team" [ref=f16e52] [cursor=pointer]:
+      - /url: team.html
+    - link "Settings" [ref=f16e60] [cursor=pointer]:
+      - /url: settings.html
+  - generic [ref=f16e65]:
+    - generic [ref=f16e66]:
+      - generic [ref=f16e67]: Apps
+      - link [ref=f16e68] [cursor=pointer]:
+        - /url: app-create.html
+    - generic [ref=f16e73]:
+      - textbox "Search apps" [ref=f16e79]
+      - generic [ref=f16e80] [cursor=pointer]: All
+      - generic [ref=f16e81] [cursor=pointer]: Draft
+      - generic [ref=f16e82] [cursor=pointer]: In review
+      - generic [ref=f16e83] [cursor=pointer]: Published
+      - generic [ref=f16e84] [cursor=pointer]: Rejected
+    - generic [ref=f16e85]:
+      - generic [ref=f16e86]:
+        - generic [ref=f16e87]: Name
+        - generic [ref=f16e88]: Status
+        - generic [ref=f16e89]: Installs
+        - generic [ref=f16e90]: Last updated
+      - link "Wishlist Pro Published 1,204 2 days ago" [ref=f16e91] [cursor=pointer]:
+        - /url: app-detail.html
+        - generic [ref=f16e92]: Wishlist Pro
+        - generic [ref=f16e95]: Published
+        - generic [ref=f16e96]: 1,204
+        - generic [ref=f16e97]: 2 days ago
+      - link "Loyalty Points In review 812 5 hours ago" [ref=f16e104] [cursor=pointer]:
+        - /url: app-detail.html
+        - generic [ref=f16e105]: Loyalty Points
+        - generic [ref=f16e108]: In review
+        - generic [ref=f16e109]: "812"
+        - generic [ref=f16e110]: 5 hours ago
+      - link "Size Finder Draft 0 Yesterday" [ref=f16e117] [cursor=pointer]:
+        - /url: app-detail.html
+        - generic [ref=f16e118]: Size Finder
+        - generic [ref=f16e121]: Draft
+        - generic [ref=f16e122]: "0"
+        - generic [ref=f16e123]: Yesterday
+      - link "Cart Recovery SMS Rejected 0 1 week ago" [ref=f16e130] [cursor=pointer]:
+        - /url: app-detail.html
+        - generic [ref=f16e131]: Cart Recovery SMS
+        - generic [ref=f16e134]: Rejected
+        - generic [ref=f16e135]: "0"
+        - generic [ref=f16e136]: 1 week ago

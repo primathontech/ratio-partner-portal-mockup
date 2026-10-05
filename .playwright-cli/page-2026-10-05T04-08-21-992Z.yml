@@ -1,0 +1,91 @@
+- generic [ref=f17e2]:
+  - generic [ref=f17e3]:
+    - link "Ratio" [ref=f17e4] [cursor=pointer]:
+      - /url: landing.html
+    - generic [ref=f17e7] [cursor=pointer]:
+      - generic [ref=f17e8]: ND
+      - generic [ref=f17e9]:
+        - generic [ref=f17e10]: Nutristar Digital
+        - generic [ref=f17e11]: Organisation Owner
+    - generic [ref=f17e15]:
+      - textbox "Search apps, stores and team" [ref=f17e19]
+      - generic [ref=f17e20]: ⌘
+      - generic [ref=f17e21]: K
+    - generic [ref=f17e22]:
+      - generic [ref=f17e23]: "3"
+      - generic [ref=f17e29]: AR
+  - generic [ref=f17e32]:
+    - link "Home" [ref=f17e33] [cursor=pointer]:
+      - /url: home.html
+    - link "Apps" [ref=f17e38] [cursor=pointer]:
+      - /url: apps.html
+    - link "Stores" [ref=f17e46] [cursor=pointer]:
+      - /url: stores.html
+    - link "Team" [ref=f17e52] [cursor=pointer]:
+      - /url: team.html
+    - link "Settings" [ref=f17e60] [cursor=pointer]:
+      - /url: settings.html
+  - generic [ref=f17e65]:
+    - generic [ref=f17e66]:
+      - link "Apps" [ref=f17e67] [cursor=pointer]:
+        - /url: apps.html
+      - generic [ref=f17e68]: /
+      - generic [ref=f17e69]: Wishlist Pro
+    - generic [ref=f17e70]:
+      - generic [ref=f17e73]:
+        - generic [ref=f17e74]:
+          - generic [ref=f17e75]: Wishlist Pro
+          - generic [ref=f17e76]: Published
+        - generic [ref=f17e77]: 1,204 installs · Updated 2 days ago
+      - generic [ref=f17e78]:
+        - generic [ref=f17e79] [cursor=pointer]: View in store
+        - generic [ref=f17e80] [cursor=pointer]
+    - generic [ref=f17e86]:
+      - generic [ref=f17e87]:
+        - generic [ref=f17e88] [cursor=pointer]: Overview
+        - generic [ref=f17e89] [cursor=pointer]: Distribution
+        - generic [ref=f17e90] [cursor=pointer]: API keys
+        - generic [ref=f17e91] [cursor=pointer]: Webhooks
+        - generic [ref=f17e92] [cursor=pointer]: Extensions
+      - generic [ref=f17e94]:
+        - generic [ref=f17e95]:
+          - text: Current version
+          - generic [ref=f17e96]:
+            - generic [ref=f17e97]:
+              - generic [ref=f17e98]: 1.3.0
+              - generic [ref=f17e99]: Active
+            - generic [ref=f17e100] [cursor=pointer]: New version
+          - generic [ref=f17e101]: Released Sep 24, 2026 by Asha Rao
+        - generic [ref=f17e102]:
+          - text: Version history
+          - generic [ref=f17e103]:
+            - generic [ref=f17e104]:
+              - generic [ref=f17e105]:
+                - generic [ref=f17e106]: 1.3.0
+                - generic [ref=f17e107]: Active
+              - generic [ref=f17e108]: Sep 24, 2026
+            - generic [ref=f17e109]:
+              - generic [ref=f17e110]:
+                - generic [ref=f17e111]: 1.2.0
+                - generic [ref=f17e112]: Replaced
+              - generic [ref=f17e113]: Aug 02, 2026
+            - generic [ref=f17e114]:
+              - generic [ref=f17e115]:
+                - generic [ref=f17e116]: 1.1.0
+                - generic [ref=f17e117]: Replaced
+              - generic [ref=f17e118]: Jun 14, 2026
+        - generic [ref=f17e119]:
+          - text: Review process
+          - generic [ref=f17e120]:
+            - generic [ref=f17e121]:
+              - generic [ref=f17e122]: "1"
+              - generic [ref=f17e123]: Submit
+            - generic [ref=f17e124]:
+              - generic [ref=f17e125]: "2"
+              - generic [ref=f17e126]: Review
+            - generic [ref=f17e127]:
+              - generic [ref=f17e128]: "3"
+              - generic [ref=f17e129]: Feedback
+            - generic [ref=f17e130]:
+              - generic [ref=f17e131]: "4"
+              - generic [ref=f17e132]: Publish

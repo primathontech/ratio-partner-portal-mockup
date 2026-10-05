@@ -1,0 +1,83 @@
+- generic [active] [ref=f12e1]:
+  - generic [ref=f12e2]:
+    - generic [ref=f12e3]:
+      - link "Ratio" [ref=f12e4] [cursor=pointer]:
+        - /url: landing.html
+      - generic [ref=f12e7] [cursor=pointer]:
+        - generic [ref=f12e8]: ND
+        - generic [ref=f12e9]:
+          - generic [ref=f12e10]: Nutristar Digital
+          - generic [ref=f12e11]: Organisation Owner
+      - generic [ref=f12e15]:
+        - textbox "Search apps, stores and team" [ref=f12e19]
+        - generic [ref=f12e20]: ⌘
+        - generic [ref=f12e21]: K
+      - generic [ref=f12e22]:
+        - generic [ref=f12e23]: "3"
+        - generic [ref=f12e29]: AR
+    - generic [ref=f12e32]:
+      - link "Home" [ref=f12e33] [cursor=pointer]:
+        - /url: home.html
+      - link "Apps" [ref=f12e38] [cursor=pointer]:
+        - /url: apps.html
+      - link "Stores" [ref=f12e46] [cursor=pointer]:
+        - /url: stores.html
+      - link "Team" [ref=f12e52] [cursor=pointer]:
+        - /url: team.html
+      - link "Settings" [ref=f12e60] [cursor=pointer]:
+        - /url: settings.html
+    - generic [ref=f12e65]:
+      - generic [ref=f12e66]:
+        - generic [ref=f12e67]: Stores
+        - generic [ref=f12e68] [cursor=pointer]: Request store access
+      - generic [ref=f12e73]:
+        - generic [ref=f12e74] [cursor=pointer]: Dev
+        - generic [ref=f12e75] [cursor=pointer]: Client transfer
+        - generic [ref=f12e76] [cursor=pointer]: Collaborations
+      - generic [ref=f12e78]:
+        - generic [ref=f12e79]:
+          - generic [ref=f12e80]: Store
+          - generic [ref=f12e81]: Status
+          - generic [ref=f12e82]: Scopes
+          - generic [ref=f12e83]: Expires
+        - generic [ref=f12e84]:
+          - generic [ref=f12e85]:
+            - generic [ref=f12e86]: Wellversed
+            - generic [ref=f12e88]: Active · Additional access requested
+            - generic [ref=f12e89]: read_orders, write_orders +1
+            - generic [ref=f12e90]: in 22 days
+            - generic [ref=f12e91] [cursor=pointer]
+          - generic [ref=f12e97]:
+            - generic [ref=f12e98]: Aqualogica
+            - generic [ref=f12e100]: Request sent
+            - generic [ref=f12e101]: read_products
+            - generic [ref=f12e102]: —
+            - generic [ref=f12e103] [cursor=pointer]
+          - generic [ref=f12e109]:
+            - generic [ref=f12e110]: Kwik Fashion
+            - generic [ref=f12e112]: Expires soon
+            - generic [ref=f12e113]: read_orders
+            - generic [ref=f12e114]: in 5 days
+            - generic [ref=f12e115] [cursor=pointer]
+          - generic [ref=f12e121]:
+            - generic [ref=f12e122]: Nooba Foods
+            - generic [ref=f12e124]: Expired
+            - generic [ref=f12e125]: read_products
+            - generic [ref=f12e126]: 12 days ago
+            - generic [ref=f12e127] [cursor=pointer]
+  - generic [ref=f12e133]:
+    - generic [ref=f12e134]:
+      - generic [ref=f12e135]: Ratio
+      - generic [ref=f12e136] [cursor=pointer]
+    - textbox "Search apps, stores and team" [ref=f12e145]
+    - generic [ref=f12e146]:
+      - link "Home" [ref=f12e147] [cursor=pointer]:
+        - /url: home.html
+      - link "Apps" [ref=f12e152] [cursor=pointer]:
+        - /url: apps.html
+      - link "Stores" [ref=f12e160] [cursor=pointer]:
+        - /url: stores.html
+      - link "Team" [ref=f12e166] [cursor=pointer]:
+        - /url: team.html
+      - link "Settings" [ref=f12e174] [cursor=pointer]:
+        - /url: settings.html

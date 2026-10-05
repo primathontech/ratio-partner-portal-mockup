@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log in &mdash; Ratio</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="js/icons.js"></script>
+<style>
+body{background:var(--surface-page)}
+.lg-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:48px 16px}
+.lg-card{width:100%;max-width:400px;background:#fff;border:1px solid var(--line-100);border-radius:12px;padding:32px;box-sizing:border-box}
+.lg-divider{display:flex;align-items:center;gap:10px;margin:18px 0;color:var(--ink-300);font:400 12px/16px var(--font-sans)}
+.lg-divider::before,.lg-divider::after{content:"";flex:1;height:1px;background:var(--line-150)}
+.otp-box{width:44px;height:52px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset,0 0 0 1px var(--line-100);text-align:center;font:600 20px/52px var(--font-sans);color:var(--ink-900);outline:none}
+.otp-box:focus{box-shadow:0 0 0 1px var(--accent) inset,0 0 0 1px var(--accent)}
+</style>
+</head>
+<body>
+<div class="lg-wrap">
+
+<a href="landing.html" class="rp-logo" style="margin-bottom:40px;text-decoration:none">Ratio</a>
+
+<div id="panel-password" class="lg-card">
+  <div style="font:600 20px/26px var(--font-sans);color:var(--ink-900)">Log in to Ratio</div>
+  <div style="font:400 14px/20px var(--font-sans);letter-spacing:-0.15px;color:var(--ink-500);margin-top:6px">Welcome back. Enter your details to continue.</div>
+
+  <div class="btn btn-secondary" style="width:100%;margin-top:24px;gap:10px">
+    <span id="google-icon"></span>Continue with Google
+  </div>
+  <div class="lg-divider">or</div>
+
+  <label class="field-label">Email</label>
+  <input class="input" id="lg-email" placeholder="you@company.com" value="asha@nutristar.in">
+
+  <div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between">
+    <label class="field-label" style="margin-bottom:0">Password</label>
+    <a href="#" style="font:400 12px/16px var(--font-sans)" onclick="return false;">Forgot password?</a>
+  </div>
+  <input class="input" type="password" id="lg-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" value="password123">
+
+  <button class="btn btn-primary" style="width:100%;margin-top:24px" onclick="submitPassword()">Continue</button>
+
+  <div style="text-align:center;margin-top:20px;font:400 13px/18px var(--font-sans);color:var(--ink-500)">
+    New to Ratio? <a href="onboarding.html">Create an account</a>
+  </div>
+</div>
+
+<div id="panel-otp" class="lg-card" style="display:none;text-align:center">
+  <span style="width:44px;height:44px;border-radius:10px;background:var(--line-100);display:flex;align-items:center;justify-content:center;margin:0 auto" id="otp-icon"></span>
+  <div style="font:600 18px/24px var(--font-sans);color:var(--ink-900);margin-top:16px">Enter the code we sent you</div>
+  <div style="font:400 13px/19px var(--font-sans);color:var(--ink-500);margin-top:6px">We sent a 6-digit code to <b style="color:var(--ink-900)">asha@nutristar.in</b></div>
+
+  <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
+    <input class="otp-box" maxlength="1" oninput="otpNext(this)">
+    <input class="otp-box" maxlength="1" oninput="otpNext(this)">
+    <input class="otp-box" maxlength="1" oninput="otpNext(this)">
+    <input class="otp-box" maxlength="1" oninput="otpNext(this)">
+    <input class="otp-box" maxlength="1" oninput="otpNext(this)">
+    <input class="otp-box" maxlength="1" oninput="otpNext(this)">
+  </div>
+
+  <button class="btn btn-primary" style="width:100%;margin-top:24px" onclick="window.location.href='home.html'">Verify and continue</button>
+  <div style="margin-top:14px;font:400 13px/18px var(--font-sans);color:var(--ink-500)">Didn't get a code? <a href="#" onclick="return false;">Resend</a></div>
+  <div style="margin-top:10px"><a href="#" onclick="showPasswordPanel();return false;" style="font:400 13px/18px var(--font-sans);color:var(--ink-500)">&larr; Back</a></div>
+</div>
+
+</div>
+
+<script>
+document.getElementById('google-icon').innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16"><path fill="#4285F4" d="M15.68 8.18c0-.57-.05-1.11-.14-1.64H8v3.1h4.3a3.68 3.68 0 0 1-1.6 2.42v2h2.58c1.51-1.39 2.38-3.44 2.38-5.88Z"/><path fill="#34A853" d="M8 16c2.16 0 3.97-.72 5.29-1.94l-2.58-2c-.72.48-1.63.77-2.71.77-2.08 0-3.85-1.41-4.48-3.3H.86v2.07A8 8 0 0 0 8 16Z"/><path fill="#FBBC05" d="M3.52 9.53a4.8 4.8 0 0 1 0-3.06V4.4H.86a8 8 0 0 0 0 7.2l2.66-2.07Z"/><path fill="#EA4335" d="M8 3.18c1.18 0 2.23.4 3.06 1.2l2.29-2.29A7.95 7.95 0 0 0 8 0 8 8 0 0 0 .86 4.4l2.66 2.07C4.15 4.59 5.92 3.18 8 3.18Z"/></svg>';
+document.getElementById('otp-icon').innerHTML = icon('lock', 18);
+
+function submitPassword() {
+  document.getElementById('panel-password').style.display = 'none';
+  document.getElementById('panel-otp').style.display = '';
+  document.querySelector('.otp-box').focus();
+}
+function showPasswordPanel() {
+  document.getElementById('panel-otp').style.display = 'none';
+  document.getElementById('panel-password').style.display = '';
+}
+function otpNext(el) {
+  if (el.value && el.nextElementSibling) el.nextElementSibling.focus();
+}
+</script>
+</body>
+</html>
