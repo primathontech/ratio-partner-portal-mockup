@@ -469,6 +469,7 @@
 <script src="js/shell.js"></script>
 <script>
 renderShell({ active: 'settings' });
+if (location.hash === '#billing') switchTab('settings', 'billing');
 document.getElementById('card-icon').innerHTML = icon('card', 16);
 document.getElementById('payout-info-icon').innerHTML = icon('info', 14);
 document.getElementById('payout-empty-icon').innerHTML = icon('card', 18);
