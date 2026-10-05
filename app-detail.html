@@ -10,8 +10,10 @@
 <style>
 .detail-layout{display:flex;gap:32px;align-items:flex-start}
 @media (max-width:900px){.detail-layout{flex-direction:column}.subnav{width:100%;flex-direction:row;flex-wrap:wrap}}
-.rev-step{flex:1;text-align:center;position:relative}
-.rev-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:600 12px/16px var(--font-sans);margin:0 auto}
+.ov-card{cursor:pointer;transition:box-shadow var(--transition-control)}
+.ov-card:hover{box-shadow:0 0 0 1px var(--line-150)}
+.versions-table .table-head-row, .versions-table .table-row{grid-template-columns:2fr 1.2fr 1.6fr 1.1fr 110px}
+.logs-table .table-head-row, .logs-table .table-row{grid-template-columns:40px 1.6fr 1.6fr 1.6fr 1.3fr}
 </style>
 </head>
 <body>
@@ -32,14 +34,23 @@
     </div>
     <div style="display:flex;gap:8px;align-items:center">
       <span class="btn btn-secondary">View in store</span>
-      <span style="color:var(--ink-500);cursor:pointer;margin-left:4px" id="kebab-slot"></span>
+      <div class="dropdown">
+        <span style="color:var(--ink-500);cursor:pointer;margin-left:4px" id="kebab-slot" onclick="toggleDropdown('app-kebab-menu')"></span>
+        <div id="app-kebab-menu" class="dropdown-panel" style="right:0;top:26px;width:200px;padding:6px">
+          <div class="menu-item" style="border-radius:6px" onclick="closeDropdown('app-kebab-menu');openModal('transfer-ownership-modal')">Transfer ownership</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="detail-layout">
     <div class="subnav">
       <a class="tab active" data-tabgroup="appdetail" data-tabkey="overview" onclick="switchTab('appdetail','overview',event)">Overview</a>
+      <a class="tab" data-tabgroup="appdetail" data-tabkey="listing" onclick="switchTab('appdetail','listing',event)">Listing</a>
       <a class="tab" data-tabgroup="appdetail" data-tabkey="distribution" onclick="switchTab('appdetail','distribution',event)">Distribution</a>
+      <a class="tab" data-tabgroup="appdetail" data-tabkey="plans" onclick="switchTab('appdetail','plans',event)">Plans</a>
+      <a class="tab" data-tabgroup="appdetail" data-tabkey="versions" onclick="switchTab('appdetail','versions',event)">Versions</a>
+      <a class="tab" data-tabgroup="appdetail" data-tabkey="logs" onclick="switchTab('appdetail','logs',event)">Logs</a>
       <a class="tab" data-tabgroup="appdetail" data-tabkey="apikeys" onclick="switchTab('appdetail','apikeys',event)">API keys</a>
       <a class="tab" data-tabgroup="appdetail" data-tabkey="webhooks" onclick="switchTab('appdetail','webhooks',event)">Webhooks</a>
       <a class="tab" data-tabgroup="appdetail" data-tabkey="extensions" onclick="switchTab('appdetail','extensions',event)">Extensions</a>
@@ -58,44 +69,136 @@
           <div style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-top:6px">Released Sep 24, 2026 by Asha Rao</div>
         </div>
 
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+          <div class="card card-pad ov-card" onclick="switchTab('appdetail','webhooks',event)">
+            <div style="display:flex;align-items:center;justify-content:space-between"><span style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Webhook delivery</span><span class="ov-caret" style="color:var(--ink-500);transform:rotate(-90deg);display:inline-flex"></span></div>
+            <div style="font:600 22px/28px var(--font-sans);color:var(--ink-900);margin-top:8px">98.4%</div>
+            <div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:2px">Delivered &middot; last 7 days &middot; 4 active subscriptions</div>
+          </div>
+
+          <div class="card card-pad ov-card" onclick="window.location.href='settings.html#billing'">
+            <div style="display:flex;align-items:center;justify-content:space-between"><span style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Payout this month</span><span class="ov-caret" style="color:var(--ink-500);transform:rotate(-90deg);display:inline-flex"></span></div>
+            <div style="font:600 22px/28px var(--font-sans);color:var(--ink-900);margin-top:8px">&#8377;84,210</div>
+            <div style="display:flex;gap:14px;margin-top:8px">
+              <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Aug<br><span style="color:var(--ink-800);font-weight:500;font-size:13px">&#8377;71,480</span></div>
+              <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Sep<br><span style="color:var(--ink-800);font-weight:500;font-size:13px">&#8377;79,960</span></div>
+              <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Oct<br><span style="color:var(--ink-800);font-weight:500;font-size:13px">&#8377;84,210</span></div>
+            </div>
+          </div>
+
+          <div class="card card-pad ov-card" onclick="switchTab('appdetail','distribution',event)">
+            <div style="display:flex;align-items:center;justify-content:space-between"><span style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Installs</span><span class="ov-caret" style="color:var(--ink-500);transform:rotate(-90deg);display:inline-flex"></span></div>
+            <div style="font:600 22px/28px var(--font-sans);color:var(--ink-900);margin-top:8px">1,204</div>
+            <div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:2px">+37 this month &middot; 2.1% install rate</div>
+          </div>
+
+          <div class="card card-pad ov-card" onclick="switchTab('appdetail','apikeys',event)">
+            <div style="display:flex;align-items:center;justify-content:space-between"><span style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Credentials</span><span class="ov-caret" style="color:var(--ink-500);transform:rotate(-90deg);display:inline-flex"></span></div>
+            <div style="margin-top:8px;font:400 13px/18px var(--font-mono);color:var(--ink-800)">88ec0cdb&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;b662</div>
+            <div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:4px">Client ID &middot; secret hidden</div>
+          </div>
+        </div>
+
+        <div class="card ov-card" style="margin-top:16px;padding:0" onclick="switchTab('appdetail','versions',event)">
+          <div style="padding:14px 16px;border-bottom:1px solid var(--line-100);display:flex;align-items:center;justify-content:space-between">
+            <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Recent versions</span>
+            <span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">View all &rarr;</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--line-100)"><div style="display:flex;align-items:center;gap:8px"><span style="font:400 14px/20px var(--font-sans);color:var(--ink-800)">1.3.0</span><span class="pill pill-success">Active</span></div><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Sep 24, 2026</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px"><div style="display:flex;align-items:center;gap:8px"><span style="font:400 14px/20px var(--font-sans);color:var(--ink-800)">1.2.0</span><span class="pill pill-neutral">Replaced</span></div><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Aug 02, 2026</span></div>
+        </div>
+      </div>
+
+      <!-- Listing -->
+      <div data-panelgroup="appdetail" data-panelkey="listing" style="display:none">
+        <div class="card card-pad">
+          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Public listing</span>
+          <div class="field-help" style="display:block;margin-top:2px">What merchants see for this app on <span style="font-family:var(--font-mono)">apps.ratio.win</span>.</div>
+
+          <div style="margin-top:16px"><label class="field-label">App name</label><input class="input" id="listing-name" value="Wishlist Pro" oninput="onListingNameInput()"></div>
+
+          <div style="margin-top:16px">
+            <label class="field-label">Description</label>
+            <div class="field-help" style="margin-top:0;margin-bottom:8px;max-width:560px">Shown on the app's listing page. Supports basic Markdown.</div>
+            <div style="display:flex;align-items:center;gap:4px;margin-bottom:6px;flex-wrap:wrap">
+              <span class="btn btn-secondary btn-sm" style="padding:0 10px;font-weight:700" title="Bold" onclick="listingMdBold()">B</span>
+              <span class="btn btn-secondary btn-sm" style="padding:0 10px;font-style:italic" title="Italic" onclick="listingMdItalic()">I</span>
+              <span class="btn btn-secondary btn-sm" style="padding:0 10px" title="Link" onclick="listingMdLink()"><span id="listing-md-link-icon"></span></span>
+              <span class="btn btn-secondary btn-sm" style="padding:0 10px" title="Bulleted list" onclick="listingMdList()">List</span>
+              <span style="flex:1"></span>
+              <span class="tab active" id="listing-md-write-tab" style="font-size:12px;padding:0 2px 4px;margin-bottom:0" onclick="if(listingMdPreviewOn) toggleListingMdPreview()">Write</span>
+              <span class="tab" id="listing-md-preview-tab" style="font-size:12px;padding:0 2px 4px;margin-bottom:0" onclick="if(!listingMdPreviewOn) toggleListingMdPreview()">Preview</span>
+            </div>
+            <textarea class="input" id="listing-desc" style="height:96px">Wishlist Pro lets shoppers save products for later and come back when they're ready to buy. **Unlimited wishlists**, email reminders, and a clean on-site widget.</textarea>
+            <div class="input" id="listing-desc-preview" style="display:none;min-height:96px;height:auto;padding:10px 12px;font:400 14px/20px var(--font-sans);color:var(--ink-800)"></div>
+            <div class="field-help">Supports **bold**, _italic_, [links](https://) and bulleted lists.</div>
+          </div>
+
+          <div style="margin-top:16px">
+            <label class="field-label">Short description <span style="color:var(--ink-300);font-weight:400">(shown in search results and listing cards)</span></label>
+            <input class="input" id="listing-short-desc" maxlength="100" value="Save-for-later wishlists with reminders and a one-click widget." oninput="onListingShortDescInput()">
+            <div class="field-help"><span id="listing-short-desc-count">0</span>/100 characters</div>
+          </div>
+
+          <div style="margin-top:16px">
+            <label class="field-label">Categories <span style="color:var(--ink-300);font-weight:400">(select all that apply)</span></label>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
+              <span style="display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 10px;border-radius:7px;box-shadow:0 0 0 1px var(--line-100) inset"><span class="checkbox checked" onclick="toggleCheck(this)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Marketing</span></span>
+              <span style="display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 10px;border-radius:7px;box-shadow:0 0 0 1px var(--line-100) inset"><span class="checkbox" onclick="toggleCheck(this)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Customer support</span></span>
+              <span style="display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 10px;border-radius:7px;box-shadow:0 0 0 1px var(--line-100) inset"><span class="checkbox checked" onclick="toggleCheck(this)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Loyalty and rewards</span></span>
+              <span style="display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 10px;border-radius:7px;box-shadow:0 0 0 1px var(--line-100) inset"><span class="checkbox" onclick="toggleCheck(this)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Shipping and fulfillment</span></span>
+              <span style="display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 10px;border-radius:7px;box-shadow:0 0 0 1px var(--line-100) inset"><span class="checkbox" onclick="toggleCheck(this)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Store design</span></span>
+              <span style="display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 10px;border-radius:7px;box-shadow:0 0 0 1px var(--line-100) inset"><span class="checkbox" onclick="toggleCheck(this)"></span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Finance</span></span>
+            </div>
+          </div>
+
+          <div style="margin-top:16px"><label class="field-label">App website URL</label><input class="input" id="listing-website" value="https://wishlistpro.app"></div>
+        </div>
+
         <div class="card card-pad" style="margin-top:16px">
-          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Version history</span>
-          <div style="margin-top:10px">
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line-100)"><div style="display:flex;align-items:center;gap:8px"><span style="font:400 14px/20px var(--font-sans);color:var(--ink-800)">1.3.0</span><span class="pill pill-success">Active</span></div><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Sep 24, 2026</span></div>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line-100)"><div style="display:flex;align-items:center;gap:8px"><span style="font:400 14px/20px var(--font-sans);color:var(--ink-800)">1.2.0</span><span class="pill pill-neutral">Replaced</span></div><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Aug 02, 2026</span></div>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0"><div style="display:flex;align-items:center;gap:8px"><span style="font:400 14px/20px var(--font-sans);color:var(--ink-800)">1.1.0</span><span class="pill pill-neutral">Replaced</span></div><span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Jun 14, 2026</span></div>
+          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Images</span>
+          <div style="margin-top:14px;display:flex;align-items:center;gap:14px">
+            <span class="swatch" style="width:56px;height:56px;border-radius:10px;box-shadow:0 0 0 1px var(--line-150) inset;background:var(--blue-100);flex-shrink:0"></span>
+            <div><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">App icon</div><span class="btn btn-secondary btn-sm" style="margin-top:4px">Upload icon</span><div class="field-help">1200&times;1200px, PNG or JPG, 1MB max.</div></div>
+          </div>
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--line-100)">
+            <div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Hero section image</div>
+            <div style="margin-top:10px;width:100%;max-width:560px;aspect-ratio:16/5;border-radius:10px;box-shadow:0 0 0 1px var(--line-150) inset;background:var(--surface-page);display:flex;align-items:center;justify-content:center"><span class="btn btn-secondary btn-sm">Upload hero image</span></div>
+            <div class="field-help">1600&times;500px, PNG or JPG, 2MB max.</div>
           </div>
         </div>
 
         <div class="card card-pad" style="margin-top:16px">
-          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Review process</span>
-          <div style="display:flex;margin-top:16px">
-            <div class="rev-step"><div class="rev-dot" style="background:var(--accent);color:#fff">1</div><div style="font:500 13px/18px var(--font-sans);color:var(--ink-900);margin-top:8px">Submit</div></div>
-            <div class="rev-step"><div class="rev-dot" style="background:var(--accent);color:#fff">2</div><div style="font:500 13px/18px var(--font-sans);color:var(--ink-900);margin-top:8px">Review</div></div>
-            <div class="rev-step"><div class="rev-dot" style="background:var(--line-100);color:var(--ink-500)">3</div><div style="font:500 13px/18px var(--font-sans);color:var(--ink-900);margin-top:8px">Feedback</div></div>
-            <div class="rev-step"><div class="rev-dot" style="background:var(--line-100);color:var(--ink-500)">4</div><div style="font:500 13px/18px var(--font-sans);color:var(--ink-900);margin-top:8px">Publish</div></div>
-          </div>
+          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Slug</span>
+          <div class="field-help" style="display:block;margin-top:2px">The public URL merchants use to find this app.</div>
+          <div style="margin-top:14px"><input class="input" id="listing-slug" value="wishlist-pro" oninput="validateListingSlug()"></div>
+          <div class="field-help" id="listing-slug-error" style="display:none;color:var(--danger-text)"></div>
+          <div class="field-help" id="listing-slug-preview"></div>
         </div>
+
+        <div style="margin-top:16px"><span class="btn btn-primary" onclick="saveListing()">Save changes</span></div>
       </div>
 
       <!-- Distribution -->
       <div data-panelgroup="appdetail" data-panelkey="distribution" style="display:none">
         <div class="card card-pad">
+          <label class="field-label">Install URL</label>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <div style="flex:1;min-width:260px;height:36px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset;display:flex;align-items:center;padding:0 12px;font-family:var(--font-mono);font-size:13px;color:var(--ink-800);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">https://partners.ratio.win/install/wishlist-pro</div>
+            <span class="copy-icon" style="color:var(--ink-500);cursor:pointer;flex-shrink:0" onclick="copyInstallUrl(event)"></span>
+            <span class="btn btn-secondary btn-sm" style="flex-shrink:0" onclick="showToast(&quot;This would start the install flow on the merchant's store.&quot;)">Install app</span>
+          </div>
+          <div style="font:400 12px/17px var(--font-sans);color:var(--text-muted);margin-top:8px">Share this with a merchant to install your app.</div>
+          <div style="font:400 12px/16px var(--font-sans);color:var(--ink-300);margin-top:6px">Scopes and <span style="font-family:var(--font-mono)">application_url</span> are derived from this app's <span style="font-family:var(--font-mono)">ratio.config.jsonc</span> manifest and can't be edited from this dashboard. <a href="https://partners.ratio.win/docs#api-reference">Developer docs &rarr;</a></div>
+        </div>
+
+        <div class="card card-pad" style="margin-top:16px">
           <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Distribution</span>
-          <div style="margin-top:14px;display:flex;gap:8px">
-            <div onclick="pickDist('public')" id="dist-public" style="flex:1;border-radius:8px;padding:12px 14px;cursor:pointer;box-shadow:0 0 0 1.5px var(--accent)"><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Public</div><div style="font:400 12px/17px var(--font-sans);color:var(--text-muted)">Any merchant can find and install this app</div></div>
-            <div onclick="pickDist('private')" id="dist-private" style="flex:1;border-radius:8px;padding:12px 14px;cursor:pointer;box-shadow:0 0 0 1px var(--line-100)"><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Private</div><div style="font:400 12px/17px var(--font-sans);color:var(--text-muted)">Only merchants you allow can install it</div></div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:14px">
+            <span class="pill pill-info">Public</span>
+            <span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Any merchant can find and install this app.</span>
           </div>
-          <div id="private-merchants" style="margin-top:14px;display:none">
-            <label class="field-label">Allowed merchants</label>
-            <div style="height:36px;border-radius:8px;box-shadow:0 0 0 1px var(--line-100) inset;display:flex;align-items:center;padding:0 12px;gap:8px">
-              <input placeholder="Search merchant by store domain" style="flex:1;border:none;outline:none;background:transparent;font:400 14px/20px var(--font-sans);color:var(--ink-800)">
-              <span class="btn btn-secondary" style="height:26px;padding:0 10px;font-size:13px">Add</span>
-            </div>
-            <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px">
-              <span style="height:26px;border-radius:6px;background:var(--line-100);padding:0 10px;display:inline-flex;align-items:center;gap:6px;font:400 13px/18px var(--font-sans);color:var(--ink-800)">wellversed.ratio.win<span class="remove-x" style="color:var(--ink-500);cursor:pointer"></span></span>
-            </div>
-          </div>
+          <div style="font:400 12px/17px var(--font-sans);color:var(--ink-300);margin-top:8px">Set when the app was created &mdash; contact Ratio support if you need to change this.</div>
           <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--line-100);display:flex;align-items:center;justify-content:space-between">
             <div><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">Auto-publish new versions</div><div style="font:400 12px/17px var(--font-sans);color:var(--text-muted)">Skip manual review for minor updates once approved once</div></div>
             <span class="toggle" onclick="toggleSwitch(this)"><span class="knob"></span></span>
@@ -103,6 +206,36 @@
         </div>
 
         <div class="card card-pad" style="margin-top:16px">
+          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Installation metrics</span>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px">
+            <div><div style="font:600 20px/26px var(--font-sans);color:var(--ink-900)">1,204</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px">Total installs</div></div>
+            <div><div style="font:600 20px/26px var(--font-sans);color:var(--ink-900)">37</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px">Installs this month</div></div>
+            <div><div style="font:600 20px/26px var(--font-sans);color:var(--ink-900)">9 <span style="font-size:13px;color:var(--text-muted);font-weight:400">(0.7%)</span></div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px">Uninstalls this month</div></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px;padding:0">
+          <div style="padding:14px 16px;border-bottom:1px solid var(--line-100)">
+            <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Installed merchants</span>
+            <div class="input" style="display:flex;align-items:center;gap:8px;margin-top:10px;height:36px">
+              <span id="merchant-search-icon" style="color:var(--ink-500)"></span>
+              <input id="merchant-search-input" oninput="filterMerchants()" placeholder="Search by store domain" style="flex:1;border:none;outline:none;background:transparent;font:400 14px/20px var(--font-sans);color:var(--ink-800)">
+            </div>
+          </div>
+          <div id="merchant-rows"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid var(--line-100)">
+            <span id="merchant-footer-note" style="font:400 12px/16px var(--font-sans);color:var(--text-muted)"></span>
+            <span style="display:flex;gap:8px">
+              <span class="btn btn-secondary btn-sm" id="merchant-prev-btn" style="width:36px;justify-content:center" onclick="merchantPrevPage()"><span id="merchant-prev-icon"></span></span>
+              <span class="btn btn-secondary btn-sm" id="merchant-next-btn" style="width:36px;justify-content:center" onclick="merchantNextPage()"><span id="merchant-next-icon"></span></span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plans -->
+      <div data-panelgroup="appdetail" data-panelkey="plans" style="display:none">
+        <div class="card card-pad">
           <div style="display:flex;align-items:center;justify-content:space-between">
             <div>
               <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Pricing</span>
@@ -117,6 +250,111 @@
           <div style="margin-top:20px;font:500 13px/18px var(--font-sans);color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px">Private plans</div>
           <div id="private-plans" class="empty-state" style="padding:24px 0"></div>
         </div>
+      </div>
+
+      <!-- Versions -->
+      <div data-panelgroup="appdetail" data-panelkey="versions" style="display:none">
+
+        <div id="versions-list-view">
+          <div style="margin-bottom:12px">
+            <span style="font:600 18px/24px var(--font-sans);color:var(--ink-900)">Versions</span>
+            <div style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-top:2px">Every manifest this app has ever shipped. Releasing an older version publishes it as the active configuration &mdash; it doesn't delete or alter the ones in between.</div>
+          </div>
+          <div class="card versions-table" style="overflow:hidden">
+            <div class="table-head-row"><span>Version</span><span>Review status</span><span>Pending review</span><span>Current</span><span></span></div>
+            <div id="versions-rows"></div>
+          </div>
+        </div>
+
+        <div id="versions-detail-view" style="display:none">
+          <div class="breadcrumb"><a href="#" onclick="backToVersionsList(event)">Versions</a><span>/</span><span class="current" id="version-detail-breadcrumb-current"></span></div>
+
+          <div class="card card-pad">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                <span id="version-detail-number" style="font:600 18px/24px var(--font-sans);color:var(--ink-900)"></span>
+                <span id="version-detail-status-pill"></span>
+                <span id="version-detail-current-pill"></span>
+              </div>
+              <span id="version-detail-release-btn"></span>
+            </div>
+            <div style="margin-top:12px;display:flex;gap:28px;flex-wrap:wrap">
+              <div><div class="field-label" style="margin-bottom:2px">Created</div><div id="version-detail-created" style="font:400 13px/18px var(--font-sans);color:var(--ink-800)"></div></div>
+              <div><div class="field-label" style="margin-bottom:2px">Author</div><div id="version-detail-author" style="font:400 13px/18px var(--font-sans);color:var(--ink-800)"></div></div>
+              <div id="version-detail-name-wrap" style="display:none"><div class="field-label" style="margin-bottom:2px">Name</div><div id="version-detail-name" style="font:400 13px/18px var(--font-sans);color:var(--ink-800)"></div></div>
+            </div>
+          </div>
+
+          <div id="version-pending-card" class="card card-pad" style="margin-top:16px;display:none">
+            <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Pending review items</span>
+            <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px">Outstanding feedback from the reviewer &mdash; address these before resubmitting.</div>
+            <div id="version-pending-list" style="margin-top:10px;display:flex;flex-direction:column;gap:8px"></div>
+          </div>
+
+          <div class="card card-pad" style="margin-top:16px">
+            <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Activity log</span>
+            <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:2px">Chronological record of this version's submit &rarr; review &rarr; publish lifecycle.</div>
+            <div id="version-activity-log" style="margin-top:10px"></div>
+          </div>
+
+          <div class="card card-pad" style="margin-top:16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px">
+              <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Changelog</span>
+              <span id="version-changelog-frozen-note" style="font:400 12px/16px var(--font-sans);color:var(--ink-300);display:none">Changelog is locked once a version is approved.</span>
+            </div>
+            <div id="version-changelog-toolbar" style="display:flex;align-items:center;gap:4px;margin:10px 0 6px;flex-wrap:wrap">
+              <span class="btn btn-secondary btn-sm" style="padding:0 10px;font-weight:700" title="Bold" onclick="versionMdBold()">B</span>
+              <span class="btn btn-secondary btn-sm" style="padding:0 10px;font-style:italic" title="Italic" onclick="versionMdItalic()">I</span>
+              <span class="btn btn-secondary btn-sm" style="padding:0 10px" title="Link" onclick="versionMdLink()"><span id="version-md-link-icon"></span></span>
+              <span class="btn btn-secondary btn-sm" style="padding:0 10px" title="Bulleted list" onclick="versionMdList()">List</span>
+              <span style="flex:1"></span>
+              <span class="tab active" id="version-md-write-tab" style="font-size:12px;padding:0 2px 4px;margin-bottom:0" onclick="if(versionMdPreviewOn) toggleVersionMdPreview()">Write</span>
+              <span class="tab" id="version-md-preview-tab" style="font-size:12px;padding:0 2px 4px;margin-bottom:0" onclick="if(!versionMdPreviewOn) toggleVersionMdPreview()">Preview</span>
+            </div>
+            <textarea class="input" id="version-changelog-editor" style="height:100px" oninput="onVersionChangelogInput()"></textarea>
+            <div class="input" id="version-changelog-preview" style="display:none;min-height:100px;height:auto;padding:10px 12px;font:400 14px/20px var(--font-sans);color:var(--ink-800)"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Logs -->
+      <div data-panelgroup="appdetail" data-panelkey="logs" style="display:none">
+
+        <div class="card card-pad">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <input class="input" id="logs-filter-input" placeholder="Filter logs" style="flex:1;min-width:200px" oninput="applyLogsFilter()">
+            <select class="input" id="logs-range-select" style="width:170px">
+              <option value="24h">Last 24 hours</option>
+              <option value="7d" selected>Last 7 days</option>
+              <option value="30d">Last 30 days</option>
+            </select>
+          </div>
+
+          <div style="margin-top:12px;border-radius:8px;background:var(--warning-bg);box-shadow:0 0 0 1px var(--warning-border) inset;padding:10px 14px;display:flex;gap:8px;align-items:flex-start">
+            <span style="color:var(--warning-text);flex-shrink:0;margin-top:1px" id="logs-sampling-icon"></span>
+            <span style="font:400 13px/18px var(--font-sans);color:var(--warning-text)">Showing sampled log events. Choose narrower filters to see a complete set.</span>
+          </div>
+
+          <div style="margin-top:18px">
+            <span style="font:600 14px/20px var(--font-sans);color:var(--ink-900)">Event volume</span>
+            <div style="position:relative;margin-top:10px">
+              <svg viewBox="0 0 600 140" style="width:100%;height:140px;display:block" preserveAspectRatio="none">
+                <polyline points="0,100 46,85 92,95 138,70 184,80 230,55 276,65 322,40 368,50 414,20 460,45 506,35 552,60 598,48" fill="none" stroke="#3F53FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polygon points="0,100 46,85 92,95 138,70 184,80 230,55 276,65 322,40 368,50 414,20 460,45 506,35 552,60 598,48 598,140 0,140" fill="#3F53FE" opacity="0.08"/>
+                <circle cx="414" cy="20" r="5" fill="#3F53FE" stroke="#fff" stroke-width="2"/>
+              </svg>
+              <div style="position:absolute;left:62%;top:2%;transform:translate(-50%,0);background:var(--ink-900);color:#fff;font:500 11px/16px var(--font-sans);padding:4px 8px;border-radius:6px;white-space:nowrap;pointer-events:none">Sep 28 &mdash; Events: 20,135</div>
+            </div>
+            <div style="font:400 12px/16px var(--font-sans);color:var(--ink-300);margin-top:6px">Daily event count, last 7 days.</div>
+          </div>
+        </div>
+
+        <div class="card logs-table" style="margin-top:16px;padding:0;overflow:hidden">
+          <div class="table-head-row"><span></span><span>Type</span><span>Details</span><span>Shop</span><span>Time</span></div>
+          <div id="logs-rows"></div>
+        </div>
+
       </div>
 
       <!-- API keys -->
@@ -209,6 +447,10 @@
         <div style="margin-top:20px">
           <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Configured on this app</span>
           <div style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-top:2px">Extensions this app already ships. Each one is added through the type cards below.</div>
+          <div style="margin-top:10px;border-radius:8px;background:var(--accent-tint);padding:10px 14px;display:flex;gap:8px;align-items:flex-start">
+            <span style="color:var(--accent);flex-shrink:0;margin-top:2px" id="ext-version-note-icon"></span>
+            <span style="font:400 13px/19px var(--font-sans);color:var(--ink-800)">This reflects what's configured in app version <b>1.3.0</b> &mdash; the currently active release. Extensions and scopes are declared in your app's <span style="font-family:var(--font-mono)">ratio.config.jsonc</span> manifest and take effect the moment that version is released.</span>
+          </div>
         </div>
         <div class="card" style="margin-top:10px;padding:0">
           <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line-100)">
@@ -216,6 +458,7 @@
             <div style="flex:1;min-width:0">
               <div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">Wishlist button &mdash; Theme app block</div>
               <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:1px">Product page &middot; added by 412 merchants</div>
+              <div style="font:400 12px/16px var(--font-sans);color:var(--ink-300);margin-top:2px">Settings schema: 2 fields &middot; targets the Product page section</div>
             </div>
             <span class="pill pill-success">Active</span>
           </div>
@@ -224,10 +467,25 @@
             <div style="flex:1;min-width:0">
               <div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">Add to wishlist &mdash; Admin action</div>
               <div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:1px">Order page, More actions menu</div>
+              <div style="font:400 12px/16px var(--font-sans);color:var(--ink-300);margin-top:2px">Surface: order page &middot; kind: action (opens a modal from More actions)</div>
             </div>
             <span class="pill pill-success">Active</span>
           </div>
         </div>
+
+        <div style="margin-top:20px">
+          <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">App manifest configuration</span>
+          <div style="font:400 13px/18px var(--font-sans);color:var(--text-muted);margin-top:2px">The rest of the bundle-level config currently being served from <span style="font-family:var(--font-mono)">ratio.config.jsonc</span>.</div>
+        </div>
+        <div class="card card-pad" style="margin-top:10px">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">application_url</span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800)">https://wishlistpro.app</span></div>
+            <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Embedded in admin</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">Yes</span></div>
+            <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Allowed redirection URLs</span><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800);text-align:right">https://wishlistpro.app/auth/callback</span></div>
+            <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">Webhooks API version</span><span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">2026-07</span></div>
+          </div>
+        </div>
+        <div style="margin-top:10px;border-radius:8px;background:var(--line-100);color:var(--ink-550);padding:10px 14px;font:400 12px/18px var(--font-sans)">Developer note: the exact shape of this configuration surface is still being decided; treat the fields above as illustrative, not final.</div>
 
         <div style="margin-top:24px">
           <span style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Extension types</span>
@@ -440,6 +698,29 @@
 </div>
 </div>
 
+<!-- Transfer ownership modal -->
+<div id="transfer-ownership-modal" class="modal-overlay">
+  <div class="modal" style="width:420px;padding:24px">
+    <div class="modal-title">Transfer ownership</div>
+    <div class="modal-sub">Move this app to another organization on Ratio. They'll need to accept the request before anything changes.</div>
+    <div style="margin-top:16px"><label class="field-label">Destination organization slug</label><input class="input" id="transfer-org-slug" placeholder="e.g. bloom-commerce"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px">
+      <span class="btn btn-secondary" onclick="closeModal('transfer-ownership-modal')">Cancel</span>
+      <span class="btn btn-primary" onclick="sendTransferRequest()">Send request</span>
+    </div>
+  </div>
+</div>
+
+<!-- Log detail slide-over -->
+<div id="log-detail-backdrop" style="position:fixed;inset:0;background:rgba(19,25,39,0.4);z-index:150;display:none" onclick="closeLogDetail()"></div>
+<div id="log-detail-panel" style="position:fixed;top:0;right:0;height:100vh;width:420px;max-width:92vw;background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,0.12);overflow-y:auto;z-index:151;transform:translateX(100%);transition:transform 220ms ease">
+  <div style="padding:18px 20px;border-bottom:1px solid var(--line-100);display:flex;align-items:center;justify-content:space-between">
+    <span id="log-detail-status-badge"></span>
+    <span onclick="closeLogDetail()" style="color:var(--ink-500);cursor:pointer" id="log-detail-close-icon"></span>
+  </div>
+  <div style="padding:18px 20px" id="log-detail-body"></div>
+</div>
+
 <div id="toast" class="toast"></div>
 <script src="js/shell.js"></script>
 <script>
@@ -456,6 +737,106 @@ document.getElementById('ext-icon-block').innerHTML = icon('apps', 15);
 document.getElementById('ext-icon-embed').innerHTML = icon('trend', 15);
 document.getElementById('ext-icon-admin').innerHTML = icon('settings', 15);
 document.getElementById('embed-info-icon').innerHTML = icon('info', 13);
+document.querySelectorAll('.ov-caret').forEach(function (el) { el.innerHTML = icon('caret', 12); });
+document.getElementById('ext-version-note-icon').innerHTML = icon('info', 14);
+document.getElementById('logs-sampling-icon').innerHTML = icon('info', 14);
+document.getElementById('version-md-link-icon').innerHTML = icon('externalLink', 11);
+document.getElementById('log-detail-close-icon').innerHTML = icon('close', 14);
+
+/* ---------- Listing tab: markdown description editor (copied pattern from settings.html) ---------- */
+function listingMdWrap(before, after, placeholder) {
+  var ta = document.getElementById('listing-desc');
+  var start = ta.selectionStart, end = ta.selectionEnd;
+  var selected = ta.value.slice(start, end) || placeholder || '';
+  ta.value = ta.value.slice(0, start) + before + selected + after + ta.value.slice(end);
+  ta.focus();
+  ta.selectionStart = start + before.length;
+  ta.selectionEnd = start + before.length + selected.length;
+}
+function listingMdBold() { listingMdWrap('**', '**', 'bold text'); }
+function listingMdItalic() { listingMdWrap('_', '_', 'italic text'); }
+function listingMdLink() { listingMdWrap('[', '](https://)', 'link text'); }
+function listingMdList() {
+  var ta = document.getElementById('listing-desc');
+  var start = ta.selectionStart;
+  var before = ta.value.slice(0, start);
+  var lineStart = before.lastIndexOf('\n') + 1;
+  ta.value = ta.value.slice(0, lineStart) + '- ' + ta.value.slice(lineStart);
+  ta.focus();
+  ta.selectionStart = ta.selectionEnd = start + 2;
+}
+function listingMdEscape(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function listingMdToHtml(src) {
+  var html = listingMdEscape(src)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/_(.+?)_/g, '<em>$1</em>')
+    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  var lines = html.split('\n');
+  var out = [], inList = false;
+  lines.forEach(function (line) {
+    if (/^-\s+/.test(line)) {
+      if (!inList) { out.push('<ul style="margin:4px 0 4px 18px;padding:0">'); inList = true; }
+      out.push('<li>' + line.replace(/^-\s+/, '') + '</li>');
+    } else {
+      if (inList) { out.push('</ul>'); inList = false; }
+      if (line.trim()) out.push('<p style="margin:0 0 8px">' + line + '</p>');
+    }
+  });
+  if (inList) out.push('</ul>');
+  return out.join('') || '<span style="color:var(--text-placeholder)">Nothing to preview yet.</span>';
+}
+var listingMdPreviewOn = false;
+function toggleListingMdPreview() {
+  listingMdPreviewOn = !listingMdPreviewOn;
+  var ta = document.getElementById('listing-desc');
+  var pv = document.getElementById('listing-desc-preview');
+  if (listingMdPreviewOn) { pv.innerHTML = listingMdToHtml(ta.value); ta.style.display = 'none'; pv.style.display = 'block'; }
+  else { ta.style.display = ''; pv.style.display = 'none'; }
+  document.getElementById('listing-md-write-tab').classList.toggle('active', !listingMdPreviewOn);
+  document.getElementById('listing-md-preview-tab').classList.toggle('active', listingMdPreviewOn);
+}
+document.getElementById('listing-md-link-icon').innerHTML = icon('externalLink', 11);
+
+/* ---------- Listing tab: short description counter, slug auto-suggest + validation ---------- */
+function onListingShortDescInput() {
+  document.getElementById('listing-short-desc-count').textContent = document.getElementById('listing-short-desc').value.length;
+}
+onListingShortDescInput();
+
+function slugify(s) {
+  return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+var listingSlugTouched = false;
+function refreshSlugValidation() {
+  var val = document.getElementById('listing-slug').value;
+  var err = document.getElementById('listing-slug-error');
+  var preview = document.getElementById('listing-slug-preview');
+  var valid = !val || /^[a-z0-9-]+$/.test(val);
+  err.style.display = valid ? 'none' : '';
+  if (!valid) err.textContent = 'Only lowercase letters, digits and hyphens are allowed.';
+  preview.textContent = 'apps.ratio.win/' + val;
+}
+function validateListingSlug() {
+  listingSlugTouched = true;
+  refreshSlugValidation();
+}
+function onListingNameInput() {
+  if (!listingSlugTouched) {
+    document.getElementById('listing-slug').value = slugify(document.getElementById('listing-name').value);
+  }
+  refreshSlugValidation();
+}
+refreshSlugValidation();
+
+function saveListing() {
+  if (document.getElementById('listing-slug-error').style.display !== 'none') {
+    showToast('Fix the slug before saving.');
+    return;
+  }
+  showToast('Listing changes saved.');
+}
 
 function onAdminExtKind() {
   var kind = document.getElementById('admin-ext-kind').value;
@@ -463,12 +844,6 @@ function onAdminExtKind() {
   if (kind === 'action') hint.innerHTML = 'An <b>action</b> appears in the order\'s More actions menu and opens a modal when clicked.';
   else if (kind === 'block') hint.innerHTML = 'A <b>block</b> is an inline card on the page &mdash; the merchant must add and pin it themselves.';
   else hint.innerHTML = 'A <b>print action</b> adds an item to the Print menu and renders a print-preview iframe.';
-}
-
-function pickDist(which) {
-  document.getElementById('dist-public').style.boxShadow = which === 'public' ? '0 0 0 1.5px var(--accent)' : '0 0 0 1px var(--line-100)';
-  document.getElementById('dist-private').style.boxShadow = which === 'private' ? '0 0 0 1.5px var(--accent)' : '0 0 0 1px var(--line-100)';
-  document.getElementById('private-merchants').style.display = which === 'private' ? '' : 'none';
 }
 
 var secretHidden = true;
@@ -479,6 +854,106 @@ function toggleSecret() {
     : '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';
 }
 document.getElementById('eye-icon').innerHTML = icon('eye', 13);
+
+function copyInstallUrl(e) {
+  if (e) e.stopPropagation();
+  showToast('Copied to clipboard: https://partners.ratio.win/install/wishlist-pro');
+}
+
+function sendTransferRequest() {
+  var slug = document.getElementById('transfer-org-slug').value.trim();
+  if (!slug) { showToast('Enter the destination organization slug first.'); return; }
+  closeModal('transfer-ownership-modal');
+  showToast('Transfer request sent to ' + slug + ". They'll need to accept it before ownership moves.");
+  document.getElementById('transfer-org-slug').value = '';
+}
+
+/* ---------- Distribution tab: installed-merchants search + pagination ---------- */
+var MERCHANT_TOTAL = 1204;
+var MERCHANT_PAGE_SIZE = 8;
+var MERCHANTS = [
+  { store: 'wellversed.ratio.win', date: 'Sep 28, 2026', plan: 'Growth' },
+  { store: 'sneakerbae.store', date: 'Sep 21, 2026', plan: 'Starter' },
+  { store: 'urbanwick.in', date: 'Sep 14, 2026', plan: 'Growth' },
+  { store: 'thefitkit.co', date: 'Sep 6, 2026', plan: 'Starter' },
+  { store: 'noutica.shop', date: 'Aug 29, 2026', plan: 'Growth' },
+  { store: 'minimalist.store', date: 'Jul 2, 2026', plan: 'Legacy &middot; &#8377;799/mo', legacy: true },
+  { store: 'drip.clothing', date: 'Aug 24, 2026', plan: 'Starter' },
+  { store: 'glowritual.in', date: 'Aug 18, 2026', plan: 'Growth' },
+  { store: 'kadam.store', date: 'Aug 11, 2026', plan: 'Starter' },
+  { store: 'furnishup.co', date: 'Aug 5, 2026', plan: 'Growth' },
+  { store: 'littlepaws.pet', date: 'Jul 29, 2026', plan: 'Starter' },
+  { store: 'brewhouse.coffee', date: 'Jul 22, 2026', plan: 'Growth' },
+  { store: 'zentales.in', date: 'Jul 15, 2026', plan: 'Starter' },
+  { store: 'homegrownfarms.store', date: 'Jul 9, 2026', plan: 'Legacy &middot; &#8377;799/mo', legacy: true },
+  { store: 'lumina.jewelry', date: 'Jun 30, 2026', plan: 'Growth' },
+  { store: 'tinytots.store', date: 'Jun 24, 2026', plan: 'Starter' },
+  { store: 'craftloom.in', date: 'Jun 17, 2026', plan: 'Growth' },
+  { store: 'solaceskin.co', date: 'Jun 10, 2026', plan: 'Starter' },
+  { store: 'northstarbooks.store', date: 'Jun 3, 2026', plan: 'Growth' },
+  { store: 'verdantgoods.in', date: 'May 27, 2026', plan: 'Starter' },
+  { store: 'ambercraft.shop', date: 'May 20, 2026', plan: 'Growth' },
+  { store: 'plainwear.store', date: 'May 13, 2026', plan: 'Starter' },
+  { store: 'kavach.gear', date: 'May 6, 2026', plan: 'Legacy &middot; &#8377;799/mo', legacy: true },
+  { store: 'sundrop.kids', date: 'Apr 29, 2026', plan: 'Growth' }
+];
+var merchantQuery = '';
+var merchantPage = 0;
+
+function renderMerchantRow(m, isLast) {
+  return '<div style="display:flex;align-items:center;gap:10px;padding:10px 16px' + (isLast ? '' : ';border-bottom:1px solid var(--line-100)') + '">' +
+    '<div style="flex:1;min-width:0"><div style="font:500 13px/18px var(--font-sans);color:var(--ink-900)">' + m.store + '</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">Installed ' + m.date + '</div></div>' +
+    '<span class="pill ' + (m.legacy ? 'pill-neutral' : 'pill-info') + '">' + m.plan + '</span>' +
+    '</div>';
+}
+
+function renderMerchants() {
+  var q = merchantQuery.trim().toLowerCase();
+  var filtered = MERCHANTS.filter(function (m) { return !q || m.store.toLowerCase().indexOf(q) !== -1; });
+  var totalPages = Math.max(1, Math.ceil(filtered.length / MERCHANT_PAGE_SIZE));
+  if (merchantPage > totalPages - 1) merchantPage = totalPages - 1;
+  if (merchantPage < 0) merchantPage = 0;
+  var start = merchantPage * MERCHANT_PAGE_SIZE;
+  var pageItems = filtered.slice(start, start + MERCHANT_PAGE_SIZE);
+
+  var rowsEl = document.getElementById('merchant-rows');
+  rowsEl.innerHTML = pageItems.length
+    ? pageItems.map(function (m, i) { return renderMerchantRow(m, i === pageItems.length - 1); }).join('')
+    : '<div style="padding:20px 16px;text-align:center;font:400 13px/18px var(--font-sans);color:var(--text-muted)">No merchants match your search.</div>';
+
+  var shownFrom = filtered.length ? start + 1 : 0;
+  var shownTo = Math.min(start + MERCHANT_PAGE_SIZE, filtered.length);
+  var totalLabel = q ? (filtered.length + ' matching') : (MERCHANT_TOTAL.toLocaleString('en-IN') + ' total');
+  document.getElementById('merchant-footer-note').textContent = 'Showing ' + shownFrom + '-' + shownTo + ' of ' + totalLabel;
+
+  var prevBtn = document.getElementById('merchant-prev-btn');
+  var nextBtn = document.getElementById('merchant-next-btn');
+  var atStart = merchantPage === 0;
+  var atEnd = merchantPage >= totalPages - 1;
+  prevBtn.style.opacity = atStart ? '0.4' : '';
+  prevBtn.style.pointerEvents = atStart ? 'none' : '';
+  nextBtn.style.opacity = atEnd ? '0.4' : '';
+  nextBtn.style.pointerEvents = atEnd ? 'none' : '';
+}
+
+function filterMerchants() {
+  merchantQuery = document.getElementById('merchant-search-input').value;
+  merchantPage = 0;
+  renderMerchants();
+}
+function merchantPrevPage() {
+  if (merchantPage > 0) { merchantPage--; renderMerchants(); }
+}
+function merchantNextPage() {
+  merchantPage++;
+  renderMerchants();
+}
+renderMerchants();
+document.getElementById('merchant-search-icon').innerHTML = icon('search', 12);
+document.getElementById('merchant-prev-icon').innerHTML = icon('caret', 10);
+document.getElementById('merchant-prev-icon').style.transform = 'rotate(90deg)';
+document.getElementById('merchant-next-icon').innerHTML = icon('caret', 10);
+document.getElementById('merchant-next-icon').style.transform = 'rotate(-90deg)';
 
 /* ---------- Pricing: plan list + create/edit plan modal (PRD4) ---------- */
 var PUBLIC_PLANS = [
@@ -664,6 +1139,401 @@ function publishPlan() {
 
 document.getElementById('plan-close-icon').innerHTML = icon('close', 12);
 document.getElementById('plan-feature-plus').innerHTML = icon('plus', 9);
+
+/* ---------- Versions tab: list + drill-down detail ---------- */
+var VERSION_STATUS_META = {
+  draft: { label: 'Draft', pill: 'pill-neutral' },
+  in_review: { label: 'In review', pill: 'pill-info' },
+  changes_requested: { label: 'Changes requested', pill: 'pill-warning' },
+  approved: { label: 'Approved', pill: 'pill-accent' },
+  published: { label: 'Published', pill: 'pill-success' },
+  rejected: { label: 'Rejected', pill: 'pill-danger' }
+};
+
+var VERSIONS = [
+  { number: '1.7.0', name: '', status: 'draft', created: 'Oct 5, 2026', author: 'Asha Rao', changelog: '',
+    activity: [
+      { time: 'Oct 5, 2026, 9:02 AM', actor: 'Asha Rao', text: 'Created draft 1.7.0.' }
+    ] },
+  { number: '1.6.0', name: 'Checkout perf pass', status: 'in_review', created: 'Oct 4, 2026', author: 'Asha Rao',
+    changelog: '- Minor performance improvements to the wishlist sync job.',
+    activity: [
+      { time: 'Oct 4, 2026, 2:15 PM', actor: 'Asha Rao', text: 'Created draft 1.6.0.' },
+      { time: 'Oct 4, 2026, 4:40 PM', actor: 'Asha Rao', text: 'Submitted 1.6.0 for review.' },
+      { time: 'Oct 5, 2026, 9:10 AM', actor: 'Ratio App Review', text: 'Review started.' }
+    ] },
+  { number: '1.5.0', name: 'Wishlist sharing', status: 'approved', created: 'Oct 2, 2026', author: 'Karan Shah',
+    changelog: '**New:** merchants can let shoppers share a wishlist via link.\n\n- Share button on the wishlist page\n- Read-only shared view, no login required',
+    activity: [
+      { time: 'Oct 2, 2026, 11:00 AM', actor: 'Karan Shah', text: 'Created draft 1.5.0.' },
+      { time: 'Oct 2, 2026, 3:20 PM', actor: 'Karan Shah', text: 'Submitted 1.5.0 for review.' },
+      { time: 'Oct 3, 2026, 9:45 AM', actor: 'Ratio App Review', text: 'Review started.' },
+      { time: 'Oct 4, 2026, 1:30 PM', actor: 'Ratio App Review', text: 'Approved — ready to release whenever you are.' }
+    ] },
+  { number: '1.4.0', name: 'Bulk import', status: 'changes_requested', created: 'Sep 29, 2026', author: 'Karan Shah',
+    pending: ['Icon doesn’t meet the 1200×1200px minimum', 'Redirect URL must use https'],
+    changelog: '- Bulk CSV import for existing wishlists\n- Fixes a sync race condition on rapid add/remove',
+    activity: [
+      { time: 'Sep 29, 2026, 10:05 AM', actor: 'Karan Shah', text: 'Created draft 1.4.0.' },
+      { time: 'Sep 29, 2026, 5:50 PM', actor: 'Karan Shah', text: 'Submitted 1.4.0 for review.' },
+      { time: 'Sep 30, 2026, 9:15 AM', actor: 'Ratio App Review', text: 'Review started.' },
+      { time: 'Oct 1, 2026, 4:05 PM', actor: 'Ratio App Review', text: 'Changes requested — 2 items flagged, see below.' }
+    ] },
+  { number: '1.3.0', name: '', status: 'published', current: true, created: 'Sep 20, 2026', author: 'Asha Rao',
+    changelog: '- Faster product sync\n- Fixed wishlist counter on the cart drawer',
+    activity: [
+      { time: 'Sep 20, 2026, 10:00 AM', actor: 'Asha Rao', text: 'Created draft 1.3.0.' },
+      { time: 'Sep 20, 2026, 6:30 PM', actor: 'Asha Rao', text: 'Submitted 1.3.0 for review.' },
+      { time: 'Sep 22, 2026, 11:20 AM', actor: 'Ratio App Review', text: 'Review started.' },
+      { time: 'Sep 23, 2026, 3:40 PM', actor: 'Ratio App Review', text: 'Approved.' },
+      { time: 'Sep 24, 2026, 9:00 AM', actor: 'Asha Rao', text: 'Published 1.3.0 — now the active release.' }
+    ] },
+  { number: '1.2.0', name: '', status: 'published', created: 'Jul 28, 2026', author: 'Asha Rao',
+    changelog: '- Added wishlist analytics to the admin action\n- Minor copy fixes',
+    activity: [
+      { time: 'Jul 28, 2026, 9:30 AM', actor: 'Asha Rao', text: 'Created draft 1.2.0.' },
+      { time: 'Jul 28, 2026, 4:00 PM', actor: 'Asha Rao', text: 'Submitted 1.2.0 for review.' },
+      { time: 'Jul 30, 2026, 10:10 AM', actor: 'Ratio App Review', text: 'Review started.' },
+      { time: 'Aug 1, 2026, 2:00 PM', actor: 'Ratio App Review', text: 'Approved.' },
+      { time: 'Aug 2, 2026, 9:00 AM', actor: 'Asha Rao', text: 'Published 1.2.0 — became the active release.' },
+      { time: 'Sep 24, 2026, 9:00 AM', actor: 'Asha Rao', text: 'Replaced by 1.3.0, which became the active release. 1.2.0 is retained, not deleted.' }
+    ] },
+  { number: '1.1.0', name: '', status: 'published', created: 'Jun 10, 2026', author: 'Asha Rao',
+    changelog: '- Initial public release\n- Theme app block and admin action extensions',
+    activity: [
+      { time: 'Jun 10, 2026, 9:00 AM', actor: 'Asha Rao', text: 'Created draft 1.1.0.' },
+      { time: 'Jun 10, 2026, 5:00 PM', actor: 'Asha Rao', text: 'Submitted 1.1.0 for review.' },
+      { time: 'Jun 12, 2026, 11:00 AM', actor: 'Ratio App Review', text: 'Review started.' },
+      { time: 'Jun 13, 2026, 3:15 PM', actor: 'Ratio App Review', text: 'Approved.' },
+      { time: 'Jun 14, 2026, 9:00 AM', actor: 'Asha Rao', text: 'Published 1.1.0 — became the active release.' },
+      { time: 'Aug 2, 2026, 9:00 AM', actor: 'Asha Rao', text: 'Replaced by 1.2.0, which became the active release. 1.1.0 is retained, not deleted.' }
+    ] },
+  { number: '1.0.0', name: '', status: 'rejected', created: 'May 1, 2026', author: 'Karan Shah',
+    pending: ['App requested write_customers without a documented use — scope not justified', 'Admin action surfaced on the Customer page without the required confirmation step'],
+    changelog: '- First submission attempt',
+    activity: [
+      { time: 'May 1, 2026, 10:00 AM', actor: 'Karan Shah', text: 'Created draft 1.0.0.' },
+      { time: 'May 3, 2026, 1:00 PM', actor: 'Karan Shah', text: 'Submitted 1.0.0 for review.' },
+      { time: 'May 5, 2026, 9:30 AM', actor: 'Ratio App Review', text: 'Review started.' },
+      { time: 'May 6, 2026, 4:45 PM', actor: 'Ratio App Review', text: 'Rejected — see flagged items below.' }
+    ] }
+];
+
+var currentVersionDetailNumber = null;
+
+function findVersion(number) {
+  return VERSIONS.filter(function (v) { return v.number === number; })[0];
+}
+
+function renderVersionsList() {
+  document.getElementById('versions-rows').innerHTML = VERSIONS.map(function (v) {
+    var meta = VERSION_STATUS_META[v.status];
+    var nameHtml = v.name ? '<div style="font:400 12px/16px var(--font-sans);color:var(--text-muted);margin-top:1px">' + v.name + '</div>' : '';
+    var pendingHtml = (v.status === 'changes_requested' && v.pending && v.pending.length)
+      ? '<span style="font:500 13px/18px var(--font-sans);color:var(--warning-text)">' + v.pending.length + ' item' + (v.pending.length > 1 ? 's' : '') + ' pending</span>'
+      : '<span style="color:var(--ink-300)">&mdash;</span>';
+    var currentHtml = v.current ? '<span class="pill pill-success">Current release</span>' : '';
+    var releaseHtml = (v.status === 'published' && !v.current)
+      ? '<span class="btn btn-secondary btn-sm" onclick="releaseVersion(\'' + v.number + '\', event)">Release</span>'
+      : '';
+    return '<div class="table-row" style="display:grid;cursor:pointer" onclick="openVersionDetail(\'' + v.number + '\')">' +
+      '<span><span style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">' + v.number + '</span>' + nameHtml + '</span>' +
+      '<span><span class="pill ' + meta.pill + '">' + meta.label + '</span></span>' +
+      '<span>' + pendingHtml + '</span>' +
+      '<span>' + currentHtml + '</span>' +
+      '<span>' + releaseHtml + '</span>' +
+    '</div>';
+  }).join('');
+}
+
+function releaseVersion(number, evt) {
+  if (evt) evt.stopPropagation();
+  var target = findVersion(number);
+  if (!target) return;
+  var prevCurrent = VERSIONS.filter(function (v) { return v.current; })[0];
+  VERSIONS.forEach(function (v) { v.current = false; });
+  target.current = true;
+  var now = 'Oct 5, 2026, ' + new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  target.activity.push({ time: now, actor: 'Asha Rao', text: 'Released ' + target.number + ' — re-promoted as the active configuration.' + (prevCurrent ? ' ' + prevCurrent.number + ' stays intact in the version history.' : '') });
+  if (prevCurrent) prevCurrent.activity.push({ time: now, actor: 'Asha Rao', text: target.number + ' was released, replacing this version as the active configuration. This version is retained, not deleted.' });
+  renderVersionsList();
+  showToast(target.number + ' is now the current release.');
+  if (currentVersionDetailNumber === target.number || (prevCurrent && currentVersionDetailNumber === prevCurrent.number)) {
+    openVersionDetail(currentVersionDetailNumber);
+  }
+}
+
+function openVersionDetail(number) {
+  var v = findVersion(number);
+  if (!v) return;
+  currentVersionDetailNumber = number;
+  var meta = VERSION_STATUS_META[v.status];
+
+  document.getElementById('version-detail-breadcrumb-current').textContent = v.number;
+  document.getElementById('version-detail-number').textContent = v.number;
+  document.getElementById('version-detail-status-pill').innerHTML = '<span class="pill ' + meta.pill + '">' + meta.label + '</span>';
+  document.getElementById('version-detail-current-pill').innerHTML = v.current ? '<span class="pill pill-success">Current release</span>' : '';
+  document.getElementById('version-detail-created').textContent = v.created;
+  document.getElementById('version-detail-author').textContent = v.author;
+
+  var nameWrap = document.getElementById('version-detail-name-wrap');
+  if (v.name) { nameWrap.style.display = ''; document.getElementById('version-detail-name').textContent = v.name; }
+  else { nameWrap.style.display = 'none'; }
+
+  var releaseBtn = document.getElementById('version-detail-release-btn');
+  releaseBtn.innerHTML = (v.status === 'published' && !v.current)
+    ? '<span class="btn btn-primary btn-sm" onclick="releaseVersion(\'' + v.number + '\', event)">Release this version</span>'
+    : '';
+
+  var pendingCard = document.getElementById('version-pending-card');
+  if ((v.status === 'changes_requested' || v.status === 'rejected') && v.pending && v.pending.length) {
+    pendingCard.style.display = '';
+    document.getElementById('version-pending-list').innerHTML = v.pending.map(function (item) {
+      return '<div style="display:flex;align-items:flex-start;gap:8px"><span style="color:var(--danger-text);flex-shrink:0;margin-top:3px">' + icon('close', 10) + '</span><span style="font:400 13px/19px var(--font-sans);color:var(--ink-800)">' + item + '</span></div>';
+    }).join('');
+  } else {
+    pendingCard.style.display = 'none';
+  }
+
+  document.getElementById('version-activity-log').innerHTML = v.activity.map(function (a, i) {
+    return '<div style="display:flex;gap:12px;padding:10px 0' + (i ? ';border-top:1px solid var(--line-100)' : '') + '">' +
+      '<span style="font:400 12px/16px var(--font-sans);color:var(--text-muted);width:150px;flex-shrink:0">' + a.time + '</span>' +
+      '<span style="font:400 13px/19px var(--font-sans);color:var(--ink-800)"><b style="font-weight:500;color:var(--ink-900)">' + a.actor + '</b> &mdash; ' + a.text + '</span>' +
+    '</div>';
+  }).join('');
+
+  var frozen = (v.status === 'approved' || v.status === 'published');
+  var ta = document.getElementById('version-changelog-editor');
+  var preview = document.getElementById('version-changelog-preview');
+  ta.value = v.changelog || '';
+  versionMdPreviewOn = false;
+  preview.style.display = 'none';
+  ta.style.display = '';
+  document.getElementById('version-md-write-tab').classList.add('active');
+  document.getElementById('version-md-preview-tab').classList.remove('active');
+  ta.disabled = frozen;
+  ta.style.opacity = frozen ? '0.65' : '';
+  document.getElementById('version-changelog-toolbar').style.display = frozen ? 'none' : '';
+  document.getElementById('version-changelog-frozen-note').style.display = frozen ? '' : 'none';
+
+  document.getElementById('versions-list-view').style.display = 'none';
+  document.getElementById('versions-detail-view').style.display = '';
+}
+
+function backToVersionsList(evt) {
+  if (evt) evt.preventDefault();
+  document.getElementById('versions-detail-view').style.display = 'none';
+  document.getElementById('versions-list-view').style.display = '';
+}
+
+function onVersionChangelogInput() {
+  var v = findVersion(currentVersionDetailNumber);
+  if (v) v.changelog = document.getElementById('version-changelog-editor').value;
+}
+
+/* ---------- Versions tab: markdown changelog toolbar (re-scoped copy of settings.html's pattern) ---------- */
+function versionMdWrap(before, after, placeholder) {
+  var ta = document.getElementById('version-changelog-editor');
+  var start = ta.selectionStart, end = ta.selectionEnd;
+  var selected = ta.value.slice(start, end) || placeholder || '';
+  ta.value = ta.value.slice(0, start) + before + selected + after + ta.value.slice(end);
+  ta.focus();
+  ta.selectionStart = start + before.length;
+  ta.selectionEnd = start + before.length + selected.length;
+  onVersionChangelogInput();
+}
+function versionMdBold() { versionMdWrap('**', '**', 'bold text'); }
+function versionMdItalic() { versionMdWrap('_', '_', 'italic text'); }
+function versionMdLink() { versionMdWrap('[', '](https://)', 'link text'); }
+function versionMdList() {
+  var ta = document.getElementById('version-changelog-editor');
+  var start = ta.selectionStart;
+  var before = ta.value.slice(0, start);
+  var lineStart = before.lastIndexOf('\n') + 1;
+  ta.value = ta.value.slice(0, lineStart) + '- ' + ta.value.slice(lineStart);
+  ta.focus();
+  ta.selectionStart = ta.selectionEnd = start + 2;
+  onVersionChangelogInput();
+}
+function versionMdEscape(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function versionMdToHtml(src) {
+  var html = versionMdEscape(src)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/_(.+?)_/g, '<em>$1</em>')
+    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  var lines = html.split('\n');
+  var out = [], inList = false;
+  lines.forEach(function (line) {
+    if (/^-\s+/.test(line)) {
+      if (!inList) { out.push('<ul style="margin:4px 0 4px 18px;padding:0">'); inList = true; }
+      out.push('<li>' + line.replace(/^-\s+/, '') + '</li>');
+    } else {
+      if (inList) { out.push('</ul>'); inList = false; }
+      if (line.trim()) out.push('<p style="margin:0 0 8px">' + line + '</p>');
+    }
+  });
+  if (inList) out.push('</ul>');
+  return out.join('') || '<span style="color:var(--text-placeholder)">Nothing to preview yet.</span>';
+}
+var versionMdPreviewOn = false;
+function toggleVersionMdPreview() {
+  versionMdPreviewOn = !versionMdPreviewOn;
+  var ta = document.getElementById('version-changelog-editor');
+  var pv = document.getElementById('version-changelog-preview');
+  if (versionMdPreviewOn) { pv.innerHTML = versionMdToHtml(ta.value); ta.style.display = 'none'; pv.style.display = 'block'; }
+  else { ta.style.display = ''; pv.style.display = 'none'; }
+  document.getElementById('version-md-write-tab').classList.toggle('active', !versionMdPreviewOn);
+  document.getElementById('version-md-preview-tab').classList.toggle('active', versionMdPreviewOn);
+}
+
+renderVersionsList();
+
+/* ---------- Logs tab: telemetry (filter bar, chart, table, slide-over detail) ---------- */
+var LOG_ROWS = [
+  { kind: 'graphql', op: 'productCollections', shop: 'wellversed.ratio.win', shopId: 'shop_48213', time: 'Oct 5, 2026, 10:42:11 AM', status: 'success',
+    requestId: 'req_8f3a1c2e9b7d4f61', ip: '103.21.244.12', schema: 'Admin API', apiVersion: '2026-07', duration: '142 ms', cost: '38 of 1000 points',
+    userAgent: 'Ratio-App/1.3.0 (+https://wishlistpro.app)', scopes: 'read_products, read_orders',
+    body: 'query ProductCollections($id: ID!) {\n  product(id: $id) {\n    collections(first: 10) {\n      edges { node { title } }\n    }\n  }\n}' },
+  { kind: 'webhook', topic: 'orders/create', shop: 'wellversed.ratio.win', shopId: 'shop_48213', time: 'Oct 5, 2026, 10:40:02 AM', status: 'success',
+    webhookId: 'whk_3b9f2a71', apiVersion: '2026-07', responseTime: '212 ms', payloadSize: '1.4 KB', attempt: '1 of 5',
+    uri: 'https://wishlistpro.app/webhooks/orders', subId: 'sub_7a21', subMethod: 'Declarative (ratio.config.jsonc)', deliveryMethod: 'HTTPS POST', hmac: '7sQn3fK9r2mXb4T1pLZcQ8w==',
+    headers: 'X-Ratio-Topic: orders/create\nX-Ratio-Shop-Domain: wellversed.ratio.win\nX-Ratio-Webhook-Id: whk_3b9f2a71\nX-Ratio-Hmac-Sha256: 7sQn3fK9r2mXb4T1pLZcQ8w==\nContent-Type: application/json' },
+  { kind: 'graphql', op: 'mediaFilesByIds', shop: 'aqualogica.ratio.win', shopId: 'shop_91027', time: 'Oct 5, 2026, 10:35:47 AM', status: 'success',
+    requestId: 'req_2c7e9a04f1b83d5e', ip: '103.21.244.18', schema: 'Admin API', apiVersion: '2026-07', duration: '88 ms', cost: '12 of 1000 points',
+    userAgent: 'Ratio-App/1.3.0 (+https://wishlistpro.app)', scopes: 'read_products',
+    body: 'query MediaFilesByIds($ids: [ID!]!) {\n  nodes(ids: $ids) {\n    ... on MediaImage {\n      id\n      image { url }\n    }\n  }\n}' },
+  { kind: 'webhook', topic: 'products/update', shop: 'nutristar-dev.ratio.win', shopId: 'shop_10044', time: 'Oct 5, 2026, 9:58:13 AM', status: 'error', errorCode: '400 Error',
+    webhookId: 'whk_55d8c110', apiVersion: '2026-07', responseTime: '1.8 s', payloadSize: '2.1 KB', attempt: '3 of 5',
+    uri: 'https://wishlistpro.app/webhooks/products', subId: 'sub_4f02', subMethod: 'Declarative (ratio.config.jsonc)', deliveryMethod: 'HTTPS POST', hmac: 'KxN2pQ7vL9mZ0eD3sRtYcA==',
+    headers: 'X-Ratio-Topic: products/update\nX-Ratio-Shop-Domain: nutristar-dev.ratio.win\nX-Ratio-Webhook-Id: whk_55d8c110\nX-Ratio-Hmac-Sha256: KxN2pQ7vL9mZ0eD3sRtYcA==\nContent-Type: application/json' },
+  { kind: 'graphql', op: 'customerUpdate', shop: 'aqualogica.ratio.win', shopId: 'shop_91027', time: 'Oct 5, 2026, 9:30:02 AM', status: 'error', errorCode: 'Error',
+    requestId: 'req_af401c9e3b7d2f06', ip: '103.21.244.18', schema: 'Admin API', apiVersion: '2026-07', duration: '206 ms', cost: '18 of 1000 points',
+    userAgent: 'Ratio-App/1.3.0 (+https://wishlistpro.app)', scopes: 'read_orders, write_orders',
+    body: 'mutation CustomerUpdate($input: CustomerInput!) {\n  customerUpdate(input: $input) {\n    customer { id }\n    userErrors { field message }\n  }\n}' },
+  { kind: 'webhook', topic: 'app/uninstalled', shop: 'wellversed.ratio.win', shopId: 'shop_48213', time: 'Oct 4, 2026, 11:12:45 PM', status: 'success',
+    webhookId: 'whk_0a61ffe2', apiVersion: '2026-07', responseTime: '164 ms', payloadSize: '0.6 KB', attempt: '1 of 5',
+    uri: 'https://wishlistpro.app/webhooks/uninstall', subId: 'sub_9c10', subMethod: 'Declarative (ratio.config.jsonc)', deliveryMethod: 'HTTPS POST', hmac: 'Q7mTx1vD4nRzA9pLkC2wYe==',
+    headers: 'X-Ratio-Topic: app/uninstalled\nX-Ratio-Shop-Domain: wellversed.ratio.win\nX-Ratio-Webhook-Id: whk_0a61ffe2\nX-Ratio-Hmac-Sha256: Q7mTx1vD4nRzA9pLkC2wYe==\nContent-Type: application/json' },
+  { kind: 'graphql', op: 'productVariantsBulkUpdate', shop: 'wellversed.ratio.win', shopId: 'shop_48213', time: 'Oct 4, 2026, 8:05:19 PM', status: 'success',
+    requestId: 'req_5e9d21a6c4f0b837', ip: '103.21.244.12', schema: 'Admin API', apiVersion: '2026-07', duration: '310 ms', cost: '64 of 1000 points',
+    userAgent: 'Ratio-App/1.3.0 (+https://wishlistpro.app)', scopes: 'read_products, write_orders',
+    body: 'mutation ProductVariantsBulkUpdate($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {\n  productVariantsBulkUpdate(productId: $productId, variants: $variants) {\n    product { id }\n  }\n}' },
+  { kind: 'webhook', topic: 'customers/data_request', shop: 'aqualogica.ratio.win', shopId: 'shop_91027', time: 'Oct 4, 2026, 6:48:02 PM', status: 'success',
+    webhookId: 'whk_7712ab3e', apiVersion: '2026-07', responseTime: '198 ms', payloadSize: '0.8 KB', attempt: '1 of 5',
+    uri: 'https://wishlistpro.app/webhooks/compliance', subId: 'sub_2b77', subMethod: 'Declarative (ratio.config.jsonc)', deliveryMethod: 'HTTPS POST', hmac: 'Vb3wRkD8mLq1zX6cT0pYnE==',
+    headers: 'X-Ratio-Topic: customers/data_request\nX-Ratio-Shop-Domain: aqualogica.ratio.win\nX-Ratio-Webhook-Id: whk_7712ab3e\nX-Ratio-Hmac-Sha256: Vb3wRkD8mLq1zX6cT0pYnE==\nContent-Type: application/json' }
+];
+
+function renderLogsRow(r, idx) {
+  var statusIcon = r.status === 'success'
+    ? '<span style="color:var(--success-text)">' + icon('check', 12) + '</span>'
+    : '<span style="width:8px;height:8px;border-radius:50%;background:var(--danger-text);display:inline-block"></span>';
+  var typeLabel = r.kind === 'graphql' ? 'GraphQL request' : 'Webhook / Event';
+  var detail = r.kind === 'graphql' ? r.op : r.topic;
+  return '<div class="table-row" style="display:grid;cursor:pointer" onclick="openLogDetail(' + idx + ')">' +
+    '<span style="display:flex;align-items:center;justify-content:center">' + statusIcon + '</span>' +
+    '<span style="font:400 13px/18px var(--font-sans);color:var(--ink-800)">' + typeLabel + '</span>' +
+    '<span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + detail + '</span>' +
+    '<span style="font:400 13px/18px var(--font-sans);color:var(--ink-550)">' + r.shop + '</span>' +
+    '<span style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">' + r.time + '</span>' +
+  '</div>';
+}
+function renderLogsTable() {
+  document.getElementById('logs-rows').innerHTML = LOG_ROWS.map(renderLogsRow).join('');
+}
+function applyLogsFilter() {
+  var q = (document.getElementById('logs-filter-input').value || '').trim().toLowerCase();
+  document.querySelectorAll('#logs-rows .table-row').forEach(function (row) {
+    var text = row.textContent.toLowerCase();
+    row.style.display = (!q || text.indexOf(q) !== -1) ? '' : 'none';
+  });
+}
+renderLogsTable();
+
+function fieldRow(label, valueHtml) {
+  return '<div style="margin-bottom:12px"><div class="field-label" style="margin-bottom:2px">' + label + '</div><div style="font:400 13px/19px var(--font-sans);color:var(--ink-800);word-break:break-word">' + valueHtml + '</div></div>';
+}
+function idRow(label, value) {
+  return '<div style="margin-bottom:12px"><div class="field-label" style="margin-bottom:2px">' + label + '</div><div style="display:flex;align-items:center;gap:8px"><span style="font:400 13px/18px var(--font-sans);font-family:var(--font-mono);color:var(--ink-800);word-break:break-all">' + value + '</span><span class="copy-icon" style="color:var(--ink-500);cursor:pointer;flex-shrink:0" onclick=\'copyLogText(' + JSON.stringify(value) + ')\'></span></div></div>';
+}
+function codeBlock(text) {
+  var escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return '<div style="position:relative"><div class="doc-code-like" style="background:var(--ink-900);color:#D8E0F0;border-radius:8px;padding:12px 14px;padding-right:34px;font:400 12px/18px var(--font-mono);overflow-x:auto;white-space:pre">' + escaped + '</div><span class="copy-icon" style="position:absolute;top:10px;right:10px;color:#D8E0F0;cursor:pointer" onclick=\'copyLogText(' + JSON.stringify(text) + ')\'></span></div>';
+}
+function moreDetailsBlock(baseId, innerHtml) {
+  return '<div style="margin:14px 0;padding-top:14px;border-top:1px solid var(--line-100)">' +
+    '<div style="cursor:pointer;font:500 13px/18px var(--font-sans);color:var(--accent)" onclick="toggleLogMore(\'' + baseId + '\')"><span id="' + baseId + '-label">&#9656; More details</span></div>' +
+    '<div id="' + baseId + '" style="display:none;margin-top:10px">' + innerHtml + '</div>' +
+  '</div>';
+}
+function toggleLogMore(id) {
+  var el = document.getElementById(id);
+  var label = document.getElementById(id + '-label');
+  if (!el) return;
+  var isOpen = el.style.display !== 'none';
+  el.style.display = isOpen ? 'none' : '';
+  if (label) label.innerHTML = isOpen ? '&#9656; More details' : '&#9662; More details';
+}
+function copyLogText(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () { showToast('Copied to clipboard.'); }).catch(function () { showToast('Copied to clipboard.'); });
+  } else {
+    showToast('Copied to clipboard.');
+  }
+}
+
+function renderGraphqlDetail(r) {
+  return fieldRow('Type', 'GraphQL request') +
+    fieldRow('Time', r.time) +
+    idRow('Request ID', r.requestId) +
+    fieldRow('IP', r.ip) +
+    fieldRow('Schema', r.schema) +
+    fieldRow('API version', r.apiVersion) +
+    fieldRow('Duration', r.duration) +
+    fieldRow('Cost', r.cost) +
+    fieldRow('Shop', '<a href="stores.html">' + r.shop + '</a>') +
+    idRow('Shop ID', r.shopId) +
+    moreDetailsBlock('log-more-graphql', fieldRow('User agent', r.userAgent) + fieldRow('Scope categories', r.scopes)) +
+    '<div style="margin-top:4px"><div class="field-label" style="margin-bottom:6px">Operation body</div>' + codeBlock(r.body) + '</div>';
+}
+function renderWebhookDetail(r) {
+  return fieldRow('Type', 'Webhook / Event') +
+    fieldRow('Time', r.time) +
+    idRow('Webhook ID', r.webhookId) +
+    fieldRow('API version', r.apiVersion) +
+    fieldRow('Response time', r.responseTime) +
+    fieldRow('Payload size', r.payloadSize) +
+    fieldRow('Delivery attempt', r.attempt) +
+    fieldRow('Shop', '<a href="stores.html">' + r.shop + '</a>') +
+    idRow('Shop ID', r.shopId) +
+    moreDetailsBlock('log-more-webhook',
+      fieldRow('URI', '<span style="font-family:var(--font-mono);font-size:12px">' + r.uri + '</span>') +
+      idRow('Subscription ID', r.subId) +
+      fieldRow('Subscription method', r.subMethod) +
+      fieldRow('Delivery method', r.deliveryMethod) +
+      idRow('HMAC signature', r.hmac)
+    ) +
+    '<div style="margin-top:4px"><div class="field-label" style="margin-bottom:6px">Headers</div>' + codeBlock(r.headers) + '</div>';
+}
+
+function openLogDetail(idx) {
+  var r = LOG_ROWS[idx];
+  if (!r) return;
+  var badge = r.status === 'success'
+    ? '<span class="pill pill-success">OK</span>'
+    : '<span class="pill pill-danger">' + (r.errorCode || 'Error') + '</span>';
+  document.getElementById('log-detail-status-badge').innerHTML = badge;
+  document.getElementById('log-detail-body').innerHTML = (r.kind === 'graphql') ? renderGraphqlDetail(r) : renderWebhookDetail(r);
+  document.querySelectorAll('#log-detail-body .copy-icon').forEach(function (el) { el.innerHTML = icon('copy', 12); });
+  document.getElementById('log-detail-backdrop').style.display = '';
+  document.getElementById('log-detail-panel').style.transform = 'translateX(0)';
+}
+function closeLogDetail() {
+  document.getElementById('log-detail-panel').style.transform = 'translateX(100%)';
+  document.getElementById('log-detail-backdrop').style.display = 'none';
+}
 </script>
 </body>
 </html>
