@@ -16,6 +16,9 @@ body{background:#fff}
 .faq-a{font:400 14px/21px var(--font-sans);color:var(--ink-550);margin-top:8px;display:none}
 .faq-item.open .faq-a{display:block}
 .faq-item.open .faq-chevron{transform:rotate(180deg)}
+.faq-clear{display:none;color:var(--ink-500);cursor:pointer;flex-shrink:0}
+.faq-clear.visible{display:flex}
+@media (max-width:860px){.footer-cols{grid-template-columns:1fr 1fr !important;row-gap:28px !important}}
 </style>
 </head>
 <body>
@@ -46,28 +49,26 @@ body{background:#fff}
 
 <div style="max-width:700px;margin:0 auto;padding:56px 24px 0;text-align:center">
   <h1 style="font:600 32px/38px var(--font-sans);color:var(--ink-900);margin:0">How can we help?</h1>
-  <p style="margin:12px 0 0;font:400 15px/22px var(--font-sans);color:var(--ink-550)">Search the docs, or reach the partner support team directly.</p>
+  <p style="margin:12px 0 0;font:400 15px/22px var(--font-sans);color:var(--ink-550)">Search our FAQs, or reach the partner support team directly.</p>
   <div class="search-box" style="max-width:420px;margin:24px auto 0">
     <span id="support-search-icon" style="color:var(--ink-500)"></span>
-    <input placeholder="Search for help">
+    <input id="faq-search-input" placeholder="Search FAQs" oninput="filterFaqs(this.value)">
+    <span id="faq-clear-btn" class="faq-clear" onclick="clearFaqSearch()"></span>
   </div>
 </div>
 
-<div style="max-width:700px;margin:48px auto 0;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
-  <div class="card card-pad">
+<div style="max-width:420px;margin:48px auto 0;padding:0 24px;display:flex;justify-content:center">
+  <div class="card card-pad" style="width:100%">
     <div style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Email support</div>
     <div style="font:400 13px/19px var(--font-sans);color:var(--ink-550);margin-top:4px">For account, billing and review questions. We reply within one business day.</div>
     <a href="mailto:partners@ratio.win" style="display:inline-block;margin-top:12px;font:500 13px/18px var(--font-sans)">partners@ratio.win</a>
-  </div>
-  <div class="card card-pad">
-    <div style="font:600 15px/20px var(--font-sans);color:var(--ink-900)">Developer community</div>
-    <div style="font:400 13px/19px var(--font-sans);color:var(--ink-550);margin-top:4px">Ask other partners building on Ratio, share extensions, get code review.</div>
-    <a href="#" onclick="return false;" style="display:inline-block;margin-top:12px;font:500 13px/18px var(--font-sans)">Join the community &rarr;</a>
   </div>
 </div>
 
 <div style="max-width:700px;margin:48px auto 0;padding:0 24px 80px">
   <div style="font:600 18px/24px var(--font-sans);color:var(--ink-900);margin-bottom:8px">Frequently asked</div>
+
+  <div id="faq-no-results" style="display:none;font:400 14px/20px var(--font-sans);color:var(--text-muted);padding:16px 0"></div>
 
   <div class="faq-item" onclick="this.classList.toggle('open')">
     <div class="faq-q">How long does app review take?<span class="faq-chevron" style="transition:transform 120ms ease"></span></div>
@@ -75,26 +76,90 @@ body{background:#fff}
   </div>
   <div class="faq-item" onclick="this.classList.toggle('open')">
     <div class="faq-q">Can one organisation have more than one dev store?<span class="faq-chevron" style="transition:transform 120ms ease"></span></div>
-    <div class="faq-a">No &mdash; it's one dev store per organisation by design, to keep the model simple. If your team genuinely needs more, tell us why via email support.</div>
+    <div class="faq-a">Not yet &mdash; every organisation gets one dev store for now. Multi-store support is on the way; sit tight and we'll let you know the moment it rolls out.</div>
   </div>
   <div class="faq-item" onclick="this.classList.toggle('open')">
     <div class="faq-q">How do I get access to a client's live store?<span class="faq-chevron" style="transition:transform 120ms ease"></span></div>
-    <div class="faq-a">From Stores &rarr; Collaborations, request access with the store's URL and the 4-digit code the merchant gives you. The merchant approves, narrows, or denies the scopes you asked for &mdash; never the other way around.</div>
+    <div class="faq-a">From Stores &rarr; Collaborations, request access with the store's URL and the 4-digit code the merchant gives you. The merchant approves, narrows, or denies the scopes you asked for.</div>
   </div>
   <div class="faq-item" onclick="this.classList.toggle('open')">
     <div class="faq-q">Does Ratio charge me anything to build or list an app?<span class="faq-chevron" style="transition:transform 120ms ease"></span></div>
     <div class="faq-a">No &mdash; building and listing apps on Ratio is free. If your app charges merchants, Settings &rarr; Payouts has what you've earned and when it's paid out, with the GST breakdown behind each charge.</div>
   </div>
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-q">What kinds of extensions can my app ship?<span class="faq-chevron" style="transition:transform 120ms ease"></span></div>
+    <div class="faq-a">Three today: a theme app block (merchant places it in a storefront section), a theme app embed (runs globally once the merchant turns it on), and an admin UI extension (an action, block or print view inside Ratio's merchant admin). See the <a href="https://partners.ratio.win/docs#extensions">extensions guide</a>.</div>
+  </div>
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-q">How do webhooks work?<span class="faq-chevron" style="transition:transform 120ms ease"></span></div>
+    <div class="faq-a">Two ways: declare topics in your app's manifest (applies on publish or install) or register them at runtime with the Webhooks API (applies immediately). There's no "configure and save" step in the dashboard &mdash; an app's Webhooks tab is a read-only view of what's actually active. See the <a href="https://partners.ratio.win/docs#webhooks">webhooks guide</a>.</div>
+  </div>
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-q">Can I create an app from the terminal instead of the browser?<span class="faq-chevron" style="transition:transform 120ms ease"></span></div>
+    <div class="faq-a">Yes &mdash; run <code>npx @ratio/cli create app</code>. It's surfaced right from the Create app dropdown on the Apps page if you'd rather not leave your terminal.</div>
+  </div>
 </div>
 
-<div style="margin-top:0;border-top:1px solid var(--line-100)">
-  <div style="max-width:1152px;margin:0 auto;padding:32px 24px;box-sizing:border-box;font:400 12px/16px var(--font-sans);color:var(--text-placeholder)">&copy; 2026 Ratio. All rights reserved.</div>
+<div style="margin-top:80px;border-top:1px solid var(--line-100)">
+  <div style="max-width:1152px;margin:0 auto;padding:48px 24px;box-sizing:border-box">
+    <div class="footer-cols" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:24px">
+      <div>
+        <span class="rp-logo" style="font-size:18px">RAT<span class="rp-logo-slash"></span>O</span>
+        <div style="margin-top:12px;font:400 13px/19px var(--font-sans);color:var(--text-placeholder);max-width:220px">The commerce platform for D2C brands &mdash; and the partners who build for them.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font:500 12px/16px var(--font-sans);text-transform:uppercase;letter-spacing:0.5px;color:var(--text-placeholder);margin-bottom:2px">Resources</span>
+        <a href="https://partners.ratio.win/docs" class="nav-link" style="font-size:13px">Documentation</a>
+        <a href="https://partners.ratio.win/docs#api-reference" class="nav-link" style="font-size:13px">API reference</a>
+        <a href="changelog.html" class="nav-link" style="font-size:13px">Changelog</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font:500 12px/16px var(--font-sans);text-transform:uppercase;letter-spacing:0.5px;color:var(--text-placeholder);margin-bottom:2px">Company</span>
+        <a href="https://apps.ratio.win" class="nav-link" style="font-size:13px">Apps</a>
+        <a href="support.html" class="nav-link" style="font-size:13px">Support</a>
+        <a href="https://ratio.win" class="nav-link" style="font-size:13px">About Ratio</a>
+        <a href="https://admin.ratio.win" class="nav-link" style="font-size:13px">Merchant admin</a>
+      </div>
+    </div>
+    <div style="margin-top:40px;padding-top:20px;border-top:1px solid var(--line-100);font:400 12px/16px var(--font-sans);color:var(--text-placeholder)">&copy; 2026 Ratio. All rights reserved.</div>
+  </div>
 </div>
 
 <script>
 document.getElementById('support-search-icon').innerHTML = icon('search', 12);
 document.getElementById('marketing-hamburger-icon').innerHTML = icon('menu', 18);
+document.getElementById('faq-clear-btn').innerHTML = icon('close', 10);
 document.querySelectorAll('.faq-chevron').forEach(function (el) { el.innerHTML = icon('caret', 12); });
+
+function filterFaqs(query) {
+  var q = query.trim().toLowerCase();
+  var items = document.querySelectorAll('.faq-item');
+  var clearBtn = document.getElementById('faq-clear-btn');
+  var noResults = document.getElementById('faq-no-results');
+  clearBtn.classList.toggle('visible', q.length > 0);
+
+  var anyMatch = false;
+  items.forEach(function (item) {
+    var question = item.querySelector('.faq-q').textContent.toLowerCase();
+    var match = !q || question.indexOf(q) !== -1;
+    item.style.display = match ? '' : 'none';
+    if (match) anyMatch = true;
+  });
+
+  if (q && !anyMatch) {
+    noResults.textContent = 'No results for “' + query.trim() + '”';
+    noResults.style.display = 'block';
+  } else {
+    noResults.style.display = 'none';
+  }
+}
+
+function clearFaqSearch() {
+  var input = document.getElementById('faq-search-input');
+  input.value = '';
+  filterFaqs('');
+  input.focus();
+}
 </script>
 </body>
 </html>
