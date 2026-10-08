@@ -124,7 +124,7 @@
 <div id="expand-modal" class="modal-overlay">
   <div class="modal" style="width:500px;max-height:86vh;display:flex;flex-direction:column;overflow:hidden;padding:0">
     <div style="padding:20px 22px 0">
-      <div class="modal-title">Request additional permissions</div>
+      <div class="modal-title" id="expand-modal-title">Request additional permissions</div>
       <div class="modal-sub">on <b id="expand-store-name" style="color:var(--ink-900)"></b>. Your current access keeps working while this is reviewed.</div>
       <label class="field-label" style="margin-top:16px;display:block">Scopes &mdash; the full canonical list</label>
     </div>
@@ -135,7 +135,7 @@
     </div>
     <div style="display:flex;justify-content:flex-end;gap:8px;padding:14px 22px;border-top:1px solid var(--line-100);margin-top:14px">
       <span class="btn btn-secondary" onclick="closeModal('expand-modal')">Cancel</span>
-      <span class="btn btn-primary" onclick="submitExpand()">Send request</span>
+      <span class="btn btn-primary" id="expand-submit-btn" onclick="submitExpand()">Send request</span>
     </div>
   </div>
 </div>
@@ -173,7 +173,7 @@ document.getElementById('req-plus').innerHTML = icon('plus', 10);
 document.getElementById('client-empty-icon').innerHTML = icon('stores', 18);
 document.getElementById('dev-empty-icon').innerHTML = icon('stores', 18);
 document.getElementById('rate-limit-icon').innerHTML = icon('info', 14);
-switchTab('stores', 'collab');
+switchTab('stores', location.hash === '#dev' ? 'dev' : 'collab');
 
 /* ---- Dev tab: two demo states ---- */
 var devKebab = document.getElementById('dev-kebab');
@@ -221,12 +221,12 @@ function createDevStore() {
    for the `sent` status — active/compound rows show "Does not expire". */
 var STATUS_STYLE = {
   active:   { label: 'Active', expires: 'Does not expire', pillClass: 'pill-success', canExpand: true,  canCancel: false, canRevoke: true,  canEdit: false, canRevise: false },
-  compound: { label: 'Active &middot; Additional access requested', expires: 'Does not expire', pillClass: 'pill-accent', canExpand: false, canCancel: true,  canRevoke: true,  canEdit: false, canRevise: false },
+  compound: { label: 'Active &middot; Additional access requested', expires: 'Does not expire', pillClass: 'pill-accent', canExpand: false, canCancel: true,  canRevoke: true,  canEdit: true,  canRevise: false },
   sent:     { label: 'Request sent', expires: 'in 5 days', pillClass: 'pill-warning', canExpand: false, canCancel: true,  canRevoke: false, canEdit: true,  canRevise: false },
   rejected: { label: 'Rejected', expires: '&mdash;', pillClass: 'pill-neutral', canExpand: false, canCancel: false, canRevoke: false, canEdit: false, canRevise: true }
 };
 var ROWS = [
-  { key: 'wellversed', name: 'Wellversed', scopes: 'read_orders, write_orders +1', status: 'compound', granted: ['read_orders', 'write_orders', 'read_products'], message: '' },
+  { key: 'wellversed', name: 'Wellversed', scopes: 'read_orders, write_orders +1', status: 'compound', granted: ['read_orders', 'write_orders', 'read_products'], message: '', pendingScopes: ['write_products'], pendingMessage: "We'd like to auto-publish discount codes too." },
   { key: 'aqualogica', name: 'Aqualogica', scopes: 'read_products', status: 'sent', granted: ['read_products'], message: "We'd like access to help manage your loyalty program integration." },
   { key: 'kwik', name: 'Kwik Fashion', scopes: 'read_orders', status: 'active', granted: ['read_orders'], message: '' },
   { key: 'nooba', name: 'Nooba Foods', scopes: 'read_products', status: 'rejected', granted: ['read_products'], message: 'Requesting read access to sync your product catalog with our inventory tool.' }
@@ -329,7 +329,7 @@ function renderRows() {
     var st = STATUS_STYLE[r.status];
     var menuItems = '';
     if (st.canExpand) menuItems += '<div class="row-menu-item" onclick="openExpand(\'' + r.key + '\')">Request additional permissions</div>';
-    if (st.canEdit) menuItems += '<div class="row-menu-item" onclick="openEditRequest(\'' + r.key + '\')">Edit scopes</div>';
+    if (st.canEdit) menuItems += '<div class="row-menu-item" onclick="' + (r.status === 'compound' ? 'openEditExpand' : 'openEditRequest') + '(\'' + r.key + '\')">Edit scopes</div>';
     if (st.canCancel) menuItems += '<div class="row-menu-item" style="color:var(--danger-text)" onclick="openCancel(\'' + r.key + '\')">Cancel request</div>';
     if (st.canRevoke) menuItems += '<div class="row-menu-item" style="color:var(--danger-text)">Revoke access</div>';
     if (st.canRevise) menuItems += '<div class="row-menu-item" onclick="openReviseRequest(\'' + r.key + '\')">Revise &amp; resend</div>';
@@ -431,18 +431,41 @@ function openExpand(key) {
   document.querySelectorAll('.row-menu.open').forEach(function (m) { m.classList.remove('open'); });
   expandKey = key;
   var row = ROWS.find(function (r) { return r.key === key; });
+  document.getElementById('expand-modal-title').textContent = 'Request additional permissions';
+  document.getElementById('expand-submit-btn').textContent = 'Send request';
   document.getElementById('expand-store-name').textContent = row.name;
   document.getElementById('exp-reason').value = '';
   expSelected = {};
   renderExpandScopes(row.granted);
   openModal('expand-modal');
 }
+/* Editing an in-flight (compound) additional-permissions request reopens this
+   same modal, prefilled from the row's stored pending scopes/message, so the
+   partner can change what they're asking for until the merchant decides. */
+function openEditExpand(key) {
+  document.querySelectorAll('.row-menu.open').forEach(function (m) { m.classList.remove('open'); });
+  expandKey = key;
+  var row = ROWS.find(function (r) { return r.key === key; });
+  document.getElementById('expand-modal-title').textContent = 'Edit additional permissions';
+  document.getElementById('expand-submit-btn').textContent = 'Update request';
+  document.getElementById('expand-store-name').textContent = row.name;
+  document.getElementById('exp-reason').value = row.pendingMessage || '';
+  expSelected = {};
+  (row.pendingScopes || []).forEach(function (s) { expSelected[s] = true; });
+  renderExpandScopes(row.granted);
+  openModal('expand-modal');
+}
 function submitExpand() {
   var row = ROWS.find(function (r) { return r.key === expandKey; });
+  var wasAlreadyPending = row.status === 'compound';
+  row.pendingScopes = Object.keys(expSelected).filter(function (k) { return expSelected[k]; });
+  row.pendingMessage = document.getElementById('exp-reason').value;
   row.status = 'compound';
   renderRows();
   closeModal('expand-modal');
-  showToast('Request sent. ' + row.name + '’s owner will review the additional access you’ve asked for. Your current access is unaffected while this is pending.');
+  showToast(wasAlreadyPending
+    ? 'Updated. ' + row.name + '’s owner will see your changes.'
+    : 'Request sent. ' + row.name + '’s owner will review the additional access you’ve asked for. Your current access is unaffected while this is pending.');
 }
 
 var cancelKey = null;
