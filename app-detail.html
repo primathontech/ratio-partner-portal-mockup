@@ -824,6 +824,13 @@
       <span onclick="closeLogDetail()" style="color:var(--ink-500);cursor:pointer;flex-shrink:0;margin-left:12px" id="log-detail-close-icon"></span>
     </div>
     <div style="padding:18px 22px;overflow-y:auto;flex:1" id="log-detail-body"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-top:1px solid var(--line-100);flex-shrink:0">
+      <span id="log-detail-position" style="font:400 12px/16px var(--font-sans);color:var(--text-muted)"></span>
+      <span style="display:flex;gap:8px">
+        <span class="btn btn-secondary btn-sm" id="log-detail-prev-btn" onclick="logDetailPrev()" title="Previous (&uarr; or &larr;)"><span id="log-detail-prev-icon"></span>Previous</span>
+        <span class="btn btn-secondary btn-sm" id="log-detail-next-btn" onclick="logDetailNext()" title="Next (&darr; or &rarr;)">Next<span id="log-detail-next-icon"></span></span>
+      </span>
+    </div>
   </div>
 </div>
 
@@ -2068,8 +2075,12 @@ function copyLogText(text) {
   }
 }
 
+function demoScopeNote() {
+  return '<div style="margin-bottom:14px;padding:10px 14px;border-radius:8px;background:var(--line-100);color:var(--ink-550);font:400 12px/18px var(--font-sans)">Developer note: this log type is shown for demo purposes only and isn\'t in scope yet &mdash; treat the fields above as illustrative, not a real API contract.</div>';
+}
 function renderGraphqlDetail(r) {
-  return fieldRow('Type', 'GraphQL request') +
+  return demoScopeNote() +
+    fieldRow('Type', 'GraphQL request') +
     fieldRow('Time', r.time) +
     idRow('Request ID', r.requestId) +
     fieldRow('IP', r.ip) +
@@ -2105,7 +2116,8 @@ function renderWebhookDetail(r) {
     '<div style="margin-top:14px"><div class="field-label" style="margin-bottom:6px">Response</div>' + codeBlock(r.response) + '</div>';
 }
 function renderApiDetail(r) {
-  return fieldRow('Type', 'API request') +
+  return demoScopeNote() +
+    fieldRow('Type', 'API request') +
     fieldRow('Time', r.time) +
     idRow('Request ID', r.requestId) +
     fieldRow('Method + Path', '<span style="font-family:var(--font-mono)">' + r.method + ' ' + r.path + '</span>') +
@@ -2118,9 +2130,11 @@ function renderApiDetail(r) {
     '<div style="margin-top:14px"><div class="field-label" style="margin-bottom:6px">Response body</div>' + codeBlock(r.response) + '</div>';
 }
 
+var currentLogIdx = null;
 function openLogDetail(idx) {
   var r = LOG_ROWS[idx];
   if (!r) return;
+  currentLogIdx = idx;
   var badge = r.status === 'success'
     ? '<span class="pill pill-success">OK</span>'
     : '<span class="pill pill-danger">' + (r.errorCode || 'Error') + '</span>';
@@ -2128,11 +2142,32 @@ function openLogDetail(idx) {
   var detailHtml = r.kind === 'graphql' ? renderGraphqlDetail(r) : r.kind === 'api' ? renderApiDetail(r) : renderWebhookDetail(r);
   document.getElementById('log-detail-body').innerHTML = detailHtml;
   document.querySelectorAll('#log-detail-body .copy-icon').forEach(function (el) { el.innerHTML = icon('copy', 12); });
+  document.getElementById('log-detail-position').textContent = (idx + 1) + ' of ' + LOG_ROWS.length;
+  document.getElementById('log-detail-prev-btn').toggleAttribute('disabled', idx <= 0);
+  document.getElementById('log-detail-next-btn').toggleAttribute('disabled', idx >= LOG_ROWS.length - 1);
   openModal('log-detail-modal');
+}
+function logDetailPrev() {
+  if (currentLogIdx === null || currentLogIdx <= 0) return;
+  openLogDetail(currentLogIdx - 1);
+}
+function logDetailNext() {
+  if (currentLogIdx === null || currentLogIdx >= LOG_ROWS.length - 1) return;
+  openLogDetail(currentLogIdx + 1);
 }
 function closeLogDetail() {
   closeModal('log-detail-modal');
+  currentLogIdx = null;
 }
+document.getElementById('log-detail-prev-icon').innerHTML = icon('caret', 10);
+document.getElementById('log-detail-prev-icon').style.transform = 'rotate(90deg)';
+document.getElementById('log-detail-next-icon').innerHTML = icon('caret', 10);
+document.getElementById('log-detail-next-icon').style.transform = 'rotate(-90deg)';
+document.addEventListener('keydown', function (e) {
+  if (currentLogIdx === null || !document.getElementById('log-detail-modal').classList.contains('open')) return;
+  if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); logDetailPrev(); }
+  else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); logDetailNext(); }
+});
 </script>
 </body>
 </html>
