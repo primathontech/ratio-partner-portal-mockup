@@ -64,7 +64,7 @@ function renderShell(opts) {
       '</div>' +
       '<div style="border-top:1px solid var(--line-100);padding:8px 14px 6px"><div style="font:500 14px/20px var(--font-sans);color:var(--ink-900)">' + userName + '</div><div style="font:400 12px/16px var(--font-sans);color:var(--text-muted)">' + userEmail + '</div></div>' +
       '<div style="padding:6px"><div class="menu-item" style="border-radius:6px" onclick="openModal(\'profile-modal\')">Profile</div></div>' +
-      '<div style="padding:6px 6px 8px;border-top:1px solid var(--line-100)"><a href="landing.html" class="menu-item" style="border-radius:6px">Log out</a><a href="landing.html" class="menu-item" style="border-radius:6px">Log out everywhere</a></div>' +
+      '<div style="padding:6px 6px 8px;border-top:1px solid var(--line-100)"><a href="landing.html" class="menu-item" style="border-radius:6px">Log out</a></div>' +
     '</div>';
 
   var invitesModalHtml =
