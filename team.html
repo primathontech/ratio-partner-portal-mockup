@@ -279,7 +279,9 @@ function revokeInvite(idx) {
 
 function openInviteModal() {
   var select = document.getElementById('invite-role-select');
-  select.innerHTML = TEAM_ROLES.map(function (r) { return '<option>' + r.name + '</option>'; }).join('');
+  // Ownership can only be transferred, never granted via invite.
+  select.innerHTML = TEAM_ROLES.filter(function (r) { return r.id !== 'owner'; })
+    .map(function (r) { return '<option>' + r.name + '</option>'; }).join('');
   document.getElementById('invite-email-input').value = '';
   document.getElementById('invite-email-error').style.display = 'none';
   openModal('invite-modal');
